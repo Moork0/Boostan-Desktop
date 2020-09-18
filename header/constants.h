@@ -21,8 +21,11 @@ public:
     {
     public:
         enum {
-            NoError = 0,
-            ServerConnenctionError
+            NoCodeFound             = -1,
+            CustomCode              = 500,
+            UnknownError            = 1000,
+            NoError                 = 0,
+            ServerConnenctionError  = CustomCode -1
         };
 
         Errors() = delete;
