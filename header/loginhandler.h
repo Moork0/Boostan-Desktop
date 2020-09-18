@@ -2,11 +2,10 @@
 #define LOGINHANDLER_H
 
 #include "handler.h"
-#include <iostream>
 
 class LoginHandler : public Handler
 {
-
+    Q_OBJECT
 private:
     const QByteArray image_path {"captcha.png"};
     const QString login_url{"/Forms/AuthenticateUser/AuthUser.aspx?fid=0;1&tck=&&&lastm=20190219160242"},
@@ -19,9 +18,11 @@ private slots:
 
 public:
     LoginHandler();
-    bool getCaptcha();
-    bool tryLogin(const QString& username, const QString& password, const QString& captcha);
+    Q_INVOKABLE bool getCaptcha();
+    Q_INVOKABLE bool tryLogin(const QString username, const QString password, const QString captcha);
 
+signals:
+    void cFinished();
 };
 
 #endif // LOGINHANDLER_H
