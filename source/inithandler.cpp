@@ -19,6 +19,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
     if (hasError(reply.error())) {
         reply.deleteLater();
         setSuccess(false);
+        setFinished(true);
         return false;
     }
 
@@ -38,6 +39,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
     if (!cookiefound) {
         reply.deleteLater();
         setSuccess(false);
+        setFinished(true);
         return false;
     }
 
@@ -45,11 +47,12 @@ bool InitHandler::parseInit(QNetworkReply& reply)
     if (request_validators.empty()) {
         reply.deleteLater();
         setSuccess(false);
+        setFinished(true);
         return false;
     }
 //    getCaptcha();
     reply.deleteLater();
     setSuccess(true);
-    emit finished();
+    setFinished(true);
     return true;
 }
