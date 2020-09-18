@@ -50,7 +50,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
         setFinished(true);
         return false;
     }
-//    getCaptcha();
+
     reply.deleteLater();
     setSuccess(true);
     setFinished(true);
