@@ -16,7 +16,7 @@ const QHash<uint, QString> Constants::Errors::error_strings
     {UnknownError, "اوه! یک خطای ناشناخته رخ داده!"},
     {CustomCode, "کد امنیتی اشتباه وارد شده"},
     {CustomCode + 1, "مشکلی در دریافت تصویر امنیتی بوجود اومده"},
-    {1, "نام کاربری یا رمز عبور وارد شده اشتباهه"}
+    {1, "نام کاربری یا رمز عبوری که وارد شده اشتباهه"}
 };
 
 const QHash<uint, QString> Constants::Errors::error_solutions
