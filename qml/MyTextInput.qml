@@ -2,6 +2,9 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+/*
+ *  TODO: make animation for errors (possibly with path's)
+ */
 Item {
     id: root
     property alias direction: row_layout.layoutDirection
@@ -10,6 +13,7 @@ Item {
     property alias text: tfield_root.text
     property alias placeHolder: tfield_root.placeholderText
     property alias mode: tfield_root.echoMode
+    property alias horizontalAlignment: tfield_root.horizontalAlignment
 
     signal focusChanged
 
@@ -55,7 +59,6 @@ Item {
                 bottomPadding: tfield_bg.implicitHeight / 5
                 selectByMouse: true
                 onFocusChanged: root.focusChanged()
-
 
                 background: Rectangle {
                     id: tfield_bg
