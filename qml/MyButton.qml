@@ -8,7 +8,7 @@ Button {
     font.capitalization: Font.MixedCase
     Keys.onReturnPressed: clicked()
     Keys.onEnterPressed: clicked()
-    Keys.onSpacePressed: 0
+    Keys.onSpacePressed: {}
 
     property var bgColor: "#3fc1c9"
     property alias border: __background.border
