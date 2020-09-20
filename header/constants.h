@@ -17,6 +17,11 @@ public:
                         organization_name,
                         domain_name,
                         application_path;
+
+    Constants() = delete ;
+    static QVariant getConstant(const QString& key);
+    static void setConstant(const QString& key, const QString& value);
+
     class Errors
     {
     public:
@@ -32,10 +37,6 @@ public:
         const static QHash<uint, QString> error_strings;
         const static QHash<uint, QString> error_solutions;
     };
-
-    Constants() = delete ;
-    static QVariant getConstant(const QString& key);
-    static void setConstant(const QString& key, const QString& value);
 };
 
 #endif // CONSTANTS_H
