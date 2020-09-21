@@ -5,37 +5,59 @@
 #include <QString>
 #include <QVariant>
 #include <QDir>
-#include <array>
 
-class Constants {
+namespace Constants {
 
-private:
-    static QSettings settings;
+    inline const QString    application_name{"Boostan"},
+                            organization_name{"AVID"},
+                            domain_name{"SeedPuller.space"},
+                            application_path {QDir::currentPath()};
 
-public:
-    const static QString application_name,
-                        organization_name,
-                        domain_name,
-                        application_path;
+    // default golestan url for inserting to settings if no configuration is available
+    inline const QString    root_url {"https://golestan.umz.ac.ir"};
+    inline QSettings               settings{QSettings::IniFormat, QSettings::UserScope, organization_name, application_name};
 
-    Constants() = delete ;
-    static QVariant getConstant(const QString& key);
-    static void setConstant(const QString& key, const QString& value);
+    /*
+     * functions for work with settings
+     */
+    bool        checkSettings();
+    inline QVariant    getConstant(const QString& key);
+    inline void        setConstant(const QString& key, const QString& value);
 
-    class Errors
-    {
-    public:
+    /*
+     * Constants for errors
+     */
+    namespace Errors {
+
         enum {
-            NoCodeFound             = -1,
+            NoError                 = 0,
             CustomCode              = 500,
             UnknownError            = 1000,
-            NoError                 = 0,
-            ServerConnenctionError  = CustomCode -1
+            ServerConnenctionError  = CustomCode -1,
+            WrongCaptcha            = CustomCode,
+            CaptchaStoreError       = CustomCode + 1,
+            SettingsError           = CustomCode + 2
         };
 
-        Errors() = delete;
-        const static QHash<uint, QString> error_strings;
-        const static QHash<uint, QString> error_solutions;
+        inline const QHash<uint, QString> error_strings
+        {
+            {ServerConnenctionError, "خطا در اتصال به سرور"},
+            {UnknownError, "اوه! یک خطای ناشناخته رخ داده!"},
+            {WrongCaptcha, "کد امنیتی اشتباه وارد شده"},
+            {CaptchaStoreError, "مشکلی در دریافت تصویر امنیتی بوجود اومده"},
+            {SettingsError, "مشکلی در تنظیمات بوستان بوجود اومده"},
+            {1, "نام کاربری یا رمز عبوری که وارد شده اشتباهه"}
+        };
+
+        inline const QHash<uint, QString> error_solutions
+        {
+            {ServerConnenctionError, "لطفا وضعیت اتصال به اینترنت و وبسایت گلستان رو بررسی کنید"},
+            {UnknownError, "از اونجایی که منم نمیدونم چه خطاییه، بهتره لاگ هارو بررسی کنی و در صفحه گیتهاب این مشکل رو گزارش بدی"},
+            {WrongCaptcha, "دوباره با دقت تلاش کن :)"},
+            {CaptchaStoreError, "دسترسی های پوشه بوستان رو بررسی کنید و برنامه رو دوباره اجرا کنید"},
+            {SettingsError, QString("دسترسی های فایل تنظیمات که در %1 قرار داره رو بررسی کنید").arg(settings.fileName())},
+            {1, "دوباره با دقت تلاش کن :)"}
+        };
     };
 };
 
