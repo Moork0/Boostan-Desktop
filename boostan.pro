@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        source/errors.cpp \
         source/constants.cpp \
         source/handler.cpp \
         source/inithandler.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
         source/textparser.cpp
 
 HEADERS += \
+        header/errors.h \
         header/constants.h \
         header/handler.h \
         header/inithandler.h \
