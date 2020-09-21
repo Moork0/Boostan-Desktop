@@ -31,7 +31,7 @@ namespace Constants {
 
         enum {
             NoError                 = 0,
-            CustomCode              = 500,
+            CustomCode              = 700,
             UnknownError            = 1000,
             ServerConnenctionError  = CustomCode -1,
             WrongCaptcha            = CustomCode,
