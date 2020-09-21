@@ -6,6 +6,7 @@ Page {
     property alias error_msg: error_text.text
     property alias error_solution: error_solution.text
     property var callback_function
+    property bool isCritical: false
 
     Rectangle {
         id: page_background
@@ -48,12 +49,19 @@ Page {
             anchors.topMargin: 10
             width: 150
             height: 50
-            text: "دوباره تلاش کن!"
-            bgColor: "#ED960B"
+            // this text seems reverse. correct = if critical, close page. else try again
+            text: error_page.isCritical ? "بستن برنامه!" : "دوباره تلاش کن!"
+            bgColor: error_page.isCritical ? "#E53935" :  "#ED960B"
             radius: 5
-            onClicked: callback_function()
+            onClicked: {
+                if (error_page.isCritical) {
+                    Qt.quit()
+                    return;
+                }
+                callback_function()
+            }
+
             font.pixelSize: 15
         }
-
     }
 }
