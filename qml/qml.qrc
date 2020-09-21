@@ -6,5 +6,10 @@
         <file>pics/LoginBackground.svg</file>
         <file>fonts/icons.ttf</file>
         <file>MyTextInput.qml</file>
+        <file>MyButton.qml</file>
+        <file>fonts/Tanha.ttf</file>
+        <file>ClickableText.qml</file>
+        <file>ErrorPage.qml</file>
+        <file>ErrorHandler.qml</file>
     </qresource>
 </RCC>
