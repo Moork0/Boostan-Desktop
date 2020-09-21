@@ -15,14 +15,14 @@ namespace Constants {
 
     // default golestan url for inserting to settings if no configuration is available
     inline const QString    root_url {"https://golestan.umz.ac.ir"};
-    inline QSettings               settings{QSettings::IniFormat, QSettings::UserScope, organization_name, application_name};
+    inline QSettings        settings{QSettings::IniFormat, QSettings::UserScope, organization_name, application_name};
 
     /*
      * functions for work with settings
      */
     bool        checkSettings();
-    inline QVariant    getConstant(const QString& key);
-    inline void        setConstant(const QString& key, const QString& value);
+    QVariant    getConstant(const QString& key);
+    void        setConstant(const QString& key, const QString& value);
 
     /*
      * Constants for errors

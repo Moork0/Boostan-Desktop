@@ -19,16 +19,16 @@ private:
 public:
     explicit                    Errors(QObject *parent = nullptr);
 
-    inline int                  getErrorCode() const;
+    int                  getErrorCode() const;
     void                        setErrorCode(int value);
 
-    inline bool                 isCritical() const;
+    bool                        isCritical() const;
 //    inline void                 setCritical(bool state);
 
 public slots:
     void                        reset();
-    inline QString              getErrorString()    const;
-    inline QString              getErrorSolution()  const;
+    QString              getErrorString()    const;
+    QString              getErrorSolution()  const;
 
 signals:
     void                        errorCodeChanged();
