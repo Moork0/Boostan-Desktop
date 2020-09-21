@@ -70,7 +70,7 @@ int TextParser::hasError(const QString& response)
 {
     if (response.contains("ErrorArr = new Array()")) return Constants::Errors::NoError;
     int code {Errors::extractErrorCode(response)};
-    if (code != Constants::Errors::NoCodeFound) return code;
+    if (code != Errors::NoCodeFound) return code;
     QHash<int, QString>::const_iterator it {Errors::error_keywords.cbegin()};
     for (; it != Errors::error_keywords.cend(); ++it) {
         code = response.indexOf(it.value());
@@ -84,7 +84,7 @@ int TextParser::Errors::extractErrorCode(const QString& response)
 {
     int code_position {response.indexOf("کد")};
     QString code;
-    if (code_position == -1) return Constants::Errors::NoCodeFound;
+    if (code_position == -1) return Errors::NoCodeFound;
 
     int i = code_position + 2;
     while (response[i] != " ") {

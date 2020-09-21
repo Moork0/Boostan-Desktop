@@ -23,10 +23,9 @@ namespace Validators
 
 namespace Errors
 {
+    constexpr int NoCodeFound {-1};
     const QString error_withcode_pattern      {"ErrorArr = new Array\\('[\\w :]+"};
-
     const QHash<int, QString> error_keywords {{Constants::Errors::CustomCode, "کد امنيتي"}};
-
     int extractErrorCode(const QString& response);
 };
 
