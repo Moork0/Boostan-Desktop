@@ -5,7 +5,6 @@
  * initializing static variables
  */
 const QString Handler::root_url {Constants::getConstant("root_url").toString()};
-QHashString Handler::cookies, Handler::request_validators;
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}, error_code{-1}
 {
@@ -64,22 +63,6 @@ void Handler::setErrorCode(int ecode)
     if (error_code == ecode) return;
     error_code = ecode;
     emit errorCodeChanged();
-}
-
-QString Handler::getErrorString() const
-{
-    if (error_code >= QNetworkReply::ConnectionRefusedError && error_code <= QNetworkReply::UnknownServerError)
-        return Constants::Errors::error_strings[Constants::Errors::ServerConnenctionError];
-
-    return Constants::Errors::error_strings[error_code];
-}
-
-QString Handler::getErrorSolution() const
-{
-    if (error_code >= QNetworkReply::ConnectionRefusedError && error_code <= QNetworkReply::UnknownServerError)
-        return Constants::Errors::error_solutions[Constants::Errors::ServerConnenctionError];
-
-    return Constants::Errors::error_solutions[error_code];
 }
 
 void Handler::setSuccess(bool state)

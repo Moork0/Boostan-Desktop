@@ -18,11 +18,10 @@ protected:
     Q_PROPERTY(bool     finished        READ getFinished        NOTIFY finished)
     Q_PROPERTY(bool     success         READ getSuccess         NOTIFY successChanged)
     Q_PROPERTY(uint     errorCode       READ getErrorCode       NOTIFY errorCodeChanged)
-    Q_PROPERTY(QString  errorString     READ getErrorString     NOTIFY errorCodeChanged)
-    Q_PROPERTY(QString  errorSolution   READ getErrorSolution   NOTIFY errorCodeChanged)
 
-    static const QString    root_url;
-    static QHashString      cookies, request_validators;
+    inline static QHashString      cookies, request_validators;
+    static const  QString          root_url;
+
     Network                 request;
     bool                    is_finished, success;
     int                     error_code;
@@ -34,17 +33,11 @@ protected:
 
     bool        hasError(QNetworkReply::NetworkError ecode);
 
-    bool getFinished() const;
-    void setFinished(bool value);
+    bool        getFinished() const;
+    void        setFinished(bool value);
 
     uint        getErrorCode() const;
     void        setErrorCode(int ecode);
-
-    QString     getErrorString() const;
-    void        setErrorString(const QString& str);
-
-    QString     getErrorSolution() const;
-    void        setErrorSolution(const QString& str);
 
     void        setSuccess(bool state);
     bool        getSuccess() const;
