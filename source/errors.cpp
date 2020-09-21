@@ -37,13 +37,7 @@ bool Errors::isCritical() const
     return false;
 }
 
-//void Errors::setCritical(bool state)
-//{
-//    is_critical = state;
-//}
-
 void Errors::reset()
 {
-//    setCritical(false);
     setErrorCode(Constants::Errors::NoError);
 }
