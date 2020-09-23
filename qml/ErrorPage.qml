@@ -11,16 +11,23 @@ Page {
     Rectangle {
         id: page_background
         anchors.fill: parent
-        color: "#FAFAFA"
+        color: "#262125"
+        Image {
+            id: error_logo
+            width: parent.width / 1.5
+            height: parent.height / 1.2
+            source: "pics/error-logo.svg"
+            anchors.centerIn: parent
+        }
         Label {
             id: eror_icon
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 120
+            anchors.top: error_logo.top
+            anchors.topMargin: 50
             text: "\ue802" // sad icon
             font.family: "fontello"
-            font.pixelSize: error_page.width / 5
-            color: "#424242"
+            font.pixelSize: error_logo.width / 4
+            color: "#F8F7F2"
         }
 
         Label {
@@ -29,8 +36,10 @@ Page {
             anchors.top: eror_icon.bottom
             anchors.topMargin: 40
             font.family: "Tanha"
-            font.pixelSize: eror_icon.font.pixelSize / 5
+            font.pixelSize: eror_icon.font.pixelSize / 4
+            font.weight: Font.DemiBold
 //            text: "این یک متن ارور است"
+            color: "#F8F7F2"
         }
 
         Label {
@@ -39,7 +48,9 @@ Page {
             anchors.top: error_text.bottom
             font.family: "Tanha"
             font.pixelSize: error_text.font.pixelSize / 2
+            font.weight: Font.DemiBold
 //            text: "این یک توضیحات اضافه است"
+            color: "#F8F7F2"
         }
 
         MyButton {
@@ -47,10 +58,11 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: error_solution.bottom
             anchors.topMargin: 10
-            width: 150
-            height: 50
+            width: 200
+            height: 60
             // this text seems reverse. correct = if critical, close page. else try again
             text: error_page.isCritical ? "بستن برنامه!" : "دوباره تلاش کن!"
+            font.pixelSize: 20
             bgColor: error_page.isCritical ? "#E53935" :  "#ED960B"
             radius: 5
             onClicked: {
@@ -61,7 +73,6 @@ Page {
                 callback_function()
             }
 
-            font.pixelSize: 15
         }
     }
 }
