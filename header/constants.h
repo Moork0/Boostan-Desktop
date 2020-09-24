@@ -11,11 +11,11 @@ namespace Constants {
     inline const QString    application_name{"Boostan"},
                             organization_name{"AVID"},
                             domain_name{"SeedPuller.space"},
-                            application_path {QDir::currentPath()};
+                            application_path {QDir::currentPath() + "/"},
+                            // default golestan url for inserting to settings if no configuration is available
+                            root_url {"https://golestan.umz.ac.ir"};
 
-    // default golestan url for inserting to settings if no configuration is available
-    inline const QString    root_url {"https://golestan.umz.ac.ir"};
-    inline QSettings        settings{QSettings::IniFormat, QSettings::UserScope, organization_name, application_name};
+    inline QSettings        settings{application_path + "settings.ini", QSettings::IniFormat};
 
     /*
      * functions for work with settings
