@@ -113,6 +113,7 @@ Page {
                     height: 40
                     direction: Qt.RightToLeft
                     placeHolder: "رمز عبور"
+                    mode: TextInput.Password
                     icon: "\ue800" // profile icon
                     iconSize: 24
                 }
