@@ -1,9 +1,6 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <QSettings>
-#include <QString>
-#include <QVariant>
 #include <QDir>
 
 namespace Constants {
