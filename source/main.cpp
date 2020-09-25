@@ -5,7 +5,6 @@
 //#include <QDir>
 //#include <QUrl>
 #include <QDebug>
-//#include "handler.h"
 #include "header/textparser.h"
 #include "header/inithandler.h"
 #include "header/loginhandler.h"
@@ -29,7 +28,7 @@ int main(int argc, char *argv[])
     bool universal_error{false};
     int universal_error_code {0};
     Settings settings;
-    if (!Constants::checkSettings()) {
+    if (!settings.checkSettings()) {
         universal_error = true;
         universal_error_code = Constants::Errors::SettingsError;
     }

@@ -15,8 +15,6 @@ namespace Constants {
                             // default golestan url for inserting to settings if no configuration is available
                             root_url {"https://golestan.umz.ac.ir"};
 
-    inline QSettings        settings{application_path + "settings.ini", QSettings::IniFormat};
-
     /*
      * functions for work with settings
      */

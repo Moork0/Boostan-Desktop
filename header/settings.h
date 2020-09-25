@@ -2,15 +2,20 @@
 #define SETTINGS_H
 
 #include <QObject>
+#include <QSettings>
 #include "constants.h"
 
 class Settings : public QObject
 {
     Q_OBJECT
+private:
+    inline static QSettings        settings{Constants::application_path + "settings.ini", QSettings::IniFormat};
+
 public:
     Settings();
-    Q_INVOKABLE void    setValue(QString key, QString value);
-    Q_INVOKABLE QString getValue(QString key);
+    Q_INVOKABLE static void     setValue(QString key, QString value);
+    Q_INVOKABLE static QVariant getValue(QString key);
+    bool                        checkSettings();
 };
 
 #endif // SETTINGS_H
