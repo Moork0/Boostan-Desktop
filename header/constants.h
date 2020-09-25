@@ -10,8 +10,8 @@ namespace Constants {
                             domain_name{"SeedPuller.space"},
                             application_path {QDir::currentPath() + "/"},
                             // default golestan url for inserting to settings if no configuration is available
-                            root_url {"https://golestan.umz.ac.ir"};
-
+                            root_url {"https://golestan.umz.ac.ir"},
+                            settings_path {application_path + "settings.ini"};
     /*
      * functions for work with settings
      */
@@ -50,7 +50,7 @@ namespace Constants {
             {UnknownError, "از اونجایی که منم نمیدونم چه خطاییه، بهتره لاگ هارو بررسی کنی و در صفحه گیتهاب این مشکل رو گزارش بدی"},
             {WrongCaptcha, "دوباره با دقت تلاش کن :)"},
             {CaptchaStoreError, "دسترسی های پوشه بوستان رو بررسی کنید و برنامه رو دوباره اجرا کنید"},
-            {SettingsError, QString("دسترسی های فایل تنظیمات که در %1 قرار داره رو بررسی کنید").arg(settings.fileName())},
+            {SettingsError, QString("دسترسی های فایل تنظیمات که در %1 قرار داره رو بررسی کنید").arg(settings_path)},
             {1, "دوباره با دقت تلاش کن :)"}
         };
     };

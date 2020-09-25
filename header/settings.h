@@ -9,7 +9,7 @@ class Settings : public QObject
 {
     Q_OBJECT
 private:
-    inline static QSettings        settings{Constants::application_path + "settings.ini", QSettings::IniFormat};
+    inline static QSettings        settings{Constants::settings_path, QSettings::IniFormat};
 
 public:
     Settings();

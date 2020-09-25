@@ -1,10 +1,9 @@
 #include "header/handler.h"
-#include <iostream>
 
 /*
  * initializing static variables
  */
-const QString Handler::root_url {Constants::getConstant("root_url").toString()};
+const QString Handler::root_url {Settings::getValue("root_url").toString()};
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}, error_code{-1}
 {

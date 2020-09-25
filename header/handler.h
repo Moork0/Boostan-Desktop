@@ -9,7 +9,7 @@
 
 #include "network.h"
 #include "textparser.h"
-#include "constants.h"
+#include "settings.h"
 
 class Handler : public QObject
 {
