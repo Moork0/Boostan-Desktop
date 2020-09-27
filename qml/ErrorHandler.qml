@@ -5,13 +5,13 @@ Error {
     id: error_handler
     required property var viewItem
 
-    function raiseError(error_code, callback_function, is_critical)
+    function raiseError(error_code, callback_function, critical_status)
     {
         errorCode = error_code;
         viewItem.push("ErrorPage.qml",
         {"error_msg":       getErrorString(),
          "error_solution":  getErrorSolution(),
-         "isCritical":      is_critical,
+         "criticalStatus":      critical_status,
          "callback_function": function() {
              viewItem.pop()
              callback_function()

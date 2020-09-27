@@ -6,7 +6,7 @@ Page {
     property alias error_msg: error_text.text
     property alias error_solution: error_solution.text
     property var callback_function
-    property bool isCritical: false
+    property int criticalStatus: ErrorHandler.SemiCritical
 
     Rectangle {
         id: page_background
@@ -60,13 +60,13 @@ Page {
             anchors.topMargin: 10
             width: 200
             height: 60
-            // this text seems reverse. correct = if critical, close page. else try again
-            text: error_page.isCritical ? "بستن برنامه!" : "دوباره تلاش کن!"
+            // this text seems reverse. correct = if status == Critical, close page. else try again
+            text: error_page.criticalStatus == ErrorHandler.Critical ? "بستن برنامه!" : "دوباره تلاش کن!"
             font.pixelSize: 20
-            bgColor: error_page.isCritical ? "#E53935" :  "#ED960B"
+            bgColor: error_page.criticalStatus == ErrorHandler.Critical ? "#E53935" :  "#ED960B"
             radius: 5
             onClicked: {
-                if (error_page.isCritical) {
+                if (error_page.criticalStatus == ErrorHandler.Critical) {
                     Qt.quit()
                     return;
                 }
