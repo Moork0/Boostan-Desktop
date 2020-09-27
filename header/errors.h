@@ -10,23 +10,24 @@ class Errors : public QObject
     Q_OBJECT
 private:
     Q_PROPERTY(int      errorCode       READ getErrorCode       WRITE setErrorCode  NOTIFY errorCodeChanged)
-    Q_PROPERTY(bool     isCritical      READ isCritical         NOTIFY errorCodeChanged)
-//    Q_PROPERTY(QString  errorString     READ getErrorString     NOTIFY errorCodeChanged)
-//    Q_PROPERTY(QString  errorSolution   READ getErrorSolution   NOTIFY errorCodeChanged)
+    Q_PROPERTY(uint     criticalStatus  READ getCriticalStatus  NOTIFY errorCodeChanged)
     int     error_code;
-//    bool    is_critical;
 
 public:
-    explicit                    Errors(QObject *parent = nullptr);
+    enum status{
+        Critical = 0,
+        SemiCritical,
+        Normal
+    };
+    Q_ENUM(status)
 
-    int                  getErrorCode() const;
-    void                        setErrorCode(int value);
-
-    bool                        isCritical() const;
-//    inline void                 setCritical(bool state);
+    explicit            Errors(QObject *parent = nullptr);
+    void                setErrorCode(int value);
+    int                 getErrorCode()         const;
+    uint                getCriticalStatus()    const;
 
 public slots:
-    void                        reset();
+    void                 reset();
     QString              getErrorString()    const;
     QString              getErrorSolution()  const;
 

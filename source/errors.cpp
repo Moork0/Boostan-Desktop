@@ -31,10 +31,11 @@ void Errors::setErrorCode(int ecode)
     emit errorCodeChanged();
 }
 
-bool Errors::isCritical() const
+uint Errors::getCriticalStatus() const
 {
-    if (error_code == Constants::Errors::SettingsError) return true;
-    return false;
+    if (error_code == Constants::Errors::SettingsError) return status::Critical;
+    if (error_code == Constants::Errors::ServerConnenctionError) return status::SemiCritical;
+    return status::Normal;
 }
 
 void Errors::reset()
