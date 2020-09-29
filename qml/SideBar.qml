@@ -6,7 +6,7 @@ Rectangle {
     id: side_bar
     color: "#262125"
     anchors.left: stackview.right
-    width: enabled ? mainwindow.width * 0.20 : 0
+    width: enabled ? 270 : 0
     height: mainwindow.height
 
     property real itemSize: width * 0.06
@@ -34,9 +34,32 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: 10
             font.family: "Mj_Afsoon"
-            font.pixelSize: 50
+            font.pixelSize: 55
             color: "#ED960B"
             text: "بوستان"
+        }
+
+        Item {
+            height: 15
+        }
+
+        Label {
+            id: student_name
+            Layout.alignment: Qt.AlignHCenter
+            text: "سوزان محسنی سنگتابی چخماخ شمار"
+            font.family: "Sahel"
+            font.pixelSize: 12
+            color: "#F8F7F2"
+        }
+
+        Label {
+            id: today_date
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 10
+            text: "۱۱ شهریور ۱۳۹۹"
+            font.pixelSize: 12
+            font.family: "Sahel"
+            color: "#F8F7F2"
         }
 
         Item {
@@ -108,6 +131,7 @@ Rectangle {
                     text: "\ue804" // attention icon
                     anchors.centerIn: attention_bg
                     font.weight: Font.Thin
+                    font.pixelSize: 17
                 }
             }
 
@@ -127,6 +151,7 @@ Rectangle {
                     text: "\ue807" // attention circle icon
                     anchors.centerIn: attention_circle_bg
                     font.weight: Font.Thin
+                    font.pixelSize: 17
                 }
             }
         }
