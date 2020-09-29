@@ -3,7 +3,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>LoginPage.qml</file>
-        <file>pics/LoginBackground.svg</file>
         <file>fonts/icons.ttf</file>
         <file>MyTextInput.qml</file>
         <file>MyButton.qml</file>
@@ -11,5 +10,13 @@
         <file>ClickableText.qml</file>
         <file>ErrorPage.qml</file>
         <file>ErrorHandler.qml</file>
+        <file>pics/login-logo.svg</file>
+        <file>pics/loading-logo.png</file>
+        <file>pics/error-logo.svg</file>
+        <file>fonts/Mj_Afsoon.ttf</file>
+        <file>SideBar.qml</file>
+        <file>Icon.qml</file>
+        <file>SideBarItem.qml</file>
+        <file>fonts/Sahel.ttf</file>
     </qresource>
 </RCC>
