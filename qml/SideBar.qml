@@ -8,6 +8,7 @@ Rectangle {
     anchors.left: stackview.right
     width: enabled ? 270 : 0
     height: mainwindow.height
+    radius: 17
 
     property real itemSize: width * 0.06
     property var options: ["پیشخوان", "دروس ارائه شده", "کارنامه", "حساب کاربری"]
@@ -40,13 +41,13 @@ Rectangle {
         }
 
         Item {
-            height: 15
+            height: 18
         }
 
         Label {
             id: student_name
             Layout.alignment: Qt.AlignHCenter
-            text: "سوزان محسنی سنگتابی چخماخ شمار"
+            text: "محسنی حیدریان رنجبر حسینی سلام"
             font.family: "Sahel"
             font.pixelSize: 12
             color: "#F8F7F2"
@@ -91,7 +92,7 @@ Rectangle {
         id: side_bar_right
         anchors.right: side_bar.right
         anchors.rightMargin: -7
-        width: 70
+        width: enabled ? 70 : 0
         height: side_bar.height
         radius: 10
         color: "#ED960B"
