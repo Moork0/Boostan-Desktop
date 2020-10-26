@@ -70,7 +70,7 @@ Page {
                 anchors.bottom: form_container.top
                 anchors.bottomMargin: 20
                 text: "بوستان"
-                font.family: "Tanha"
+                font.family: "Mj_Afsoon"
         //        font.bold: Font.Bold
                 font.pixelSize: 60
                 color: "#ED960B"
