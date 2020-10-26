@@ -18,5 +18,6 @@
         <file>Icon.qml</file>
         <file>SideBarItem.qml</file>
         <file>fonts/Sahel.ttf</file>
+        <file>DashboardPage.qml</file>
     </qresource>
 </RCC>
