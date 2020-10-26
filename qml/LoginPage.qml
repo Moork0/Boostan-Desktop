@@ -49,7 +49,7 @@ Page {
             id: logo_background
             Layout.preferredWidth: parent.width / 2.5
             Layout.preferredHeight: parent.height
-            color: "#ED960B"
+            color: "#19B99A"
             Image {
                 anchors.centerIn: parent
                 source: "pics/login-logo.svg"
@@ -73,7 +73,7 @@ Page {
                 font.family: "Mj_Afsoon"
         //        font.bold: Font.Bold
                 font.pixelSize: 60
-                color: "#ED960B"
+                color: "#19B99A"
             }
 
             Rectangle {
@@ -188,7 +188,7 @@ Page {
                     Layout.preferredWidth: 240
                     Layout.preferredHeight: 50
                     text: "ورود"
-                    bgColor: "#ED960B"
+                    bgColor: "#19B99A"
                     radius: 5
                     onClicked: console.log("cl")
                     font.pixelSize: 15

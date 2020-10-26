@@ -63,7 +63,7 @@ Page {
             // this text seems reverse. correct = if status == Critical, close page. else try again
             text: error_page.criticalStatus == ErrorHandler.Critical ? "بستن برنامه!" : "دوباره تلاش کن!"
             font.pixelSize: 20
-            bgColor: error_page.criticalStatus == ErrorHandler.Critical ? "#E53935" :  "#ED960B"
+            bgColor: error_page.criticalStatus == ErrorHandler.Critical ? "#E53935" :  "#19B99A"
             radius: 5
             onClicked: {
                 if (error_page.criticalStatus == ErrorHandler.Critical) {
