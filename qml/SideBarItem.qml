@@ -43,7 +43,7 @@ Item {
         visible: control.enabled
         width: 3
         height: control.height
-        color: "#ED960B"
+        color: "#19B99A"
     }
 
     MouseArea {

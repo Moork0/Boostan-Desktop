@@ -4,11 +4,11 @@ import QtQuick.Layouts 1.15
 
 Rectangle {
     id: side_bar
-    color: "#262125"
+    color: "#232429"
     anchors.left: stackview.right
     width: enabled ? 270 : 0
     height: mainwindow.height
-    radius: 17
+//    radius: 17
 
     property real itemSize: width * 0.06
     property var options: ["پیشخوان", "دروس ارائه شده", "کارنامه", "حساب کاربری"]
@@ -36,7 +36,7 @@ Rectangle {
             Layout.leftMargin: 10
             font.family: "Mj_Afsoon"
             font.pixelSize: 55
-            color: "#ED960B"
+            color: "#19B99A"
             text: "بوستان"
         }
 
@@ -79,7 +79,7 @@ Rectangle {
                     anchors.rightMargin: 30
                     anchors.verticalCenter: parent.verticalCenter
                     text: modelData
-                    color: parent.isEnable ? "#ED960B" : "#F8F7F2"
+                    color: parent.isEnable ? "#19B99A" : "#F8F7F2"
                     font.family: "Sahel"
                     font.pixelSize: itemSize
                     font.bold: true
@@ -95,7 +95,7 @@ Rectangle {
         width: enabled ? 70 : 0
         height: side_bar.height
         radius: 10
-        color: "#ED960B"
+        color: "#19B99A"
         ColumnLayout {
             anchors.right: parent.right
             anchors.rightMargin: 13
