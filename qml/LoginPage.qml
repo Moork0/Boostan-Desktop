@@ -10,41 +10,32 @@ Page {
 
     InitHandler {
         id: init_handler
-//        Component.onCompleted: start();
-//        onFinished: init_handler.success ? {} : stackview.push("ErrorPage.qml",
-//        {"error_msg": init_handler.errorString,
-//         "error_solution": init_handler.errorSolution,
-//         "callback_function": function() {
-//             stackview.pop()
-//             init_handler.start()
-//         }
-//        })
+        Component.onCompleted: start();
+        onFinished: init_handler.success ? captcha_handler.getCaptcha() : error_handler.raiseError(
+        errorCode,
+        function() {
+            init_handler.start()
+        }
+        )
     }
 
     LoginHandler {
         id: login_handler
-        onFinished: console.log("login finished with status: " + init_handler.success)
 
+    }
+
+    CaptchaHandler {
+        id: captcha_handler
+        onFinished: captcha_handler.success
+                    ? captcha_pic.source = "file:/" + ApplicationPath + "captcha.png"
+                    : error_handler.raiseError(captcha_handler.errorCode, {}, notifier)
     }
 
     RowLayout {
         anchors.fill: parent
         id: page_background
         spacing: 0
-//        Image {
-//            id: background_image
-//            anchors.fill: parent
-//            source: "pics/LoginBackground.svg"
-//            visible: false
-//        }
 
-//        FastBlur {
-//            anchors.fill: background_image
-//            id: blur_bg_image
-//            source: background_image
-//            radius: 32
-//            opacity: 0.9
-//        }
         Rectangle {
             id: logo_background
             Layout.preferredWidth: parent.width / 2.5
@@ -133,6 +124,8 @@ Page {
                         text: "\ue801" // reload icon
                         onClicked: {
                             rotate.start()
+                            captcha_pic.source = "file:/" + ApplicationPath + "/pic/captcha.png"
+                            captcha_handler.getCaptcha()
                         }
 
                         RotationAnimation {
@@ -150,6 +143,7 @@ Page {
                         id: captcha_pic
                         Layout.preferredWidth: 110
                         Layout.preferredHeight: 40
+                        cache: false
                         source: "file:/" + ApplicationPath + "/pic/captcha.png"
                     }
 
@@ -184,13 +178,13 @@ Page {
                 }
 
                 MyButton {
+                    enabled: captcha_handler.success
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: 240
                     Layout.preferredHeight: 50
                     text: "ورود"
                     bgColor: "#19B99A"
                     radius: 5
-                    onClicked: console.log("cl")
                     font.pixelSize: 15
                 }
 
@@ -200,10 +194,10 @@ Page {
 
             }
 
+            Notifier {
+                id: notifier
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
     }
-
-
-
-
 }
