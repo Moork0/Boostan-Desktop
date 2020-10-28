@@ -19,5 +19,6 @@
         <file>SideBarItem.qml</file>
         <file>fonts/Sahel.ttf</file>
         <file>DashboardPage.qml</file>
+        <file>Notifier.qml</file>
     </qresource>
 </RCC>
