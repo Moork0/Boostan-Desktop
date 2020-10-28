@@ -39,7 +39,7 @@ namespace Constants {
             {ServerConnenctionError, "خطا در اتصال به سرور"},
             {UnknownError, "اوه! یک خطای ناشناخته رخ داده!"},
             {WrongCaptcha, "کد امنیتی اشتباه وارد شده"},
-            {CaptchaStoreError, "مشکلی در دریافت تصویر امنیتی بوجود اومده"},
+            {CaptchaStoreError, "مشکلی در ذخیره تصویر امنیتی بوجود اومده"},
             {SettingsError, "مشکلی در تنظیمات بوستان بوجود اومده"},
             {1, "نام کاربری یا رمز عبوری که وارد شده اشتباهه"}
         };
