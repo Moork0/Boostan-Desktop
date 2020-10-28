@@ -22,15 +22,14 @@ bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
         setSuccess(false);
         emit finished();
     }
-
     QFile file(image_path);
     if (!file.open(QIODevice::WriteOnly)) {
         reply.deleteLater();
         setSuccess(false);
+        setErrorCode(Constants::Errors::CaptchaStoreError);
         emit finished();
         return false;
     }
-
     file.write(reply.readAll());
     file.close();
     reply.deleteLater();
