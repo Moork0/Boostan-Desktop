@@ -8,6 +8,7 @@
 #include "header/textparser.h"
 #include "header/inithandler.h"
 #include "header/loginhandler.h"
+#include "header/captchahandler.h"
 #include "header/errors.h"
 #include "header/settings.h"
 
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("UniversalErrorCode", universal_error_code);
     qmlRegisterType<InitHandler>("API.InitHandler", 1, 0, "InitHandler");
     qmlRegisterType<LoginHandler>("API.LoginHandler", 1, 0, "LoginHandler");
+    qmlRegisterType<CaptchaHandler>("API.LoginHandler", 1, 0, "CaptchaHandler");
     qmlRegisterType<Errors>("API.Errors", 1, 0, "Error");
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
