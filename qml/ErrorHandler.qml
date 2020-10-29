@@ -11,6 +11,7 @@ Error {
         errorCode = error_code;
         if (criticalStatus === ErrorHandler.Normal) {
             notifier.text = getErrorString()
+            notifier.solution = getErrorSolution()
             notifier.show()
             callback_function()
             return;
