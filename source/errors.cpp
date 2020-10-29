@@ -33,10 +33,7 @@ void Errors::setErrorCode(int ecode)
 
 uint Errors::getCriticalStatus() const
 {
-    if (error_code == Constants::Errors::SettingsError) return status::Critical;
-    if (error_code == Constants::Errors::CaptchaStoreError) return status::Critical;
-    if (error_code == Constants::Errors::ServerConnenctionError) return status::SemiCritical;
-    return status::Normal;
+    return critical_status.value(error_code, status::Normal);
 }
 
 void Errors::reset()
