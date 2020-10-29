@@ -25,7 +25,7 @@ namespace Errors
 {
     constexpr int NoCodeFound {-1};
     const QString error_withcode_pattern      {"ErrorArr = new Array\\('[\\w :]+"};
-    const QHash<int, QString> error_keywords {{Constants::Errors::WrongCaptcha, "کد امنيتي"}};
+    const QHash<int, QString> error_keywords {{Constants::Errors::WrongCaptcha, "كد امنيتي"}};
     int extractErrorCode(const QString& response);
 };
 

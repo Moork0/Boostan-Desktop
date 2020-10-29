@@ -73,8 +73,9 @@ int TextParser::hasError(const QString& response)
     if (code != Errors::NoCodeFound) return code;
     QHash<int, QString>::const_iterator it {Errors::error_keywords.cbegin()};
     for (; it != Errors::error_keywords.cend(); ++it) {
-        code = response.indexOf(it.value());
-        if (code != -1) return code;
+        if (response.contains(it.value())) {
+            return it.key();
+        }
     }
     return Constants::Errors::UnknownError;
 
