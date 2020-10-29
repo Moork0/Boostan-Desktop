@@ -21,6 +21,13 @@ Page {
 
     LoginHandler {
         id: login_handler
+        onFinished: login_handler.success
+                    ? console.log("Success!")
+                    : error_handler.raiseError(login_handler.errorCode,
+                                               function(){
+                                                captcha_handler.loadCaptcha(captcha_pic)
+                                               },
+                                               notifier)
 
     }
 
@@ -29,6 +36,11 @@ Page {
         onFinished: captcha_handler.success
                     ? captcha_pic.source = "file:/" + ApplicationPath + "captcha.png"
                     : error_handler.raiseError(captcha_handler.errorCode, {}, notifier)
+
+        function loadCaptcha(cpic) {
+            cpic.source = "file:/" + ApplicationPath + "/pic/captcha.png"
+            getCaptcha()
+        }
     }
 
     RowLayout {
@@ -124,8 +136,7 @@ Page {
                         text: "\ue801" // reload icon
                         onClicked: {
                             rotate.start()
-                            captcha_pic.source = "file:/" + ApplicationPath + "/pic/captcha.png"
-                            captcha_handler.getCaptcha()
+                            captcha_handler.loadCaptcha(captcha_pic)
                         }
 
                         RotationAnimation {
@@ -148,6 +159,7 @@ Page {
                     }
 
                     MyTextInput {
+                        id: captcha_input
                         Layout.fillWidth: true
                         height: 40
                         placeHolder: "تصویر امنیتی"
@@ -186,6 +198,7 @@ Page {
                     bgColor: "#19B99A"
                     radius: 5
                     font.pixelSize: 15
+                    onClicked: login_handler.tryLogin(username_input.text, password_input.text, captcha_input.text)
                 }
 
                 Item {
