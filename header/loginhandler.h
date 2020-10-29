@@ -8,7 +8,6 @@ class LoginHandler : public Handler
     Q_OBJECT
 private:
     const QString login_url{"/Forms/AuthenticateUser/AuthUser.aspx?fid=0;1&tck=&&&lastm=20190219160242"};
-    QString student_number, student_name;
 
 private slots:
     bool parseLogin(QNetworkReply& reply);
