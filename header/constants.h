@@ -24,6 +24,8 @@ namespace Constants {
      */
     namespace Errors {
 
+        inline const int offset{100};
+
         enum {
             NoError                 = 0,
             CustomCode              = 700,
@@ -39,9 +41,11 @@ namespace Constants {
             {ServerConnenctionError, "خطا در اتصال به سرور"},
             {UnknownError, "اوه! یک خطای ناشناخته رخ داده!"},
             {WrongCaptcha, "کد امنیتی اشتباه وارد شده"},
-            {CaptchaStoreError, "مشکلی در ذخیره تصویر امنیتی بوجود اومده"},
-            {SettingsError, "مشکلی در تنظیمات بوستان بوجود اومده"},
-            {1, "نام کاربری یا رمز عبوری که وارد شده اشتباهه"}
+            {CaptchaStoreError, "مشکلی در ذخیره تصویر امنیتی بوجود اومده!"},
+            {SettingsError, "مشکلی در تنظیمات بوستان بوجود اومده!"},
+            // this is Golestan error codes that we might see.
+            {1, "نام کاربری یا رمز عبوری که وارد شده اشتباهه!"},
+            {27, "تعداد تلاش ناموفق برای ورود بیش از حد مجاز شده!"}
         };
 
         inline const QHash<uint, QString> error_solutions
@@ -51,7 +55,8 @@ namespace Constants {
             {WrongCaptcha, "دوباره با دقت تلاش کن :)"},
             {CaptchaStoreError, "دسترسی های پوشه بوستان رو بررسی کنید و برنامه رو دوباره اجرا کنید"},
             {SettingsError, "دسترسی های فایل تنظیمات که در پوشه برنامه قرار داره رو بررسی کنید"},
-            {1, "دوباره با دقت تلاش کن :)"}
+            {1, "دوباره با دقت تلاش کن :)"},
+            {27, "یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه"}
         };
     };
 };
