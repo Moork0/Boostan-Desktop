@@ -20,20 +20,21 @@ bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
     if (hasError(reply.error())) {
         reply.deleteLater();
         setSuccess(false);
-        emit finished();
+        setFinished(true);
+        return false;
     }
     QFile file(image_path);
     if (!file.open(QIODevice::WriteOnly)) {
         reply.deleteLater();
         setSuccess(false);
         setErrorCode(Constants::Errors::CaptchaStoreError);
-        emit finished();
+        setFinished(true);
         return false;
     }
     file.write(reply.readAll());
     file.close();
     reply.deleteLater();
     setSuccess(true);
-    emit finished();
+    setFinished(true);
     return true;
 }
