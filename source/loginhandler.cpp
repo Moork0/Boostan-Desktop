@@ -30,7 +30,7 @@ bool LoginHandler::parseLogin(QNetworkReply& reply)
         return false;
     }
     const QString data {reply.readAll()};
-    error_code = TextParser::hasError(data);
+    setErrorCode(TextParser::hasError(data));
     if (error_code != Constants::Errors::NoError) {
         reply.deleteLater();
         setSuccess(false);
