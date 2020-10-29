@@ -81,7 +81,7 @@ Item {
                 property: showType === Notifier.ShowType.DownToUp ? "y" : "x"
                 from: distance
                 duration: 200
-                easing.type: Easing.InOutQuad
+                easing.type: Easing.OutElastic
             }
         }
     ]
