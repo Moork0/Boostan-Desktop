@@ -38,25 +38,19 @@ void Network::addHeader(const QByteArray &header, const QByteArray &value)
 bool Network::post(const QByteArray& data)
 {
     QNetworkRequest request(this->url);
-    bool status{false};
     request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
     setRequestHeader(request);
     QNetworkReply *reply = netaccman.post(request, data);
-    if (reply->error() == QNetworkReply::NoError) status = true;
-    reply->deleteLater();
-    return status;
+    return reply->error() == QNetworkReply::NoError;
 }
 
 bool Network::get()
 {
     QNetworkRequest request(this->url);
-    bool status{false};
     request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
     setRequestHeader(request);
     QNetworkReply* reply = netaccman.get(request);
-    if (reply->error() == QNetworkReply::NoError) status = true;
-    reply->deleteLater();
-    return status;
+    return reply->error() == QNetworkReply::NoError;
 }
 
 void Network::finished(QNetworkReply* reply)
