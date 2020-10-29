@@ -11,7 +11,7 @@ Page {
     InitHandler {
         id: init_handler
         Component.onCompleted: start();
-        onFinished: init_handler.success ? captcha_handler.getCaptcha() : error_handler.raiseError(
+        onFinished: init_handler.success ? captcha_handler.loadCaptcha(captcha_pic) : error_handler.raiseError(
         errorCode,
         function() {
             init_handler.start()
@@ -25,6 +25,7 @@ Page {
                     ? console.log("Success!")
                     : error_handler.raiseError(login_handler.errorCode,
                                                function(){
+                                                //init_handler.start()
                                                 captcha_handler.loadCaptcha(captcha_pic)
                                                },
                                                notifier)
