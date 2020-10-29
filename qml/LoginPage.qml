@@ -36,7 +36,11 @@ Page {
         id: captcha_handler
         onFinished: captcha_handler.success
                     ? captcha_pic.source = "file:/" + ApplicationPath + "captcha.png"
-                    : error_handler.raiseError(captcha_handler.errorCode, {}, notifier)
+                    : error_handler.raiseError(captcha_handler.errorCode,
+                                               function(){
+                                                captcha_handler.loadCaptcha(captcha_pic)
+                                               },
+                                               notifier)
 
         function loadCaptcha(cpic) {
             cpic.source = "file:/" + ApplicationPath + "/pic/captcha.png"
@@ -191,7 +195,7 @@ Page {
                 }
 
                 MyButton {
-                    enabled: captcha_handler.success
+                    enabled: captcha_handler.finished && captcha_handler.success
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: 240
                     Layout.preferredHeight: 50
