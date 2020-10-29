@@ -23,7 +23,7 @@ int Errors::getErrorCode() const
 void Errors::setErrorCode(int ecode)
 {
     if (error_code == ecode) return;
-    if (ecode >= QNetworkReply::ConnectionRefusedError && ecode <= QNetworkReply::UnknownServerError){
+    if (ecode >= (QNetworkReply::ConnectionRefusedError + Constants::Errors::qt_offset) && ecode <= (QNetworkReply::UnknownServerError + Constants::Errors::qt_offset)){
         error_code = Constants::Errors::ServerConnenctionError;
     } else {
         error_code = ecode;

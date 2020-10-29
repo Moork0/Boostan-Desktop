@@ -36,7 +36,7 @@ QString Handler::getCookies() const
 
 bool Handler::hasError(QNetworkReply::NetworkError ecode)
 {
-    setErrorCode(ecode);
+    setErrorCode(ecode + Constants::Errors::qt_offset);
     if (ecode == QNetworkReply::NoError) return false;
     return true;
 }
