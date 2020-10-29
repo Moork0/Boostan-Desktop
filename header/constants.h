@@ -24,11 +24,11 @@ namespace Constants {
      */
     namespace Errors {
 
-        inline const int offset{100};
+        inline const int qt_offset{100};
 
         enum {
             NoError                 = 0,
-            CustomCode              = 700,
+            CustomCode              = 800,
             UnknownError            = 1000,
             ServerConnenctionError  = CustomCode -1,
             WrongCaptcha            = CustomCode,
