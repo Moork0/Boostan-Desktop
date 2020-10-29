@@ -5,12 +5,13 @@ Item {
     id: root
     opacity: 0.0
     visible: false
-    width: notifier_text.contentWidth + 20
-    height: notifier_text.contentHeight + 20
+    width: Math.max(notifier_text.contentWidth, notifier_solution.contentWidth) + 20
+    height: notifier_text.contentHeight + notifier_solution.contentHeight + 20
     property int showType: Notifier.ShowType.DownToUp
     property alias bgColor: notifier_background.color
     property alias textColor: notifier_text.color
     property alias text: notifier_text.text
+    property alias solution: notifier_solution.text
     property alias font: notifier_text.font
     property real distance: showType === Notifier.ShowType.DownToUp ? page_background.height + root.height + 20 : -root.width
     enum ShowType {
@@ -28,15 +29,29 @@ Item {
         anchors.fill: parent
         color: "#19B99A"
         radius: 5
-        Label {
-            id: notifier_text
+        Column {
             anchors.centerIn: notifier_background
-            text: "این یک متن ارور است که باید ببینید"
-            color: "#FFFFFF"
-            font.family: "Medium"
-            font.pixelSize: 15
-            font.weight: Font.DemiBold
+            Label {
+                id: notifier_text
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "این یک متن ارور است که باید ببینید"
+                color: "#FFFFFF"
+                font.family: "Sahel"
+                font.pixelSize: 15
+                font.weight: Font.DemiBold
+            }
+            Label {
+                id: notifier_solution
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "این یک متن ارور است که باید ببینید"
+                color: notifier_text.color
+                font.family: notifier_text.font.family
+                font.pixelSize: 14
+                font.weight: Font.DemiBold
+            }
         }
+
+
     }
 
     states: [
