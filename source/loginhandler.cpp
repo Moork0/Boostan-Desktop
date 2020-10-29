@@ -8,7 +8,6 @@ LoginHandler::LoginHandler()
 bool LoginHandler::tryLogin(const QString username, const QString password, const QString captcha)
 {
     connect(&request, &Network::complete, this, &LoginHandler::parseLogin);
-    setFinished(false);
     QString logincreds = QString("<r F51851=\"\" F80351=\"%1\" F80401=\"%2\" F51701=\"%3\" F83181=\"\"/>").arg(username, password, captcha);
     QString data{"__VIEWSTATE=" + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 + "&__VIEWSTATEGENERATOR=" + request_validators["__VIEWSTATEGENERATOR"]
