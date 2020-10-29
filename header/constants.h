@@ -40,7 +40,7 @@ namespace Constants {
         {
             {ServerConnenctionError, "خطا در اتصال به سرور"},
             {UnknownError, "اوه! یک خطای ناشناخته رخ داده!"},
-            {WrongCaptcha, "کد امنیتی اشتباه وارد شده"},
+            {WrongCaptcha, "کد امنیتی اشتباه وارد شده!"},
             {CaptchaStoreError, "مشکلی در ذخیره تصویر امنیتی بوجود اومده!"},
             {SettingsError, "مشکلی در تنظیمات بوستان بوجود اومده!"},
             // this is Golestan error codes that we might see.
