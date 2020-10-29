@@ -12,6 +12,7 @@ Error {
         if (criticalStatus === ErrorHandler.Normal) {
             notifier.text = getErrorString()
             notifier.show()
+            callback_function()
             return;
         }
         viewItem.push("ErrorPage.qml",
