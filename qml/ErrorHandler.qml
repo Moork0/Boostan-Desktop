@@ -21,8 +21,8 @@ Error {
          "error_solution":  getErrorSolution(),
          "criticalStatus":      criticalStatus,
          "callback_function": function() {
-             viewItem.pop()
              callback_function()
+             viewItem.pop()
          }
         })
     }
