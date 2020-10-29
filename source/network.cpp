@@ -3,14 +3,11 @@
 Network::Network(QObject *parent) : QObject(parent)
 {
     connect(&netaccman, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
-//    netaccman.setProxy(QNetworkProxy(QNetworkProxy::Socks5Proxy, "127.0.0.1", 9050));
 }
 
 Network::Network(QUrl url, QObject *parent) : Network {parent}
 {
     this->url = url;
-//    connect(&netaccman, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
-//    netaccman.setProxy(QNetworkProxy(QNetworkProxy::Socks5Proxy, "127.0.0.1", 9050));
 }
 
 QHash<QByteArray, QByteArray> Network::getHeaders() const
@@ -41,17 +38,25 @@ void Network::addHeader(const QByteArray &header, const QByteArray &value)
 bool Network::post(const QByteArray& data)
 {
     QNetworkRequest request(this->url);
+    bool status{false};
+    request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
     setRequestHeader(request);
     QNetworkReply *reply = netaccman.post(request, data);
-    return reply->error() == QNetworkReply::NoError;
+    if (reply->error() == QNetworkReply::NoError) status = true;
+    reply->deleteLater();
+    return status;
 }
 
 bool Network::get()
 {
     QNetworkRequest request(this->url);
+    bool status{false};
+    request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
     setRequestHeader(request);
     QNetworkReply* reply = netaccman.get(request);
-    return reply->error() == QNetworkReply::NoError;
+    if (reply->error() == QNetworkReply::NoError) status = true;
+    reply->deleteLater();
+    return status;
 }
 
 void Network::finished(QNetworkReply* reply)

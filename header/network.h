@@ -37,8 +37,6 @@ private:
     QHash<QByteArray, QByteArray> headers;
     QNetworkAccessManager netaccman;
 
-//    QList<QByteArray> byteheaders;
-
     void setRequestHeader(QNetworkRequest& req);
 };
 
