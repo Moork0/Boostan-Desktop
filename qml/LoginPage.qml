@@ -4,6 +4,7 @@ import QtGraphicalEffects 1.15
 import QtQuick.Layouts 1.15
 import API.InitHandler 1.0
 import API.LoginHandler 1.0
+import API.Settings 1.0
 
 Page {
     id: login_page
@@ -21,26 +22,32 @@ Page {
 
     LoginHandler {
         id: login_handler
-        onFinished: login_handler.success
-                    ? console.log("Success!")
-                    : error_handler.raiseError(login_handler.errorCode,
-                                               function(){
-                                                //init_handler.start()
-                                                captcha_handler.loadCaptcha(captcha_pic)
-                                               },
-                                               notifier)
-
+        onFinished: {
+            if (success) {
+                if (remember_checkbox.checked) {
+                    Settings.setValue("username", username_input.text)
+                    Settings.setValue("password", password_input.text)
+                }
+                return;
+            }
+            error_handler.raiseError(login_handler.errorCode,
+                                    function(){ init_handler.start() },
+                                    notifier)
+        }
     }
 
     CaptchaHandler {
         id: captcha_handler
-        onFinished: captcha_handler.success
-                    ? captcha_pic.source = "file:/" + ApplicationPath + "captcha.png"
-                    : error_handler.raiseError(captcha_handler.errorCode,
-                                               function(){
-                                                captcha_handler.loadCaptcha(captcha_pic)
-                                               },
-                                               notifier)
+        onFinished: {
+            if(captcha_handler.success) {
+                captcha_pic.source = "file:/" + ApplicationPath + "captcha.png"
+                return
+            }
+            error_handler.raiseError(captcha_handler.errorCode,
+                                    function(){ captcha_handler.loadCaptcha(captcha_pic) },
+                                    notifier)
+        }
+
 
         function loadCaptcha(cpic) {
             cpic.source = "file:/" + ApplicationPath + "/pic/captcha.png"
@@ -111,6 +118,7 @@ Page {
                     direction: Qt.RightToLeft
                     placeHolder: "نام کاربری"
                     icon: "\ue805" // profile icon
+                    text: Settings.getValue("username") === undefined ? "" : Settings.getValue("username")
                 }
 
                 MyTextInput {
@@ -124,6 +132,7 @@ Page {
                     mode: TextInput.Password
                     icon: "\ue800" // profile icon
                     iconSize: 24
+                    text: Settings.getValue("password") === undefined ? "" : Settings.getValue("password")
                 }
 
                 /*
@@ -203,7 +212,15 @@ Page {
                     bgColor: "#19B99A"
                     radius: 5
                     font.pixelSize: 15
-                    onClicked: login_handler.tryLogin(username_input.text, password_input.text, captcha_input.text)
+                    onClicked: {
+                        if (username_input.isEmpty || password_input.isEmpty || captcha_input.isEmpty) {
+                            notifier.text = "ورودی ها نباید خالی باشن!"
+                            notifier.solution = "یک بار دیگه فرم رو بررسی کن و همه ورودی هارو پر کن"
+                            notifier.show()
+                            return
+                        }
+                        login_handler.tryLogin(username_input.text, password_input.text, captcha_input.text)
+                    }
                 }
 
                 Item {
