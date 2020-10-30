@@ -66,7 +66,7 @@ QHashString TextParser::extractTokens(const QString& response)
     return tokens;
 }
 
-int TextParser::hasError(const QString& response)
+int TextParser::Errors::hasError(const QString& response)
 {
     if (response.contains("ErrorArr = new Array()")) return Constants::Errors::NoError;
     int code {Errors::extractErrorCode(response)};
