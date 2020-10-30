@@ -1,7 +1,7 @@
 #include "header/textparser.h"
 #include <QFile>
 
-QHashString TextParser::extractFormValidators(const QString& response)
+QHashString TextParser::Validators::extractFormValidators(const QString& response)
 {
     QHashString result;
     QRegularExpression re(Validators::viewstate_pattern);
@@ -32,7 +32,7 @@ QHashString TextParser::extractFormValidators(const QString& response)
     return result;
 }
 
-QHashString TextParser::extractTokens(const QString& response)
+QHashString TextParser::Validators::extractTokens(const QString& response)
 {
     if (Errors::hasError(response)) return QHashString {};
 
@@ -122,7 +122,16 @@ void TextParser::extractOfferedCourses(const QString& response)
     qDebug() << "end";
 }
 
-
-
-
-
+qint64 TextParser::extractStudentNumber(const QString &response)
+{
+    int position {response.indexOf("=&quot;")};
+    QString stu_number;
+    if (position == -1) return -1; // return error
+    // 7 is the lentgh of string we searched. we need to skip this string.
+    int char_position {position + 7};
+    while (response[char_position] != "&") {
+        stu_number.append(response[char_position]);
+        ++char_position;
+    }
+    return stu_number.toLongLong();
+}

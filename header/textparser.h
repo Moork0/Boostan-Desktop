@@ -19,6 +19,9 @@ namespace TextParser
         const QString event_val_pattern         {"__EVENTVALIDATION\" value=\"\\S+"};             // regex pattern for event validation
         const QString tokens_pattern            {"SavAut\\([,a-z0-9'A-Z-]+"};                    // regex pattern for lt,ctck,u,ft,seq and ...
         const QString tck_pattern               {"SetOpenerTck\\('[A-Z0-9-]{16}"};              // regex pattern for tck.
+
+        QHashString extractFormValidators(const QString& response);
+        QHashString extractTokens(const QString& response);
     };
 
     namespace Errors
@@ -26,15 +29,15 @@ namespace TextParser
         constexpr int NoCodeFound {-1};
         const QString error_withcode_pattern      {"ErrorArr = new Array\\('[\\w :]+"};
         const QHash<int, QString> error_keywords {{Constants::Errors::WrongCaptcha, "كد امنيتي"}};
+
         int extractErrorCode(const QString& response);
         int hasError(const QString& response);
     };
 
     const QString offered_course_pattern    {"<Root>[\\W\\w]+<\\/Root>"};
 
-    QHashString extractFormValidators(const QString& response);
-    QHashString extractTokens(const QString& response);
     void extractOfferedCourses(const QString& response);
+    qint64 extractStudentNumber(const QString& response);
 };
 
 
