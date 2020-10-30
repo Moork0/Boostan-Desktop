@@ -29,13 +29,11 @@ namespace Errors
     int extractErrorCode(const QString& response);
 };
 
-    const QString student_name_pattern      {"SetUsr\\('[\\w ,']+"};                       // regex pattern for student name
     const QString offered_course_pattern    {"<Root>[\\W\\w]+<\\/Root>"};
 
     int hasError(const QString& response);
     QHashString extractLoginValidators(const QString& response);
     QHashString extractTokens(const QString& response);
-    QString extractStudentName(const QString& response);
     void extractOfferedCourses(const QString& response);
 };
 

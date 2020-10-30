@@ -96,16 +96,6 @@ int TextParser::Errors::extractErrorCode(const QString& response)
     return code.toInt();
 }
 
-QString TextParser::extractStudentName(const QString& response)
-{
-    QRegularExpression re {student_name_pattern, QRegularExpression::UseUnicodePropertiesOption};
-    QRegularExpressionMatch match {re.match(response)};
-    if (match.hasMatch()) {
-        return match.captured().remove("SetUsr('").remove("'").remove(",");
-    }
-    return QString {};
-}
-
 void TextParser::extractOfferedCourses(const QString& response)
 {
 //    QRegularExpression re {offered_course_pattern, QRegularExpression::UseUnicodePropertiesOption};
