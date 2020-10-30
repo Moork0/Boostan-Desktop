@@ -32,7 +32,7 @@ namespace TextParser
 
     const QString offered_course_pattern    {"<Root>[\\W\\w]+<\\/Root>"};
 
-    QHashString extractLoginValidators(const QString& response);
+    QHashString extractFormValidators(const QString& response);
     QHashString extractTokens(const QString& response);
     void extractOfferedCourses(const QString& response);
 };

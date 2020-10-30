@@ -1,7 +1,7 @@
 #include "header/textparser.h"
 #include <QFile>
 
-QHashString TextParser::extractLoginValidators(const QString& response)
+QHashString TextParser::extractFormValidators(const QString& response)
 {
     QHashString result;
     QRegularExpression re(Validators::viewstate_pattern);
@@ -34,7 +34,7 @@ QHashString TextParser::extractLoginValidators(const QString& response)
 
 QHashString TextParser::extractTokens(const QString& response)
 {
-    if (hasError(response)) return QHashString {};
+    if (Errors::hasError(response)) return QHashString {};
 
     QHashString tokens {{"u", ""}, {"su", ""}, {"fu", ""}, {"f", ""}, {"lt", ""}, {"ctck", ""}, {"seq", ""}, {"tck", ""}};
     QString capture;
