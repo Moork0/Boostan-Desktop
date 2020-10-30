@@ -1,9 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-//#include <QFile>
-//#include <QDir>
-//#include <QUrl>
 #include <QDebug>
 #include "header/textparser.h"
 #include "header/inithandler.h"
@@ -15,17 +12,16 @@
 int main(int argc, char *argv[])
 {
 
-//    TextParser parser;
 
-//    login.getCaptcha();
 //    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("error.html");
+//    QFile file("response.html");
 //    if (file.open(QIODevice::ReadOnly)) {
 //        QString rr {file.readAll()};
-//        TextParser::Errors::extractErrorCode(rr);
+//        TextParser::extractStudentNumber(rr);
 //    } else {
 //        qDebug() << file.errorString();
 //    }
+
     bool universal_error{false};
     int universal_error_code {0};
     Settings settings;
