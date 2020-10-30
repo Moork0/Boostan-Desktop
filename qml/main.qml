@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import API.Settings 1.0
+//import API.Settings 1.0
 
 ApplicationWindow {
     id: mainwindow
@@ -15,40 +14,25 @@ ApplicationWindow {
     FontLoader { source: "fonts/icons.ttf"; }
     FontLoader { source: "fonts/Tanha.ttf" }
     FontLoader { source: "fonts/Mj_Afsoon.ttf" }
+    FontLoader { source: "fonts/Sahel.ttf" }
 
     StackView {
-        width: parent.width
+        width: parent.width - right_pane.width
         height: parent.height
         id: stackview
-//        initialItem: "LoginPage.qml"
         Component.onCompleted: {
             if (UniversalError) {
-                error_handler.raiseError(UniversalErrorCode, {}, ErrorHandler.Critical)
+                error_handler.raiseError(UniversalErrorCode)
                 return;
             }
-//            stackview.push("LoginPage.qml")
-            stackview.width -= right_pane.width
+            stackview.push("LoginPage.qml")
+//            stackview.push("DashboardPage.qml")
         }
     }
 
-    Rectangle {
+    SideBar {
         id: right_pane
-        color: "#262125"
-        anchors.left: stackview.right
-        width: mainwindow.width * 0.25
-        height: mainwindow.height
-        Rectangle {
-            id: right_pane_right
-            anchors.right: right_pane.right
-            width: right_pane.width * 0.33
-            height: right_pane.height
-            radius: 10
-            color: "#ED960B"
-            ColumnLayout {
-
-            }
-        }
-
+        enabled: false
     }
 
     ErrorHandler {
