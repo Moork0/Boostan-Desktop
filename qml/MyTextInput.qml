@@ -14,6 +14,7 @@ Item {
     property alias placeHolder: tfield_root.placeholderText
     property alias mode: tfield_root.echoMode
     property alias horizontalAlignment: tfield_root.horizontalAlignment
+    property bool isEmpty: tfield_root.text.trim() == ""
 
     signal focusChanged
 
@@ -24,7 +25,8 @@ Item {
         color: "#FFFFFF"
         radius: 8
         border.width: 1
-        border.color: tfield_root.focus ? "#2196F3" : "transparent"
+        border.color: "transparent"
+
 
         RowLayout {
             id: row_layout
@@ -58,7 +60,19 @@ Item {
                 Layout.fillHeight: true
                 bottomPadding: tfield_bg.implicitHeight / 5
                 selectByMouse: true
-                onFocusChanged: root.focusChanged()
+                onFocusChanged: {
+                    root.focusChanged()
+                    if (tfield_root.focus) {
+                        input_container.border.color = "#2196F3"
+                        return;
+                    }
+
+                    if (!tfield_root.focus && tfield_root.text.trim() == "") {
+                        input_container.border.color = "#E65100"
+                        return;
+                    }
+                    input_container.border.color = "transparent"
+                }
 
                 background: Rectangle {
                     id: tfield_bg
