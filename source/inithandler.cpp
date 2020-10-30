@@ -43,7 +43,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
         return false;
     }
 
-    request_validators = TextParser::extractFormValidators(data);
+    request_validators = TextParser::Validators::extractFormValidators(data);
     if (request_validators.empty()) {
         reply.deleteLater();
         setSuccess(false);

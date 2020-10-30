@@ -85,7 +85,7 @@ void Handler::clearCookies()
 
 bool Handler::updateTokens(const QString& data)
 {
-    QHashString tokens {TextParser::extractTokens(data)};
+    QHashString tokens {TextParser::Validators::extractTokens(data)};
     if (tokens.isEmpty()) return false;
     QHashString::iterator it {tokens.begin()};
     for (; it != tokens.end() && it.key() != "tck"; ++it) {
