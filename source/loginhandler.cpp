@@ -22,29 +22,9 @@ bool LoginHandler::tryLogin(const QString username, const QString password, cons
 bool LoginHandler::parseLogin(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &LoginHandler::parseLogin);
-    if (hasError(reply.error())) {
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
-        return false;
-    }
-    const QString data {reply.readAll()};
+    QString data;
+    if (!verifyResponse(reply, data)) return false;
     qDebug() << data;
-    setErrorCode(TextParser::Errors::hasError(data));
-    if (error_code != Constants::Errors::NoError) {
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
-        return false;
-    }
-
-    if (!updateTokens(data)) {
-        setErrorCode(Constants::Errors::UnknownError);
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
-        return false;
-    }
     reply.deleteLater();
     setSuccess(true);
     setFinished(true);
