@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QFile>
 #include <QHash>
+#include <memory>
 #include <QDebug>
 
 #include "network.h"
@@ -31,8 +32,6 @@ protected:
     void        clearCookies();
     QString     getCookies() const;
 
-    bool        hasError(QNetworkReply::NetworkError ecode);
-
     bool        getFinished() const;
     void        setFinished(bool value);
 
@@ -42,9 +41,12 @@ protected:
     void        setSuccess(bool state);
     bool        getSuccess() const;
 
+    bool        hasError(QNetworkReply::NetworkError ecode);
+    bool        updateTokens(const QString& data);
+    bool        verifyResponse(QNetworkReply& reply, QString& data);
+
 public:
     explicit    Handler(QObject *parent = nullptr);
-    bool        updateTokens(const QString& data);
 
 signals:
     void finished();

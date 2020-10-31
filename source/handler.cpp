@@ -95,7 +95,33 @@ bool Handler::updateTokens(const QString& data)
     return true;
 }
 
+bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
+{
+    if (hasError(reply.error())) {
+        reply.deleteLater();
+        setSuccess(false);
+        setFinished(true);
+        return false;
+    }
+    if (data == QString()) data = reply.readAll();
 
+    setErrorCode(TextParser::Errors::hasError(data));
+    if (getErrorCode() != Constants::Errors::NoError) {
+        reply.deleteLater();
+        setSuccess(false);
+        setFinished(true);
+        return false;
+    }
+
+    if (!updateTokens(data)) {
+        setErrorCode(Constants::Errors::UnknownError);
+        reply.deleteLater();
+        setSuccess(false);
+        setFinished(true);
+        return false;
+    }
+    return true;
+}
 
 
 
