@@ -1,6 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSGRendererInterface>
+#include <QQuickWindow>
 #include <QDebug>
 #include "header/textparser.h"
 #include "header/inithandler.h"
@@ -12,6 +14,14 @@
 int main(int argc, char *argv[])
 {
 
+    //!Using RHI
+     #if defined (Q_OS_WINDOWS)
+         QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D12);
+     #elif defined (Q_OS_MACOS)
+         QQuickWindow::setSceneGraphBackend(QSGRendererInterface::MetalRhi);
+     #elif defined (Q_OS_LINUX)
+         QQuickWindow::setSceneGraphBackend(QSGRendererInterface::VulkanRhi);
+     #endif
 
 //    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
 //    QFile file("response.html");
@@ -29,6 +39,8 @@ int main(int argc, char *argv[])
         universal_error = true;
         universal_error_code = Constants::Errors::SettingsError;
     }
+
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     app.setOrganizationName(Constants::application_name);
