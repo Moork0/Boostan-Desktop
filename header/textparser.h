@@ -7,8 +7,6 @@
 #include <QDebug>
 #include "constants.h"
 
-using QHashString = QHash <QString, QString>;
-
 namespace TextParser
 {
 
