@@ -3,6 +3,8 @@
 
 #include <QDir>
 
+using QHashString = QHash <QString, QString>;
+
 namespace Constants {
 
     inline const QString    application_name{"Boostan"},
