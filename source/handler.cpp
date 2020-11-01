@@ -106,13 +106,6 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
     }
     if (data == QString()) data = reply.readAll();
     qDebug() << data;
-    if (!updateTokens(data)) {
-        setErrorCode(Constants::Errors::UnknownError);
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
-        return false;
-    }
 
     setErrorCode(TextParser::Errors::hasError(data));
     if (getErrorCode() != Constants::Errors::NoError) {
@@ -121,6 +114,15 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
         setFinished(true);
         return false;
     }
+
+    if (!updateTokens(data)) {
+        setErrorCode(Constants::Errors::UnknownError);
+        reply.deleteLater();
+        setSuccess(false);
+        setFinished(true);
+        return false;
+    }
+
     return true;
 }
 
