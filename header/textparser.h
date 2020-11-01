@@ -7,6 +7,13 @@
 #include <QDebug>
 #include "constants.h"
 
+/*
+ * I think this file should being removed and all of the variables should move to
+ * Constants.h because they're somehow a constant.
+ * Also all of the functions should move to a relevant class file(handlers probably).
+ * This will make that classes bigger but that's better because of one of the SOLID principles
+ * which i dont remember that =)
+ */
 namespace TextParser
 {
 
@@ -35,7 +42,7 @@ namespace TextParser
     const QString offered_course_pattern    {"<Root>[\\W\\w]+<\\/Root>"};
 
     void extractOfferedCourses(const QString& response);
-    qint64 extractStudentNumber(const QString& response);
+    QString extractStudentNumber(const QString& response);
 };
 
 
