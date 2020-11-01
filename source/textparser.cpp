@@ -36,7 +36,7 @@ QHashString TextParser::Validators::extractTokens(const QString& response)
 {
     if (Errors::hasError(response)) return QHashString {};
 
-    QHashString tokens {{"u", ""}, {"su", ""}, {"fu", ""}, {"f", ""}, {"lt", ""}, {"ctck", ""}, {"seq", ""}, {"tck", ""}};
+    QHashString tokens {{"u", ""}, {"su", ""}, {"ft", ""}, {"f", ""}, {"lt", ""}, {"ctck", ""}, {"seq", ""}, {"tck", ""}};
     QString capture;
     QRegularExpression re {Validators::tokens_pattern};
     QRegularExpressionMatch match {re.match(response)};
@@ -47,7 +47,7 @@ QHashString TextParser::Validators::extractTokens(const QString& response)
     if (splited.size() < 7) return QHashString {};
     tokens["u"] = splited[0];
     tokens["su"] = splited[1];
-    tokens["fu"] = splited[2];
+    tokens["ft"] = splited[2];
     tokens["f"] = splited[3];
     tokens["lt"] = splited[4];
     tokens["ctck"] = splited[5];
@@ -122,16 +122,16 @@ void TextParser::extractOfferedCourses(const QString& response)
     qDebug() << "end";
 }
 
-qint64 TextParser::extractStudentNumber(const QString &response)
+QString TextParser::extractStudentNumber(const QString &response)
 {
     int position {response.indexOf("=&quot;")};
     QString stu_number;
-    if (position == -1) return -1; // return error
+    if (position == -1) return QString(); // return error
     // 7 is the lentgh of string we searched. we need to skip this string.
     int char_position {position + 7};
     while (response[char_position] != "&") {
         stu_number.append(response[char_position]);
         ++char_position;
     }
-    return stu_number.toLongLong();
+    return stu_number;
 }
