@@ -28,9 +28,9 @@ QString Handler::getCookies() const
     QString data;
     QHashString::const_iterator it = cookies.begin();
     for (; it != cookies.end(); ++it) {
-        data += it.key() + "=" + it.value() + ";";
+        data += it.key() + "=" + it.value() + "; ";
     }
-    data.remove(data.size() - 1, 1);
+    data.chop(2);
     return data;
 }
 
