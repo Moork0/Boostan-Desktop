@@ -14,7 +14,6 @@ bool DashboardHandler::getTokens()
 {
     connect(&request, &Network::complete, this, &DashboardHandler::parseTokens);
     request.setUrl(root_url + user_info_url + request_validators["tck"]);
-    qDebug() << getCookies().toUtf8();
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
 }
@@ -40,8 +39,8 @@ bool DashboardHandler::getUserNumber()
     QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                + "&TicketTextBox="         + request_validators["tck"]
-                + "Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=<r/>&ex="};
+                + "&TicketTextBox="         + cookies["ctck"]
+                + "&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex="};
 
     return request.post(data.toUtf8());
 }
@@ -56,7 +55,7 @@ void DashboardHandler::parseUserNumber(QNetworkReply& reply)
     request_validators.insert(TextParser::Validators::extractFormValidators(data));
     user_number = TextParser::extractStudentNumber(data);
     if (user_number == QString()) {
-        setErrorCode(Constants::Errors::UnknownError);
+        setErrorCode(Constants::Errors::ExtractError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
@@ -78,7 +77,7 @@ bool DashboardHandler::getUserInfo()
                 + "&__EVENTVALIDATION="          + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 + "&TicketTextBox="              + request_validators["tck"]
                 + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info[Number]
-                + "%22%2F%3EFm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&ex="};
+                + "%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex="};
 
     return request.post(data.toUtf8());
 }
