@@ -6,10 +6,10 @@ Error {
     // the view system which manage pages (like stackview)
     required property var viewItem
 
-    function raiseError(error_code, callback_function = {}, notifier)
+    function raiseError(error_code, callback_function = {}, notifier = undefined)
     {
         errorCode = error_code;
-        if (criticalStatus === ErrorHandler.Normal) {
+        if (criticalStatus === ErrorHandler.Normal && notifier !== undefined) {
             notifier.text = getErrorString()
             notifier.solution = getErrorSolution()
             notifier.show()
