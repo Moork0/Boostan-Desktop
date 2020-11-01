@@ -19,7 +19,6 @@ SOURCES += \
         source/captchahandler.cpp \
         source/settings.cpp \
         source/errors.cpp \
-        source/constants.cpp \
         source/handler.cpp \
         source/inithandler.cpp \
         source/loginhandler.cpp \
