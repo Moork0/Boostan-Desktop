@@ -16,6 +16,7 @@ Error {
             callback_function()
             return;
         }
+        right_pane.enabled = false
         viewItem.push("ErrorPage.qml",
         {
          "error_msg":       getErrorString(),
@@ -24,6 +25,7 @@ Error {
          "callback_function": function() {
              callback_function()
              viewItem.pop()
+             right_pane.enabled = true
          }
         })
     }
