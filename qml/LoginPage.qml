@@ -28,6 +28,8 @@ Page {
                     Settings.setValue("username", username_input.text)
                     Settings.setValue("password", password_input.text)
                 }
+                stackview.replace("DashboardPage.qml", StackView.PushTransition)
+                right_pane.enabled = true;
                 return;
             }
             error_handler.raiseError(login_handler.errorCode,
