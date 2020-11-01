@@ -24,7 +24,6 @@ bool LoginHandler::parseLogin(QNetworkReply& reply)
     disconnect(&request, &Network::complete, this, &LoginHandler::parseLogin);
     QString data;
     if (!verifyResponse(reply, data)) return false;
-    qDebug() << data;
     reply.deleteLater();
     setSuccess(true);
     setFinished(true);
