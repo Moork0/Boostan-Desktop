@@ -88,7 +88,8 @@ bool Handler::updateTokens(const QString& data)
     QHashString tokens {TextParser::Validators::extractTokens(data)};
     if (tokens.isEmpty()) return false;
     QHashString::iterator it {tokens.begin()};
-    for (; it != tokens.end() && it.key() != "tck"; ++it) {
+    for (; it != tokens.end(); ++it) {
+        if (it.key() == "tck") continue;
         cookies[it.key()] = it.value();
     }
     request_validators["tck"] = tokens["tck"];
@@ -104,17 +105,17 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
         return false;
     }
     if (data == QString()) data = reply.readAll();
-
-    setErrorCode(TextParser::Errors::hasError(data));
-    if (getErrorCode() != Constants::Errors::NoError) {
+    qDebug() << data;
+    if (!updateTokens(data)) {
+        setErrorCode(Constants::Errors::UnknownError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
         return false;
     }
 
-    if (!updateTokens(data)) {
-        setErrorCode(Constants::Errors::UnknownError);
+    setErrorCode(TextParser::Errors::hasError(data));
+    if (getErrorCode() != Constants::Errors::NoError) {
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
