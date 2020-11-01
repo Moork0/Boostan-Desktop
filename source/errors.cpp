@@ -33,7 +33,7 @@ void Errors::setErrorCode(int ecode)
 
 uint Errors::getCriticalStatus() const
 {
-    return critical_status.value(error_code, status::Normal);
+    return Constants::Errors::critical_status.value(error_code, Constants::Errors::Normal);
 }
 
 void Errors::reset()
