@@ -5,11 +5,18 @@
 #include <QQuickWindow>
 #include <QDebug>
 #include "header/textparser.h"
+#include "header/errors.h"
+#include "header/settings.h"
 #include "header/inithandler.h"
 #include "header/loginhandler.h"
 #include "header/captchahandler.h"
-#include "header/errors.h"
-#include "header/settings.h"
+#include "header/briefinfohandler.h"
+
+//bool f(QString& response)
+//{
+
+
+//}
 
 int main(int argc, char *argv[])
 {
@@ -24,10 +31,10 @@ int main(int argc, char *argv[])
      #endif
 
 //    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("response.html");
+//    QFile file("res2.html");
 //    if (file.open(QIODevice::ReadOnly)) {
 //        QString rr {file.readAll()};
-//        TextParser::extractStudentNumber(rr);
+//        f(rr);
 //    } else {
 //        qDebug() << file.errorString();
 //    }
@@ -57,6 +64,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<InitHandler>("API.InitHandler", 1, 0, "InitHandler");
     qmlRegisterType<LoginHandler>("API.LoginHandler", 1, 0, "LoginHandler");
     qmlRegisterType<CaptchaHandler>("API.LoginHandler", 1, 0, "CaptchaHandler");
+    qmlRegisterType<BriefInfoHandler>("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
     qmlRegisterType<Errors>("API.Errors", 1, 0, "Error");
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
