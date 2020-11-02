@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-//import API.Settings 1.0
 
 ApplicationWindow {
     id: mainwindow
