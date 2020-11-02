@@ -1,9 +1,20 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+//import QtCharts 2.15
+import API.BriefInfoHandler 1.0
 
 Page {
     id: dashboard_page
+
+    BriefInfoHandler {
+        id: dashboard_handler
+        Component.onCompleted: {
+            start()
+        }
+        onFinished: success ? console.log(getSemesterYears(), getSemesterAvgs()) : error_handler.raiseError(errorCode)
+    }
+
     Rectangle {
         id: page_background
         anchors.fill: parent
@@ -26,6 +37,20 @@ Page {
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
+//                ChartView {
+//                    title: "Bar series"
+//                    anchors.fill: parent
+//                    legend.alignment: Qt.AlignBottom
+//                    antialiasing: true
+
+//                    BarSeries {
+//                        id: mySeries
+//                        axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012" ] }
+//                        BarSet { label: "Bob"; values: [2, 2, 3, 4, 5, 6] }
+//                        BarSet { label: "Susan"; values: [5, 1, 2, 4, 1, 7] }
+//                        BarSet { label: "James"; values: [3, 5, 8, 13, 5, 8] }
+//                    }
+//                }
             }
 
             Rectangle {
@@ -42,38 +67,47 @@ Page {
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.preferredWidth: personal_info_bg.width
-                        text: "نام و نام خانوادگی: سیده سوزان محسنی سنگتابی"
+                        text: "نام و نام خانوادگی: " + dashboard_handler.briefInfo.name
                         wrapMode: Text.WordWrap
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "دوره آموزشی:‌ روزانه"
+                        text: "دوره آموزشی:‌ " + dashboard_handler.briefInfo.studyType
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "رشته تحصیلی: مراقبت های ویژه حیوانات"
+                        text: "رشته تحصیلی: " + dashboard_handler.briefInfo.field
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "عدد: " + Number(123456789123).toLocaleString(Qt.locale("fa_IR"), "f", 0)
+                        property var t
+                        Component.onCompleted: {
+                            t = Qt.locale("fa_IR")
+                            t.NumberOption = Locale.OmitGroupSeparator
+                            //console.log()
+                        }
+
+                        text: "عدد: " + dashboard_handler.briefInfo.id
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
+
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "شماره ملی: 55457897789987987"
+                        text: "واحد گذرانیده: " + dashboard_handler.briefInfo.passedUnits
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
+
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "معدل کل: 20"
+                        text: "معدل کل: " + dashboard_handler.briefInfo.average
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
