@@ -1,37 +1,67 @@
 #include "header/dashboardhandler.h"
 
-DashboardHandler::DashboardHandler() : student_info {"", "", "", "", "", ""}
+BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}
 {
-
+    locale.setNumberOptions(QLocale::OmitGroupSeparator);
 }
 
-void DashboardHandler::start()
+QVariantMap BriefInfoHandler::getStudentInfo() const
 {
-    getTokens();
+    QVariantMap data;
+    for (auto it {student_info.cbegin()}; it != student_info.cend(); ++it) {
+        data[it.key()] = it.value();
+    }
+    data[info_title[INDEX_Id]] = locale.toString(data[info_title[INDEX_Id]].toULongLong());
+    data[info_title[INDEX_Passed]] = locale.toString(static_cast<int>(data[info_title[INDEX_Passed]].toFloat()));
+    data[info_title[INDEX_TotalAvg]] = locale.toString(data[info_title[INDEX_TotalAvg]].toFloat());
+    return data;
 }
 
-bool DashboardHandler::getTokens()
+void BriefInfoHandler::start()
 {
-    connect(&request, &Network::complete, this, &DashboardHandler::parseTokens);
+    requestTokens();
+}
+
+QStringList BriefInfoHandler::getSemesterAvgs() const
+{
+    QStringList list;
+    for (float average : passed_semesters_avg) {
+        list << locale.toString(average);
+    }
+    return list;
+}
+
+QStringList BriefInfoHandler::getSemesterYears() const
+{
+    QStringList list;
+    for (int year : passed_semesters) {
+        list << locale.toString(year % 1000);
+    }
+    return list;
+}
+
+bool BriefInfoHandler::requestTokens()
+{
+    connect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
     request.setUrl(root_url + user_info_url + request_validators["tck"]);
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
 }
 
-void DashboardHandler::parseTokens(QNetworkReply& reply)
+void BriefInfoHandler::parseTokens(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &DashboardHandler::parseTokens);
+    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
     QString data;
     if (!verifyResponse(reply, data)) return;
 
     request_validators.insert(TextParser::Validators::extractFormValidators(data));
 
-    getUserNumber();
+    requestStuId();
 }
 
-bool DashboardHandler::getUserNumber()
+bool BriefInfoHandler::requestStuId()
 {
-    connect(&request, &Network::complete, this, &DashboardHandler::parseUserNumber);
+    connect(&request, &Network::complete, this, &BriefInfoHandler::parseUserNumber);
     request.setUrl(root_url + user_info_url + request_validators["tck"]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
@@ -45,9 +75,9 @@ bool DashboardHandler::getUserNumber()
     return request.post(data.toUtf8());
 }
 
-void DashboardHandler::parseUserNumber(QNetworkReply& reply)
+void BriefInfoHandler::parseUserNumber(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &DashboardHandler::parseUserNumber);
+    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseUserNumber);
 
     QString data, user_number;
     if (!verifyResponse(reply, data)) return;
@@ -61,13 +91,13 @@ void DashboardHandler::parseUserNumber(QNetworkReply& reply)
         setFinished(true);
         return;
     }
-    student_info[user_info::Number] = user_number;
-    getUserInfo();
+    student_info["id"] = user_number;
+    requestBriefInfo();
 }
 
-bool DashboardHandler::getUserInfo()
+bool BriefInfoHandler::requestBriefInfo()
 {
-    connect(&request, &Network::complete, this, &DashboardHandler::parseUserInfo);
+    connect(&request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
     request.setUrl(root_url + user_info_url + request_validators["tck"]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
@@ -76,15 +106,15 @@ bool DashboardHandler::getUserInfo()
                 + "&__VIEWSTATEGENERATOR="       + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="          + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 + "&TicketTextBox="              + request_validators["tck"]
-                + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info[Number]
+                + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info["id"]
                 + "%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex="};
 
     return request.post(data.toUtf8());
 }
 
-void DashboardHandler::parseUserInfo(QNetworkReply& reply)
+void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &DashboardHandler::parseUserInfo);
+    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
     QString data;
     if (!verifyResponse(reply, data)) return;
 
@@ -94,14 +124,15 @@ void DashboardHandler::parseUserInfo(QNetworkReply& reply)
         setFinished(true);
         return;
     }
-    qDebug() << student_info;
-    qDebug() << student_avgs;
+//    qDebug() << student_info;
+//    qDebug() << student_avgs;
+    emit studentInfoChanged();
     setSuccess(true);
     setFinished(true);
     return;
 }
 
-bool DashboardHandler::extractStudentInfo(const QString& response)
+bool BriefInfoHandler::extractStudentInfo(const QString& response)
 {
     const QList<QString> keywords {"F51851",        // keyword for Name
                                    "F17551",        // Field
@@ -110,8 +141,9 @@ bool DashboardHandler::extractStudentInfo(const QString& response)
                                    "F41801"};      // Passed
     int position;
     QString value;
-    for (QString keyword : keywords) {
-        position = response.indexOf(keyword);
+    // increased START_INDEX by 2 because we want to skip the Id cuz we don't have Id in this data.
+    for (int title_index{INDEX_START + 2}, keyindex{0}; title_index < INDEX_END; ++title_index, ++keyindex) {
+        position = response.indexOf(keywords[keyindex]);
         if (position == -1) {
             return false;
         }
@@ -121,13 +153,13 @@ bool DashboardHandler::extractStudentInfo(const QString& response)
         for (int i{position}; response[i] != "'"; ++i) {
             value.append(response[i]);
         }
-        student_info.append(value);
+        student_info[info_title[title_index]] = value;
         value.clear();
     }
     return true;
 }
 
-bool DashboardHandler::extractStudentAvgs(const QString &response)
+bool BriefInfoHandler::extractStudentAvgs(const QString &response)
 {
     int year_position, avg_position;
     QString year_value, avg_value;
@@ -150,8 +182,9 @@ bool DashboardHandler::extractStudentAvgs(const QString &response)
         for (int i{avg_position}; response[i] != ' '; ++i) {
             avg_value.append(response[i]);
         }
+        passed_semesters.append(year_value.toInt());
+        passed_semesters_avg.append(avg_value.toFloat());
 
-        student_avgs.append(QPair<int, float>(year_value.toInt(), avg_value.toFloat()));
         year_value.clear();
         avg_value.clear();
         year_position = response.indexOf(year_keyword, year_position);

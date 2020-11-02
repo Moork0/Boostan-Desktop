@@ -2,40 +2,56 @@
 #define DASHBOARDHANDLER_H
 
 #include "handler.h"
+#include <vector>
 
-class DashboardHandler : public Handler
+class BriefInfoHandler : public Handler
 {
     Q_OBJECT
 private:
-    inline static QString user_info_url {"/Forms/F1802_PROCESS_MNG_STDJAMEHMON/F1802_01_PROCESS_MNG_STDJAMEHMON_Dat.aspx?r=0.9638806400489983&fid=0;12310&b=0&l=0&&lastm=20180201081222&tck="};
-    QStringList student_info;
-    QList<QPair<int, float>> student_avgs;
+    Q_PROPERTY(QVariantMap   briefInfo  READ getStudentInfo     NOTIFY studentInfoChanged)
 
-    bool getTokens();
-    bool getUserNumber();
-    bool getUserInfo();
-    bool extractStudentInfo(const QString& response);
-    bool extractStudentAvgs(const QString& response);
+    inline static QString       user_info_url {"/Forms/F1802_PROCESS_MNG_STDJAMEHMON/F1802_01_PROCESS_MNG_STDJAMEHMON_Dat.aspx?r=0.9638806400489983&fid=0;12310&b=0&l=0&&lastm=20180201081222&tck="};
+    const std::vector<QString>  info_title {"id", "name", "field", "studyType", "average", "passedUnits"};
+    QMap<QString, QString>      student_info;
+    QList<int>                  passed_semesters;
+    QList<float>                passed_semesters_avg;
+    QLocale                     locale;
+
+    bool            requestTokens();
+    bool            requestStuId();
+    bool            requestBriefInfo();
+    QVariantMap     getStudentInfo() const;
+    bool            extractStudentInfo(const QString& response);
+    bool            extractStudentAvgs(const QString& response);
+
 public:
-    enum user_info {
-        Number,
-        Name,
-        Field,
-        StudyType,
-        TotalAvg,
-        Passed
+    enum info_index {
+        INDEX_START = -1,   // used to determine the start of enum in loops
+        INDEX_Id,
+        INDEX_Name,
+        INDEX_Field,
+        INDEX_StudyType,
+        INDEX_TotalAvg,
+        INDEX_Passed,
+        INDEX_END           // used to determine the end of enum in loops
     };
-    Q_ENUM(user_info);
 
-    DashboardHandler();
+
+    BriefInfoHandler();
+
 
 private slots:
-    void parseUserInfo(QNetworkReply& reply);
-    void parseUserNumber(QNetworkReply& reply);
-    void parseTokens(QNetworkReply& reply);
+    void            parseUserInfo(QNetworkReply& reply);
+    void            parseUserNumber(QNetworkReply& reply);
+    void            parseTokens(QNetworkReply& reply);
 
 public slots:
-    void start();
+    void            start();
+    QStringList     getSemesterAvgs()  const;
+    QStringList     getSemesterYears() const;
+
+signals:
+    void            studentInfoChanged();
 };
 
 #endif // DASHBOARDHANDLER_H
