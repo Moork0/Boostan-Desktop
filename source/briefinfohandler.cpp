@@ -1,4 +1,4 @@
-#include "header/dashboardhandler.h"
+#include "header/briefinfohandler.h"
 
 BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}
 {
