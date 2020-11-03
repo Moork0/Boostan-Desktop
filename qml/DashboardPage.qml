@@ -10,7 +10,7 @@ Page {
     BriefInfoHandler {
         id: dashboard_handler
         Component.onCompleted: {
-            start()
+//            start()
         }
         onFinished: success ? console.log(getSemesterYears(), getSemesterAvgs()) : error_handler.raiseError(errorCode)
     }
@@ -93,7 +93,7 @@ Page {
                             //console.log()
                         }
 
-                        text: "عدد: " + dashboard_handler.briefInfo.id
+                        text: "شماره دانشجویی: " + dashboard_handler.briefInfo.id
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
@@ -122,60 +122,134 @@ Page {
             spacing: 10
 
             Rectangle {
-                id: table_schedule
+                id: table_schedule_bg
                 Layout.fillWidth: true                
                 Layout.fillHeight: true
                 width: layout.width
                 height: layout.height / 2
                 color: "#1D2025"
                 radius: 10
-                GridLayout {
-                    id: days_column
-                    anchors.right: table_schedule.right
-                    anchors.top: table_schedule.top
-                    anchors.topMargin: -2
-//                    anchors.topMargin: 50
-                    width: table_schedule.width * 0.1
-                    height: table_schedule.height
-                    columns: 1
-//                    rows: 6
-                    rowSpacing: 0
-                    layoutDirection: Qt.RightToLeft
-                    Repeater {
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignRight
-//                        model: ["روز / ساعت", "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه"]
-                        model: ListModel {
-                            ListElement {
-                                name:"hhh"
-                            }
-                        }
+                Item {
+                    id: blank_space
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    width: 90
+                    height: 40
+                    Label {
+                        anchors.centerIn: parent
+                        text: "روز / ساعت"
+                        font.family: "Sahel"
+                        color: "#FFFFFF"
+                    }
+                }
 
-                        delegate: Rectangle {
+                RowLayout {
+                    id: hours
+                    y: -2
+                    layoutDirection: Qt.RightToLeft
+                    width: parent.width - blank_space.width
+                    height: blank_space.height
+                    spacing: 0
+                    Repeater {
+                        id: hours_repeater
+                        model: ["۸-۱۰", "۱۰-۱۲", "۱۳-۱۵", "۱۵-۱۷", "۱۷-۱۹"]
+                        Rectangle {
                             Layout.alignment: Qt.AlignRight
-                            border.width: 2
-                            border.color: "#262A2F"
                             color: "transparent"
-                            width: days_column.width
                             Layout.fillHeight: true
+                            Layout.fillWidth: true
                             Label {
                                 anchors.centerIn: parent
                                 font.family: "Sahel"
                                 color: "#FFFFFF"
-                                text: model.name
+                                text: modelData
                             }
                             Rectangle {
-                                anchors.bottom: parent.bottom
-                                width: parent.width - 5
-                                height: 2
-                                x: 2
-                                color: "#1D2025"
+                                x: parent.width
+                                width: 2
+                                height: parent.height
+                                color: "#262A2F"
                             }
                         }
                     }
                 }
 
+                ColumnLayout {
+                    id: days
+                    anchors.right: parent.right
+                    anchors.top: blank_space.bottom
+                    anchors.topMargin: -4
+                    spacing: 0
+                    width: blank_space.width
+                    height: table_schedule_bg.height - blank_space.height + 4
+                    Repeater {
+                        id: days_repeater
+                        model: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه"]
+                        Rectangle {
+                            Layout.alignment: Qt.AlignRight
+                            color: "transparent"
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            Label {
+                                anchors.centerIn: parent
+                                font.family: "Sahel"
+                                color: "#FFFFFF"
+                                text: modelData
+                            }
+                            Rectangle {
+                                y: 0
+                                width: parent.width
+                                height: 2
+                                color: "#262A2F"
+                            }
+                        }
+                    }
+                }
+
+                ColumnLayout {
+                    id: courses
+                    anchors.top: hours.bottom
+                    anchors.topMargin: -1
+                    width: parent.width - days.width
+                    height: parent.height - hours.height
+                    spacing: 0
+                    Repeater {
+                        model: 5
+                        RowLayout {
+                            width: parent.width
+                            Layout.fillHeight: true
+                            layoutDirection: Qt.RightToLeft
+                            spacing: 0
+                            Repeater {
+                                model: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه"]
+                                Rectangle {
+                                    Layout.alignment: Qt.AlignRight
+                                    color: "transparent"
+                                    Layout.fillHeight: true
+                                    Layout.fillWidth: true
+                                    Label {
+                                        anchors.centerIn: parent
+                                        font.family: "Sahel"
+                                        color: "#FFFFFF"
+                                        text: modelData
+                                    }
+                                    Rectangle {
+                                        y: 0
+                                        width: parent.width + 4
+                                        height: 2
+                                        color: "#262A2F"
+                                    }
+                                    Rectangle {
+                                        width: 2
+                                        height: parent.height + 4
+                                        x: parent.width
+                                        color: "#262A2F"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
