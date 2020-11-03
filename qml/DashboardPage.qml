@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-//import QtCharts 2.15
 import API.BriefInfoHandler 1.0
 
 Page {
@@ -37,20 +36,12 @@ Page {
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
-//                ChartView {
-//                    title: "Bar series"
-//                    anchors.fill: parent
-//                    legend.alignment: Qt.AlignBottom
-//                    antialiasing: true
 
-//                    BarSeries {
-//                        id: mySeries
-//                        axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012" ] }
-//                        BarSet { label: "Bob"; values: [2, 2, 3, 4, 5, 6] }
-//                        BarSet { label: "Susan"; values: [5, 1, 2, 4, 1, 7] }
-//                        BarSet { label: "James"; values: [3, 5, 8, 13, 5, 8] }
-//                    }
-//                }
+                Plot {
+                    anchors.fill: parent
+                    xAxis: dashboard_handler.getSemesterYears()
+                    yAxis: dashboard_handler.getSemesterAvgs()
+                }
             }
 
             Rectangle {
