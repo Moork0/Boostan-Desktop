@@ -1,9 +1,9 @@
-#include <QGuiApplication>
+#include <QtWidgets/QApplication>
+
+//#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QSGRendererInterface>
 #include <QQuickWindow>
-#include <QDebug>
 #include "header/textparser.h"
 #include "header/errors.h"
 #include "header/settings.h"
@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
         universal_error_code = Constants::Errors::SettingsError;
     }
 
-
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
+//    QGuiApplication app(argc, argv);
     app.setOrganizationName(Constants::application_name);
     app.setOrganizationDomain(Constants::domain_name);
     app.setApplicationName(Constants::organization_name);
