@@ -1,4 +1,4 @@
-QT += quick network core
+QT += quick network core charts
 
 CONFIG += c++17 console
 #CONFIG -= app_bundle
