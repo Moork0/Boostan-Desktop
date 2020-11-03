@@ -14,7 +14,7 @@ private:
     const std::vector<QString>  info_title {"id", "name", "field", "studyType", "average", "passedUnits"};
     QMap<QString, QString>      student_info;
     QList<int>                  passed_semesters;
-    QList<float>                passed_semesters_avg;
+    QStringList                 passed_semesters_avg;
     QLocale                     locale;
 
     bool            requestTokens();

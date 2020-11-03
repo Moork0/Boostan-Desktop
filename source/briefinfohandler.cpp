@@ -24,11 +24,7 @@ void BriefInfoHandler::start()
 
 QStringList BriefInfoHandler::getSemesterAvgs() const
 {
-    QStringList list;
-    for (float average : passed_semesters_avg) {
-        list << locale.toString(average);
-    }
-    return list;
+    return passed_semesters_avg;
 }
 
 QStringList BriefInfoHandler::getSemesterYears() const
@@ -183,7 +179,7 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
             avg_value.append(response[i]);
         }
         passed_semesters.append(year_value.toInt());
-        passed_semesters_avg.append(avg_value.toFloat());
+        passed_semesters_avg.append(avg_value);
 
         year_value.clear();
         avg_value.clear();
