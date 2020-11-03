@@ -20,5 +20,6 @@
         <file>fonts/Sahel.ttf</file>
         <file>DashboardPage.qml</file>
         <file>Notifier.qml</file>
+        <file>Plot.qml</file>
     </qresource>
 </RCC>
