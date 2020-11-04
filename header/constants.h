@@ -26,7 +26,8 @@ namespace Constants {
      */
     namespace Errors {
 
-        inline const int qt_offset{100};
+        inline constexpr int qt_offset{100};
+        inline constexpr int NoCodeFound{-1};
 
         enum error_codes{
             NoError                 = 0,
@@ -58,6 +59,8 @@ namespace Constants {
             {24, SemiCritical},
             {27, SemiCritical}
         };
+
+        inline const QHash<int, QString> error_keywords {{WrongCaptcha, "كد امنيتي"}};
 
         inline const QHash<uint, QString> error_strings
         {
