@@ -21,8 +21,9 @@ private:
     bool            requestStuId();
     bool            requestBriefInfo();
     QVariantMap     getStudentInfo() const;
-    bool            extractStudentInfo(const QString& response);
-    bool            extractStudentAvgs(const QString& response);
+    bool            extractStudentInfo  (const QString& response);
+    bool            extractStudentAvgs  (const QString& response);
+    QString         extractStudentNumber(const QString& response);
 
 public:
     enum info_index {

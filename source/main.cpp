@@ -1,10 +1,9 @@
 #include <QtWidgets/QApplication>
-
 //#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
-#include "header/textparser.h"
+
 #include "header/errors.h"
 #include "header/settings.h"
 #include "header/inithandler.h"

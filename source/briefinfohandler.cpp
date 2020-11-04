@@ -50,7 +50,7 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
     QString data;
     if (!verifyResponse(reply, data)) return;
 
-    request_validators.insert(TextParser::Validators::extractFormValidators(data));
+    request_validators.insert(extractFormValidators(data));
 
     requestStuId();
 }
@@ -78,8 +78,8 @@ void BriefInfoHandler::parseUserNumber(QNetworkReply& reply)
     QString data, user_number;
     if (!verifyResponse(reply, data)) return;
 
-    request_validators.insert(TextParser::Validators::extractFormValidators(data));
-    user_number = TextParser::extractStudentNumber(data);
+    request_validators.insert(extractFormValidators(data));
+    user_number = extractStudentNumber(data);
     if (user_number == QString()) {
         setErrorCode(Constants::Errors::ExtractError);
         reply.deleteLater();
@@ -187,4 +187,18 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
         avg_position = response.indexOf(avg_keyword, avg_position);
     }
     return true;
+}
+
+QString BriefInfoHandler::extractStudentNumber(const QString &response)
+{
+    int position {response.indexOf("=&quot;")};
+    QString stu_number;
+    if (position == -1) return QString(); // return error
+    // 7 is the lentgh of string we searched. we need to skip this string.
+    int char_position {position + 7};
+    while (response[char_position] != "&") {
+        stu_number.append(response[char_position]);
+        ++char_position;
+    }
+    return stu_number;
 }

@@ -5,16 +5,28 @@
 #include <QUrl>
 #include <QFile>
 #include <QHash>
-#include <memory>
 #include <QDebug>
+#include <QRegularExpression>
 
 #include "network.h"
-#include "textparser.h"
+#include "constants.h"
 #include "settings.h"
 
 class Handler : public QObject
 {
     Q_OBJECT
+private:
+    const QString viewstate_pattern         {"__VIEWSTATE\" value=\"\\S+"};                     // regex patern for view state
+    const QString viewstate_gen_pattern     {"__VIEWSTATEGENERATOR\" value=\"[A-Za-z0-9]+"};   // regex pattern for viewstate generator
+    const QString event_val_pattern         {"__EVENTVALIDATION\" value=\"\\S+"};             // regex pattern for event validation
+    const QString tokens_pattern            {"SavAut\\([,a-z0-9'A-Z-]+"};                    // regex pattern for lt,ctck,u,ft,seq and ...
+    const QString tck_pattern               {"SetOpenerTck\\('[A-Z0-9-]{16}"};              // regex pattern for tck.
+    const QString error_withcode_pattern    {"ErrorArr = new Array\\('[\\w :]+"};           // regex pattern for finding error which has a code
+
+    QHashString extractTokens(const QString& response);
+    int extractDataErrorCode(const QString& response);
+    int extractDataError(const QString& response);
+
 protected:
     Q_PROPERTY(bool     finished        READ getFinished        NOTIFY finished)
     Q_PROPERTY(bool     success         READ getSuccess         NOTIFY successChanged)
@@ -44,6 +56,8 @@ protected:
     bool        hasError(QNetworkReply::NetworkError ecode);
     bool        updateTokens(const QString& data);
     bool        verifyResponse(QNetworkReply& reply, QString& data);
+
+    QHashString extractFormValidators(const QString& response);
 
 public:
     explicit    Handler(QObject *parent = nullptr);
