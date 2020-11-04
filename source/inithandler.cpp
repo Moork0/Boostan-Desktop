@@ -25,7 +25,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
 
     QString data = reply.readAll();
     bool cookiefound{false};
-    for (auto [key, value] : reply.rawHeaderPairs()) {
+    for (const auto& [key, value] : reply.rawHeaderPairs()) {
         if (key == "Set-Cookie") {
 //            qDebug() << value;
             QString sid {value};
@@ -43,7 +43,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
         return false;
     }
 
-    request_validators = TextParser::Validators::extractFormValidators(data);
+    request_validators = extractFormValidators(data);
     if (request_validators.empty()) {
         reply.deleteLater();
         setSuccess(false);
