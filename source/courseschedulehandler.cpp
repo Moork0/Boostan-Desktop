@@ -13,20 +13,107 @@ CourseScheduleHandler::CourseScheduleHandler()
     }
 }
 
-void CourseScheduleHandler::extractWeeklySchedule(QString& response)
+void CourseScheduleHandler::start()
 {
-//    QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
-//    QRegularExpressionMatch match {re.match(response)};
+    requestTokens();
+}
 
-//    if (!match.hasMatch()) return;
+bool CourseScheduleHandler::requestTokens()
+{
+    connect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
+    request.setUrl(root_url + schedule_url + request_validators["tck"]);
+    request.addHeader("Cookie", getCookies().toUtf8());
+    return request.get();
+}
 
-//    QXmlStreamReader reader(match.captured());
-    QXmlStreamReader reader {response};
+void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
+{
+    disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
+    QString data;
+    if (!verifyResponse(reply, data)) return;
+
+    request_validators.insert(extractFormValidators(data));
+    requestSchedule();
+}
+
+bool CourseScheduleHandler::requestCurrentYear()
+{
+    connect(&request, &Network::complete, this, &CourseScheduleHandler::parseCurrentYear);
+    request.setUrl(root_url + schedule_url + request_validators["tck"]);
+    request.addHeader("Cookie", getCookies().toUtf8());
+    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
+                + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
+                + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+                + "&TicketTextBox="         + cookies["ctck"]
+                + "&Fm_Action=00&Frm_Type=&Frm_No=&F_ID=&XmlPriPrm=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex="};
+    return request.post(data.toUtf8());
+
+}
+
+void CourseScheduleHandler::parseCurrentYear(QNetworkReply& reply)
+{
+    disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseCurrentYear);
+    QString data;
+    if (!verifyResponse(reply, data)) return;
+    request_validators.insert(extractFormValidators(data));
+    if (!extractCurrentYear(data)) {
+        setErrorCode(Constants::Errors::ExtractError);
+        setSuccess(true);
+        setFinished(true);
+        reply.deleteLater();
+    }
+    setSuccess(true);
+    setFinished(true);
+    reply.deleteLater();
+}
+
+bool CourseScheduleHandler::requestSchedule()
+{
+    connect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
+    request.setUrl(root_url + schedule_url + request_validators["tck"]);
+    request.addHeader("Cookie", getCookies().toUtf8());
+    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
+                + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
+                + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+                + "&TicketTextBox="         + cookies["ctck"]
+
+                // below is like this: <Root><N+UQID="15"+id="4"+F="%1"+T="%1"/></Root>
+                + "&XmlPriPrm="             + QString("%3CRoot%3E%3CN+UQID%3D%2215%22+id%3D%224%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E").arg(year)
+                + "&Fm_Action=09&Frm_Type=&Frm_No=&F_ID=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex="};
+    return request.post(data.toUtf8());
+}
+
+void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
+{
+    disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
+    QString data;
+    if (!verifyResponse(reply, data)) return;
+    request_validators.insert(extractFormValidators(data));
+    if (!extractWeeklySchedule(data)) {
+        setErrorCode(Constants::Errors::ExtractError);
+        setSuccess(true);
+        setFinished(true);
+        reply.deleteLater();
+    }
+    setSuccess(true);
+    setFinished(true);
+    reply.deleteLater();
+}
+
+bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
+{
+    QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
+    QRegularExpressionMatch match {re.match(response)};
+    if (!match.hasMatch()) return false;
+
+    QXmlStreamReader reader(match.captured());
     QMap<QString, QVariant> course_data;
     QString hour;
 
-    if (!reader.readNextStartElement()) return;
-    if (reader.name() != "Root") return;
+    if (!reader.readNextStartElement()) return false;
+    if (reader.name() != "Root") return false;
 
     while(reader.readNextStartElement()) {
         if(reader.name() != "row") continue;
@@ -44,8 +131,22 @@ void CourseScheduleHandler::extractWeeklySchedule(QString& response)
         }
         reader.skipCurrentElement();
     }
-
+    return true;
 //    qDebug() << weekly_schedule;
+}
+
+bool CourseScheduleHandler::extractCurrentYear(QString& response)
+{
+    int position {response.indexOf("f=\"3")};
+    if (position == -1) return false;
+    year.clear();
+    // we should skip 3 characters
+    position += 3;
+    while (response[position] != '"') {
+        year.append(response[position]);
+        ++position;
+    }
+    return true;
 }
 
 QList<QVariant> CourseScheduleHandler::DailyScheduleModel(int day) const
