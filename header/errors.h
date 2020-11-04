@@ -24,8 +24,8 @@ public:
 
     explicit            Errors(QObject *parent = nullptr);
     void                setErrorCode(int value);
-    int                 getErrorCode()         const;
-    uint                getCriticalStatus()    const;
+    int                 getErrorCode()      const;
+    uint                getCriticalStatus() const;
 
 public slots:
     void                 reset();
