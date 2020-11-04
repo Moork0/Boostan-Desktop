@@ -10,12 +10,7 @@
 #include "header/loginhandler.h"
 #include "header/captchahandler.h"
 #include "header/briefinfohandler.h"
-
-//bool f(QString& response)
-//{
-
-
-//}
+#include "header/courseschedulehandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,11 +24,12 @@ int main(int argc, char *argv[])
          QQuickWindow::setSceneGraphBackend(QSGRendererInterface::VulkanRhi);
      #endif
 
+//    CourseScheduleHandler s;
 //    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("res2.html");
+//    QFile file("courses.xml");
 //    if (file.open(QIODevice::ReadOnly)) {
 //        QString rr {file.readAll()};
-//        f(rr);
+//        s.extractWeeklySchedule(rr);
 //    } else {
 //        qDebug() << file.errorString();
 //    }
@@ -64,6 +60,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<LoginHandler>("API.LoginHandler", 1, 0, "LoginHandler");
     qmlRegisterType<CaptchaHandler>("API.LoginHandler", 1, 0, "CaptchaHandler");
     qmlRegisterType<BriefInfoHandler>("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
+    qmlRegisterType<CourseScheduleHandler>("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
     qmlRegisterType<Errors>("API.Errors", 1, 0, "Error");
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
