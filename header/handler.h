@@ -21,7 +21,7 @@ private:
     const QString event_val_pattern         {"__EVENTVALIDATION\" value=\"\\S+"};             // regex pattern for event validation
     const QString tokens_pattern            {"SavAut\\([,a-z0-9'A-Z-]+"};                    // regex pattern for lt,ctck,u,ft,seq and ...
     const QString tck_pattern               {"SetOpenerTck\\('[A-Z0-9-]{16}"};              // regex pattern for tck.
-    const QString error_withcode_pattern    {"ErrorArr = new Array\\('[\\w :]+"};           // regex pattern for finding error which has a code
+    const QString error_withcode_pattern    {"ErrorArr = new Array\\('[\\w :]+"};          // regex pattern for finding error which has a code
 
     QHashString extractTokens(const QString& response);
     int extractDataErrorCode(const QString& response);
