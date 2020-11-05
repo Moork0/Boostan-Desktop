@@ -226,10 +226,13 @@ Page {
                                     Layout.fillHeight: true
                                     Layout.fillWidth: true
                                     Label {
+                                        width: parent.width - 5
                                         anchors.centerIn: parent
                                         font.family: "Sahel"
                                         color: "#FFFFFF"
                                         text: modelData.name
+                                        wrapMode: Label.WordWrap
+                                        horizontalAlignment: Label.AlignHCenter
                                     }
                                     Rectangle {
                                         y: 0
