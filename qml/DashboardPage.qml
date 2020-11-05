@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import API.BriefInfoHandler 1.0
+import API.CourseScheduleHandler 1.0
 
 Page {
     id: dashboard_page
@@ -9,9 +10,14 @@ Page {
     BriefInfoHandler {
         id: dashboard_handler
         Component.onCompleted: {
-//            start()
+            start()
         }
-        onFinished: success ? console.log(getSemesterYears(), getSemesterAvgs()) : error_handler.raiseError(errorCode)
+        onFinished: success ? schedule_handler.start() : error_handler.raiseError(errorCode)
+    }
+
+    CourseScheduleHandler {
+        id: schedule_handler
+        onFinished: success ? console.log(" course success") : error_handler.raiseError(errorCode)
     }
 
     Rectangle {
@@ -39,8 +45,8 @@ Page {
 
                 Plot {
                     anchors.fill: parent
-                    xAxis: dashboard_handler.getSemesterYears()
-                    yAxis: dashboard_handler.getSemesterAvgs()
+                    xAxis: dashboard_handler.finished && dashboard_handler.success ? dashboard_handler.getSemesterYears() : []
+                    yAxis: dashboard_handler.finished && dashboard_handler.success ? dashboard_handler.getSemesterAvgs() : []
                 }
             }
 
@@ -205,6 +211,7 @@ Page {
                     height: parent.height - hours.height
                     spacing: 0
                     Repeater {
+                        id: day_row
                         model: 5
                         RowLayout {
                             width: parent.width
@@ -212,7 +219,7 @@ Page {
                             layoutDirection: Qt.RightToLeft
                             spacing: 0
                             Repeater {
-                                model: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه"]
+                                model: schedule_handler.finished && schedule_handler.success ? schedule_handler.dailyScheduleModel(index) : 0
                                 Rectangle {
                                     Layout.alignment: Qt.AlignRight
                                     color: "transparent"
@@ -222,7 +229,7 @@ Page {
                                         anchors.centerIn: parent
                                         font.family: "Sahel"
                                         color: "#FFFFFF"
-                                        text: modelData
+                                        text: modelData.name
                                     }
                                     Rectangle {
                                         y: 0
