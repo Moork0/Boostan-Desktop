@@ -28,7 +28,7 @@ private slots:
 
 public:
     CourseScheduleHandler();
-    Q_INVOKABLE QList<QVariant> DailyScheduleModel(int day) const;
+    Q_INVOKABLE QList<QVariant> dailyScheduleModel(int day) const;
     Q_INVOKABLE void start();
 };
 

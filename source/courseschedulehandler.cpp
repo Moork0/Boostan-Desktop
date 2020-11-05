@@ -149,7 +149,7 @@ bool CourseScheduleHandler::extractCurrentYear(QString& response)
     return true;
 }
 
-QList<QVariant> CourseScheduleHandler::DailyScheduleModel(int day) const
+QList<QVariant> CourseScheduleHandler::dailyScheduleModel(int day) const
 {
     return weekly_schedule[day];
 }
