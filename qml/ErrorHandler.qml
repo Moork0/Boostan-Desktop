@@ -25,7 +25,6 @@ Error {
          "callback_function": function() {
              callback_function()
              viewItem.pop()
-             right_pane.enabled = true
          }
         })
     }
