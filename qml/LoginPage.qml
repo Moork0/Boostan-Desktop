@@ -23,7 +23,8 @@ Page {
     LoginHandler {
         id: login_handler
         onFinished: {
-            if (success) {
+            submit_loading.visible = false
+            if (login_handler.success) {
                 if (remember_checkbox.checked) {
                     Settings.setValue("username", username_input.text)
                     Settings.setValue("password", password_input.text)
@@ -173,6 +174,11 @@ Page {
                         Layout.preferredHeight: 40
                         cache: false
                         source: "file:/" + ApplicationPath + "/pic/captcha.png"
+                        LoadingAnimationColor {
+                            id: captcha_loading
+                            anchors.fill: captcha_pic
+                            visible: captcha_handler.working
+                        }
                     }
 
                     MyTextInput {
@@ -207,6 +213,7 @@ Page {
                 }
 
                 MyButton {
+                    id: submit_button
                     enabled: captcha_handler.finished && captcha_handler.success
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: 240
@@ -223,6 +230,25 @@ Page {
                             return
                         }
                         login_handler.tryLogin(username_input.text, password_input.text, captcha_input.text)
+                        submit_loading.visible = true
+                    }
+
+                    Rectangle {
+                        id: submit_loading
+                        visible: false
+                        anchors.fill: submit_button
+                        color: "#19B99A"
+                        LoadingAnimationPulse {
+                            anchors.centerIn: parent
+                            running: parent.visible
+                            barCount: 3
+                            color: "#FAFAFA"
+                            width: 40
+                            height: 25
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                        }
                     }
                 }
 
