@@ -21,5 +21,6 @@
         <file>DashboardPage.qml</file>
         <file>Notifier.qml</file>
         <file>Plot.qml</file>
+        <file>LoadingAnimationColor.qml</file>
     </qresource>
 </RCC>
