@@ -8,7 +8,8 @@ Rectangle {
     anchors.left: stackview.right
     width: enabled ? 270 : 0
     height: mainwindow.height
-//    radius: 17
+
+    property alias studentName: student_name.text
 
     property real itemSize: width * 0.06
     property var options: ["پیشخوان", "دروس ارائه شده", "کارنامه", "حساب کاربری"]
