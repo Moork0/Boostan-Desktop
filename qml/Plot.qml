@@ -42,7 +42,7 @@ ChartView {
         id: bar_serie
         axisX: axis_x
         axisY: axis_y
-        barWidth: 0.2
+        barWidth: 0.35
         labelsVisible: true
         labelsPosition: AbstractBarSeries.LabelsInsideEnd
         BarSet {
