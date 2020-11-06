@@ -30,6 +30,7 @@ Page {
                 }
                 stackview.replace("DashboardPage.qml", StackView.PushTransition)
                 right_pane.enabled = true;
+                right_pane.toOption(0);
                 return;
             }
             error_handler.raiseError(login_handler.errorCode,
