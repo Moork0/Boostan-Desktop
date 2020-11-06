@@ -48,6 +48,12 @@ Page {
                     xAxis: dashboard_handler.finished && dashboard_handler.success ? dashboard_handler.getSemesterYears() : []
                     yAxis: dashboard_handler.finished && dashboard_handler.success ? dashboard_handler.getSemesterAvgs() : []
                 }
+                LoadingAnimationColor {
+                    anchors.fill: parent
+                    radius: 10
+                    visible: !dashboard_handler.success
+                }
+
             }
 
             Rectangle {
@@ -109,6 +115,11 @@ Page {
                         color: "#FFFFFF"
                     }
 
+                }
+                LoadingAnimationColor {
+                    anchors.fill: parent
+                    radius: 10
+                    visible: !dashboard_handler.success
                 }
             }
         }
@@ -260,6 +271,13 @@ Page {
                         }
                     }
                 }
+
+                LoadingAnimationColor {
+                    anchors.fill: parent
+                    radius: 10
+                    visible: !schedule_handler.finished
+                }
+
             }
         }
     }
