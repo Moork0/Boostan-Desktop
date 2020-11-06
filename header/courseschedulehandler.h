@@ -14,22 +14,20 @@ private:
     QString         year;
     QList<QList<QVariant>> weekly_schedule;
 
-    int     hourIndex(QString& hour) const;
-    bool    extractWeeklySchedule(QString& response);
-    bool    extractCurrentYear(QString& response);
+    int     hourIndex               (QString& hour) const;
+    bool    extractWeeklySchedule   (QString& response);
+    bool    extractCurrentYear      (QString& response);
     bool    requestTokens();
-    bool    requestCurrentYear();
     bool    requestSchedule();
 
 private slots:
-    void    parseTokens(QNetworkReply& reply);
-    void    parseSchedule(QNetworkReply& reply);
-    void    parseCurrentYear(QNetworkReply& reply);
+    void    parseTokens             (QNetworkReply& reply);
+    void    parseSchedule           (QNetworkReply& reply);
 
 public:
     CourseScheduleHandler();
-    Q_INVOKABLE QList<QVariant> dailyScheduleModel(int day) const;
-    Q_INVOKABLE void start();
+    Q_INVOKABLE QVariantList    dailyScheduleModel  (int day) const;
+    Q_INVOKABLE void            start               (int current);
 };
 
 #endif // COURSESCHEDULEHANDLER_H

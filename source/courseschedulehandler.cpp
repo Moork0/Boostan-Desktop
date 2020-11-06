@@ -13,8 +13,9 @@ CourseScheduleHandler::CourseScheduleHandler()
     }
 }
 
-void CourseScheduleHandler::start()
+void CourseScheduleHandler::start(int current)
 {
+    year = current;
     requestTokens();
 }
 
@@ -34,38 +35,6 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 
     request_validators.insert(extractFormValidators(data));
     requestSchedule();
-}
-
-bool CourseScheduleHandler::requestCurrentYear()
-{
-    connect(&request, &Network::complete, this, &CourseScheduleHandler::parseCurrentYear);
-    request.setUrl(root_url + schedule_url + request_validators["tck"]);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
-                + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                + "&TicketTextBox="         + cookies["ctck"]
-                + "&Fm_Action=00&Frm_Type=&Frm_No=&F_ID=&XmlPriPrm=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex="};
-    return request.post(data.toUtf8());
-
-}
-
-void CourseScheduleHandler::parseCurrentYear(QNetworkReply& reply)
-{
-    disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseCurrentYear);
-    QString data;
-    if (!verifyResponse(reply, data)) return;
-    request_validators.insert(extractFormValidators(data));
-    if (!extractCurrentYear(data)) {
-        setErrorCode(Constants::Errors::ExtractError);
-        setSuccess(true);
-        setFinished(true);
-        reply.deleteLater();
-    }
-    setSuccess(true);
-    setFinished(true);
-    reply.deleteLater();
 }
 
 bool CourseScheduleHandler::requestSchedule()
