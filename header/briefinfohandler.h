@@ -8,7 +8,8 @@ class BriefInfoHandler : public Handler
 {
     Q_OBJECT
 private:
-    Q_PROPERTY(QVariantMap   briefInfo  READ getStudentInfo     NOTIFY studentInfoChanged)
+    Q_PROPERTY(QVariantMap  briefInfo   READ getStudentInfo     NOTIFY studentInfoChanged)
+    Q_PROPERTY(int          currentYear READ getCurrentYear     NOTIFY currentYearChanged)
 
     inline static QString       user_info_url {"/Forms/F1802_PROCESS_MNG_STDJAMEHMON/F1802_01_PROCESS_MNG_STDJAMEHMON_Dat.aspx?r=0.9638806400489983&fid=0;12310&b=0&l=0&&lastm=20180201081222&tck="};
     const std::vector<QString>  info_title {"id", "name", "field", "studyType", "average", "passedUnits"};
@@ -16,6 +17,7 @@ private:
     QList<int>                  passed_semesters;
     QStringList                 passed_semesters_avg;
     QLocale                     locale;
+    int                         current_year;
 
     bool            requestTokens();
     bool            requestStuId();
@@ -39,7 +41,7 @@ public:
 
 
     BriefInfoHandler();
-
+    int             getCurrentYear() const;
 
 private slots:
     void            parseUserInfo(QNetworkReply& reply);
@@ -53,6 +55,7 @@ public slots:
 
 signals:
     void            studentInfoChanged();
+    void            currentYearChanged();
 };
 
 #endif // DASHBOARDHANDLER_H

@@ -1,8 +1,13 @@
 #include "header/briefinfohandler.h"
 
-BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}
+BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}, current_year{0}
 {
     locale.setNumberOptions(QLocale::OmitGroupSeparator);
+}
+
+int BriefInfoHandler::getCurrentYear() const
+{
+    return current_year;
 }
 
 QVariantMap BriefInfoHandler::getStudentInfo() const
@@ -186,6 +191,8 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
         year_position = response.indexOf(year_keyword, year_position);
         avg_position = response.indexOf(avg_keyword, avg_position);
     }
+    current_year = passed_semesters.last();
+    emit currentYearChanged();
     return true;
 }
 
