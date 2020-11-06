@@ -70,7 +70,7 @@ Page {
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.preferredWidth: personal_info_bg.width
-                        text: "نام و نام خانوادگی: " + dashboard_handler.briefInfo.name
+                        text: "نام و نام خانوادگی: " + right_pane.studentName
                         wrapMode: Text.WordWrap
                         font.family: "Sahel"
                         color: "#FFFFFF"
