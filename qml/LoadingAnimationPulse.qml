@@ -11,25 +11,6 @@ Item {
 
     property bool running: true
 
-    onRunningChanged: {
-        if (barCount !== repeater.count || timer._barIndex <= barCount - 1) {
-            return;
-        }
-
-        for (var barIndex = 0; barIndex < barCount; barIndex++) {
-            if (running) {
-                if (repeater.itemAt(barIndex)) {
-                    repeater.itemAt(barIndex).playAnimation();
-                }
-            }
-            else {
-                if (repeater.itemAt(barIndex)) {
-                    repeater.itemAt(barIndex).pauseAnimation();
-                }
-            }
-        }
-    }
-
     Repeater {
         id: repeater
         delegate: Component {
