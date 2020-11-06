@@ -15,7 +15,7 @@ CourseScheduleHandler::CourseScheduleHandler()
 
 void CourseScheduleHandler::start(int current)
 {
-    year = current;
+    year = QString::number(current);
     requestTokens();
 }
 
@@ -62,9 +62,10 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
     request_validators.insert(extractFormValidators(data));
     if (!extractWeeklySchedule(data)) {
         setErrorCode(Constants::Errors::ExtractError);
-        setSuccess(true);
+        setSuccess(false);
         setFinished(true);
         reply.deleteLater();
+        return;
     }
     setSuccess(true);
     setFinished(true);
