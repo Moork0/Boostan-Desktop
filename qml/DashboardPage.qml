@@ -12,7 +12,7 @@ Page {
         Component.onCompleted: {
             start()
         }
-        onFinished: success ? schedule_handler.start() : error_handler.raiseError(errorCode)
+        onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode)
     }
 
     CourseScheduleHandler {
