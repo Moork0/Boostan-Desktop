@@ -225,6 +225,9 @@ Page {
                                     color: "transparent"
                                     Layout.fillHeight: true
                                     Layout.fillWidth: true
+                                    ToolTip.visible: course_area.containsMouse && modelData.name != ""
+                                    ToolTip.delay: 500
+                                    ToolTip.text: "استاد: " + modelData.teacher + "<br>تاریخ امتحان:‌ " + modelData.exam
                                     Label {
                                         width: parent.width - 5
                                         anchors.centerIn: parent
@@ -234,6 +237,12 @@ Page {
                                         wrapMode: Label.WordWrap
                                         horizontalAlignment: Label.AlignHCenter
                                     }
+                                    MouseArea {
+                                        id: course_area
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                    }
+
                                     Rectangle {
                                         y: 0
                                         width: parent.width + 4
