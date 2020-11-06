@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Dialogs 1.2
 import API.BriefInfoHandler 1.0
 import API.CourseScheduleHandler 1.0
 
@@ -26,6 +27,14 @@ Page {
         color: "#262A2F"
     }
 
+    Notifier {
+        id: notifier
+        showType: Notifier.ShowType.LeftToRight
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        z: 2
+    }
+
     ColumnLayout {
         id: layout
         width: parent.width - 20
@@ -38,20 +47,36 @@ Page {
             spacing: 10
 
             Rectangle {
+                id: averages_plot
                 Layout.preferredWidth: parent.width * 0.70
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
+                property bool ready: dashboard_handler.finished && dashboard_handler.success
+
+                Icon {
+                    id: save_plot
+                    visible: averages_plot.ready
+                    anchors { top: parent.top; left: parent.left; leftMargin: 10; topMargin: 10 }
+                    text: "\u1f4b"
+                    color: "#FFFFFF"
+                    description: "ذخیره نمودار معدل"
+                    clickAble: true
+                    onClicked: file_dialog.saveItem(averages_plot, save_plot)
+                }
 
                 Plot {
-                    anchors.fill: parent
-                    xAxis: dashboard_handler.finished && dashboard_handler.success ? dashboard_handler.getSemesterYears() : []
-                    yAxis: dashboard_handler.finished && dashboard_handler.success ? dashboard_handler.getSemesterAvgs() : []
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                    height: parent.height - 40
+                    xAxis: averages_plot.ready ? dashboard_handler.getSemesterYears() : []
+                    yAxis: averages_plot.ready && dashboard_handler.success ? dashboard_handler.getSemesterAvgs() : []
                 }
+
                 LoadingAnimationColor {
                     anchors.fill: parent
                     radius: 10
-                    visible: !dashboard_handler.success
+                    visible: !averages_plot.ready
                 }
 
             }
@@ -127,7 +152,8 @@ Page {
         RowLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height / 2
-            spacing: 10
+//            spacing: 10
+            spacing: 0
 
             Rectangle {
                 id: table_schedule_bg
@@ -137,6 +163,23 @@ Page {
                 height: layout.height / 2
                 color: "#1D2025"
                 radius: 10
+                property bool ready: schedule_handler.finished && schedule_handler.success
+
+                Icon {
+                    id: save_schedule
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        leftMargin: 10
+                        topMargin: 10
+                    }
+                    text: "\u1f4b"
+                    color: "#FFFFFF"
+                    description: "ذخیره برنامه هفتگی"
+                    clickAble: true
+                    onClicked: file_dialog.saveItem(table_schedule_bg, save_schedule)
+                }
+
                 Item {
                     id: blank_space
                     anchors.right: parent.right
@@ -230,7 +273,7 @@ Page {
                             layoutDirection: Qt.RightToLeft
                             spacing: 0
                             Repeater {
-                                model: schedule_handler.finished && schedule_handler.success ? schedule_handler.dailyScheduleModel(index) : 0
+                                model: table_schedule_bg.ready ? schedule_handler.dailyScheduleModel(index) : 0
                                 Rectangle {
                                     Layout.alignment: Qt.AlignRight
                                     color: "transparent"
@@ -275,10 +318,31 @@ Page {
                 LoadingAnimationColor {
                     anchors.fill: parent
                     radius: 10
-                    visible: !schedule_handler.finished
+                    visible: !table_schedule_bg.ready
                 }
 
             }
+        }
+    }
+    FileDialog {
+        id: file_dialog
+        selectExisting: false
+        selectMultiple: false
+        property var item_to_save
+        property var item_caller
+        function saveItem(item, caller) {
+            item_to_save = item
+            item_caller = caller
+            file_dialog.open()
+        }
+        onAccepted: {
+            item_caller.visible = false
+            item_to_save.grabToImage(function(result) {
+                result.saveToFile(String(file_dialog.fileUrl).replace("file://", ""))
+                item_caller.visible = item_to_save.ready
+                notifier.text = "تصویر با موفقیت ذخیره شد!"
+                notifier.show()
+             });
         }
     }
 }
