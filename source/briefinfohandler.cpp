@@ -135,14 +135,13 @@ void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
 
 bool BriefInfoHandler::extractStudentInfo(const QString& response)
 {
-    const QList<QString> keywords {"F51851",        // keyword for Name
-                                   "F17551",        // Field
+    const QList<QString> keywords {"F17551",        // Field
                                    "F41351",        // StudyType
                                    "F41701",        // TotalAvg
                                    "F41801"};      // Passed
     int position;
     QString value;
-    // increased START_INDEX by 2 because we want to skip the Id cuz we don't have Id in this data.
+    // increased START_INDEX by 2 because we want to skip the Id since we don't have Id in this data.
     for (int title_index{INDEX_START + 2}, keyindex{0}; title_index < INDEX_END; ++title_index, ++keyindex) {
         position = response.indexOf(keywords[keyindex]);
         if (position == -1) {
