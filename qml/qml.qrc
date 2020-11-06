@@ -22,6 +22,6 @@
         <file>Notifier.qml</file>
         <file>Plot.qml</file>
         <file>LoadingAnimationColor.qml</file>
-        <file>LoadingAnimationParticle.qml</file>
+        <file>LoadingAnimationPulse.qml</file>
     </qresource>
 </RCC>
