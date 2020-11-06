@@ -50,6 +50,12 @@ void Handler::setFinished(bool value)
 {
     is_finished = value;
     if (is_finished == true) emit finished();
+    emit workingChanged();
+}
+
+bool Handler::getWorking() const
+{
+    return !is_finished;
 }
 
 uint Handler::getErrorCode() const

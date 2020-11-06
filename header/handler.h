@@ -31,6 +31,7 @@ protected:
     Q_PROPERTY(bool     finished        READ getFinished        NOTIFY finished)
     Q_PROPERTY(bool     success         READ getSuccess         NOTIFY successChanged)
     Q_PROPERTY(uint     errorCode       READ getErrorCode       NOTIFY errorCodeChanged)
+    Q_PROPERTY(bool     working         READ getWorking         NOTIFY workingChanged)
 
     inline static QHashString      cookies, request_validators;
     static const  QString          root_url;
@@ -46,6 +47,7 @@ protected:
 
     bool        getFinished() const;
     void        setFinished(bool value);
+    bool        getWorking() const;
 
     uint        getErrorCode() const;
     void        setErrorCode(int ecode);
@@ -66,6 +68,7 @@ signals:
     void finished();
     void successChanged();
     void errorCodeChanged();
+    void workingChanged();
 };
 
 #endif // HANDLER_H
