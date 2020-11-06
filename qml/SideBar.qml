@@ -14,6 +14,9 @@ Rectangle {
     property var options: ["پیشخوان", "دروس ارائه شده", "کارنامه", "حساب کاربری"]
     property int currentOption: -1
 
+    /*
+     * this function needs refactor
+     */
     function toOption(option) {
         if (currentOption < 0) {
             currentOption = option
