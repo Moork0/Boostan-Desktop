@@ -3,18 +3,22 @@
 /*
  * initializing static variables
  */
+//! TODO: make root_url inline and initialize this variable in constructor
 const QString Handler::root_url {Settings::getValue("root_url").toString()};
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}, error_code{-1}
 {
-}
 
+}
 
 void Handler::setCookie(QString& key, QString& value)
 {
     cookies[key] = value;
 }
 
+/*
+ * split 'keyvalue' string into key,value and pass them to setCookie()
+ */
 void Handler::setCookie(QString& keyvalue)
 {
     QList<QString> splited = keyvalue.split('=');
@@ -36,6 +40,8 @@ QString Handler::getCookies() const
 
 bool Handler::hasError(QNetworkReply::NetworkError ecode)
 {
+    // since the ecode is one of the Qt default codes, we should add it to qt_offset
+    // to prevent conflict with Golestan error codes.
     setErrorCode(ecode + Constants::Errors::qt_offset);
     if (ecode == QNetworkReply::NoError) return false;
     return true;
@@ -49,6 +55,7 @@ bool Handler::getFinished() const
 void Handler::setFinished(bool value)
 {
     is_finished = value;
+    // we only wanna use finished() when an request is finished.
     if (is_finished == true) emit finished();
     emit workingChanged();
 }
@@ -72,6 +79,7 @@ void Handler::setErrorCode(int ecode)
 
 void Handler::setSuccess(bool state)
 {
+    //! TODO: use one line condition
     if (success == state) {
         return;
     }
@@ -94,6 +102,8 @@ bool Handler::updateTokens(const QString& data)
     QHashString tokens {extractTokens(data)};
     if (tokens.isEmpty()) return false;
     QHashString::iterator it {tokens.begin()};
+    // we should remove 'ctck' at every update
+    // because we should use ctck only when Golestan says.
     cookies.remove("ctck");
     for (; it != tokens.end(); ++it) {
         if (it.key() == "tck") continue;
@@ -123,6 +133,8 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
     }
 
     if (!updateTokens(data)) {
+        // we don't know what will gonna prevent updateTokens() to not updating tokens.
+        // so the error is unknown and no more progress can be done.
         setErrorCode(Constants::Errors::UnknownError);
         reply.deleteLater();
         setSuccess(false);
@@ -133,6 +145,11 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
     return true;
 }
 
+/**
+ * TODO: since regexes are generally slower than normal string searchs,
+ * i should compare the performance of this function when using REGEXes and
+ * when using string searchs. then choose the fastest one.
+ **/
 QHashString Handler::extractFormValidators(const QString& response)
 {
     QHashString result;
@@ -166,6 +183,11 @@ QHashString Handler::extractFormValidators(const QString& response)
 
 QHashString Handler::extractTokens(const QString& response)
 {
+    //! TODO: idk if i should move this variable to class data members or not
+    //! cuz this function would called alot and constructing this variable
+    //! every time the function being called would be non-optimal.
+    // tokens that Golestan will return at every request and we need these to be able to make
+    // another requests.
     QHashString tokens {{"u", ""}, {"su", ""}, {"ft", ""}, {"f", ""}, {"lt", ""}, {"ctck", ""}, {"seq", ""}, {"tck", ""}};
     QString capture;
     QRegularExpression re {tokens_pattern};
@@ -174,7 +196,9 @@ QHashString Handler::extractTokens(const QString& response)
     if (!match.hasMatch()) return QHashString {};
     capture = match.captured().remove("SavAut(").remove("'");
     QStringList splited = capture.split(",");
+    // tokens.size() - 1(we dont wanna tck now) = 7
     if (splited.size() < 7) return QHashString {};
+    /// this could be done with a loop. but it's unnecessary i think.
     tokens["u"] = splited[0];
     tokens["su"] = splited[1];
     tokens["ft"] = splited[2];
@@ -183,10 +207,18 @@ QHashString Handler::extractTokens(const QString& response)
     tokens["ctck"] = splited[5];
     tokens["seq"] = splited[6];
 
+    /*
+     * Normally, 'tck' and 'ctck' are equal to each other and in this case, Golestan only needs 'tck'.
+     * But sometimes Golestan explicitly returns tck in other way. in that case we use both 'tck' and 'ctck'
+     */
+    // check if 'tck' is explicitly defined
     if (!response.contains("SetOpenerTck(") || response.contains("SetOpenerTck('')")) {
-        tokens["tck"] = splited[5];
+        // no 'tck' defined explicitly. use 'ctck' instead and remove 'ctck' from tokens.
+        tokens["tck"] = splited[5]; // splited[5] == ctck
         tokens.remove("ctck");
     } else {
+        // 'tck' is defined explicitly. we extract that.
+        //! TODO: this could be done with string search and would be faster than regex.
         re.setPattern(tck_pattern);
         match = re.match(response);
         if (!match.hasMatch()) return QHashString {};
@@ -198,10 +230,12 @@ QHashString Handler::extractTokens(const QString& response)
 
 int Handler::extractDataErrorCode(const QString& response)
 {
+    // all error codes will come after the word 'code'(in persian)
     int code_position {response.indexOf("کد")};
     QString code;
     if (code_position == -1) return Constants::Errors::NoCodeFound;
 
+    // 2 is the length of 'code' in persian. we should skip this to capture actual value.
     int i = code_position + 2;
     while (response[i] != " ") {
         code.append(response[i]);
@@ -210,7 +244,10 @@ int Handler::extractDataErrorCode(const QString& response)
 
     return code.toInt();
 }
-
+/*
+ * This function at first try to extract code from the response.
+ * if no code found, then try to find a key word that matches the custom error key words.
+ */
 int Handler::extractDataError(const QString& response)
 {
     if (response.contains("ErrorArr = new Array()")) return Constants::Errors::NoError;
@@ -219,8 +256,10 @@ int Handler::extractDataError(const QString& response)
     QHash<int, QString>::const_iterator it {Constants::Errors::error_keywords.cbegin()};
     for (; it != Constants::Errors::error_keywords.cend(); ++it) {
         if (response.contains(it.value())) {
+            // key is a custom error code.
             return it.key();
         }
     }
+    // code has error but no corresponding custom error found.
     return Constants::Errors::UnknownError;
 }
