@@ -14,12 +14,6 @@ namespace Constants {
                             // default golestan url for inserting to settings if no configuration is available
                             root_url {"https://golestan.umz.ac.ir"},
                             settings_path {application_path + "settings.ini"};
-    /*
-     * functions for work with settings
-     */
-    bool        checkSettings();
-    QVariant    getConstant(const QString& key);
-    void        setConstant(const QString& key, const QString& value);
 
     /*
      * Constants for errors
