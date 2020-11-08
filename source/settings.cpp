@@ -15,6 +15,9 @@ QVariant Settings::getValue(QString key)
     return settings.value(key);
 }
 
+/*
+ * check if settings is writable and has some required default value
+ */
 bool Settings::checkSettings()
 {
     if (!settings.isWritable()) return false;
