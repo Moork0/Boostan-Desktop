@@ -1,5 +1,6 @@
 #include "header/network.h"
 
+//! TODO: needs refactor. change connect to a pointer version
 Network::Network(QObject *parent) : QObject(parent)
 {
     connect(&netaccman, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
@@ -35,6 +36,7 @@ void Network::addHeader(const QByteArray &header, const QByteArray &value)
     this->headers[header] = value;
 }
 
+// send a POST request to 'url' with data 'data' and return request status
 bool Network::post(const QByteArray& data)
 {
     QNetworkRequest request(this->url);
@@ -44,6 +46,7 @@ bool Network::post(const QByteArray& data)
     return reply->error() == QNetworkReply::NoError;
 }
 
+// send a GET request to 'url' return request status
 bool Network::get()
 {
     QNetworkRequest request(this->url);
@@ -58,8 +61,10 @@ void Network::finished(QNetworkReply* reply)
     emit complete(*reply);
 }
 
+// actually sets a request 'req' headers to 'headers'
 void Network::setRequestHeader(QNetworkRequest &req)
 {
+    //! TODO: convert iterator from java style to std style
     QHash<QByteArray, QByteArray>::const_iterator it = headers.constBegin();
     while (it != headers.constEnd()) {
         req.setRawHeader(it.key(), it.value());
