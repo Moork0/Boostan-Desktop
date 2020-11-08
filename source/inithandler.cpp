@@ -12,6 +12,11 @@ bool InitHandler::start()
     return request.get();
 }
 
+/*
+ * parse init response.
+ * 1- parse cookies and set ASP_SESSIONID to a valid value.
+ * 2- extract validators.
+ */
 bool InitHandler::parseInit(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &InitHandler::parseInit);
@@ -25,6 +30,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
 
     QString data = reply.readAll();
     bool cookiefound{false};
+    // extract cookies from response headers and add them to our 'cookies'.
     for (const auto& [key, value] : reply.rawHeaderPairs()) {
         if (key == "Set-Cookie") {
 //            qDebug() << value;
@@ -37,6 +43,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
     }
 
     if (!cookiefound) {
+        //! TODO: here we should set error code to UnknownError
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
@@ -45,6 +52,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
 
     request_validators = extractFormValidators(data);
     if (request_validators.empty()) {
+        //! TODO: here we should set error code to UnknownError
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
