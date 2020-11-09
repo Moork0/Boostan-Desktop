@@ -74,10 +74,7 @@ void Handler::setErrorCode(int ecode)
 
 void Handler::setSuccess(bool state)
 {
-    //! TODO: use one line condition
-    if (success == state) {
-        return;
-    }
+    if (success == state) return;
     success = state;
     emit successChanged();
 }
