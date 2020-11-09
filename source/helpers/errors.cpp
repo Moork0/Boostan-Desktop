@@ -1,4 +1,4 @@
-#include "header/errors.h"
+#include "header/helpers/errors.h"
 
 Errors::Errors(QObject *parent) : QObject(parent), error_code{0}
 {

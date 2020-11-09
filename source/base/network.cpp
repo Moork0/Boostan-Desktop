@@ -1,4 +1,4 @@
-#include "header/network.h"
+#include "header/base/network.h"
 
 //! TODO: needs refactor. change connect to a pointer version
 Network::Network(QObject *parent) : QObject(parent)

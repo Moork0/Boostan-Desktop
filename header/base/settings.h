@@ -10,7 +10,7 @@
 
 #include <QObject>
 #include <QSettings>
-#include "constants.h"
+#include "../helpers/constants.h"
 
 class Settings : public QObject
 {

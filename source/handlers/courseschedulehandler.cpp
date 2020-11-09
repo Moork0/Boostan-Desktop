@@ -1,4 +1,4 @@
-#include "header/courseschedulehandler.h"
+#include "header/handlers/courseschedulehandler.h"
 
 /*
     * Our structure is like this:

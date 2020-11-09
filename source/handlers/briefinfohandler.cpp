@@ -1,4 +1,4 @@
-#include "header/briefinfohandler.h"
+#include "header/handlers/briefinfohandler.h"
 
 BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}, current_year{0}
 {

@@ -1,4 +1,4 @@
-#include "header/offeredcoursehandler.h"
+#include "header/handlers/offeredcoursehandler.h"
 
 OfferedCourseHandler::OfferedCourseHandler()
 {

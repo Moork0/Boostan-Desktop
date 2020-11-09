@@ -21,9 +21,9 @@
 #include <QDebug>
 #include <QRegularExpression>
 
-#include "network.h"
-#include "constants.h"
-#include "settings.h"
+#include "../base/network.h"
+#include "../base/settings.h"
+#include "../helpers/constants.h"
 
 class Handler : public QObject
 {

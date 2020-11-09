@@ -15,30 +15,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        source/courseschedulehandler.cpp \
-        source/offeredcoursehandler.cpp \
-        source/briefinfohandler.cpp \
-        source/captchahandler.cpp \
-        source/settings.cpp \
-        source/errors.cpp \
-        source/handler.cpp \
-        source/inithandler.cpp \
-        source/loginhandler.cpp \
-        source/main.cpp \
-        source/network.cpp
+        source/handlers/courseschedulehandler.cpp \
+        source/handlers/offeredcoursehandler.cpp \
+        source/handlers/briefinfohandler.cpp \
+        source/handlers/captchahandler.cpp \
+        source/handlers/handler.cpp \
+        source/handlers/inithandler.cpp \
+        source/handlers/loginhandler.cpp \
+        source/base/settings.cpp \
+        source/base/network.cpp \
+        source/helpers/errors.cpp \
+        source/main.cpp
 
 HEADERS += \
-        header/courseschedulehandler.h \
-        header/offeredcoursehandler.h \
-        header/briefinfohandler.h \
-        header/captchahandler.h \
-        header/errors.h \
-        header/constants.h \
-        header/handler.h \
-        header/inithandler.h \
-        header/loginhandler.h \
-        header/network.h \
-        header/settings.h \
+        header/handlers/courseschedulehandler.h \
+        header/handlers/offeredcoursehandler.h \
+        header/handlers/briefinfohandler.h \
+        header/handlers/captchahandler.h \
+        header/handlers/handler.h \
+        header/handlers/inithandler.h \
+        header/handlers/loginhandler.h \
+        header/helpers/errors.h \
+        header/helpers/constants.h \
+        header/base/network.h \
+        header/base/settings.h \
 
 RESOURCES += qml/qml.qrc
 
