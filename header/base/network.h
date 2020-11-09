@@ -18,6 +18,15 @@
 class Network : public QObject
 {
     Q_OBJECT
+
+private:
+    QUrl url;
+    QHash<QByteArray, QByteArray> headers;
+    QNetworkAccessManager netaccman;
+
+    // actually sets header for a request 'req' from 'headers'
+    void setRequestHeader(QNetworkRequest& req);
+
 public:
     explicit Network(QObject *parent = nullptr);
     explicit Network(QUrl url, QObject* parent = nullptr);
@@ -42,19 +51,9 @@ public:
 signals:
     void complete(QNetworkReply& data);
 
-//! TODO: this should change to private slots
-public slots:
+private slots:
     // slot that connects to QNetworkReply finished
     void finished(QNetworkReply* reply);
-
-//! TODO: this sould move to above of public specifier
-private:
-    QUrl url;
-    QHash<QByteArray, QByteArray> headers;
-    QNetworkAccessManager netaccman;
-
-    // actually sets header for a request 'req' from 'headers'
-    void setRequestHeader(QNetworkRequest& req);
 };
 
 #endif // NETWORK_H
