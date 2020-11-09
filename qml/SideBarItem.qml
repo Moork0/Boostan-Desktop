@@ -1,3 +1,7 @@
+/*
+    * A side bar item implementation
+*/
+
 import QtQuick 2.15
 
 Item {
@@ -12,6 +16,7 @@ Item {
 
     }
 
+    // show a shadow when a item is in selected mode or has a mouse hovered on
     Rectangle {
         id: shadow
         width: root.width
@@ -37,6 +42,7 @@ Item {
         }
     }
 
+    // indicator that determine a item is in selected mode
     Rectangle {
         id: enable_indicator
         anchors.left: control.left

@@ -1,3 +1,7 @@
+/*
+    * Custom button component
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -74,6 +78,9 @@ Button {
         }
 
         Rectangle {
+            /*
+                * this rectangle will fill the whole button with animation when a click occur
+            */
             id: __background_presshold
             height: __background.height
             width: 0
@@ -85,6 +92,7 @@ Button {
         }
 
         Rectangle {
+            /* shadow will be visible when mouse hovered on button or a click occured */
             id: __background_shadow
             anchors.fill: __background
             radius: __background.radius

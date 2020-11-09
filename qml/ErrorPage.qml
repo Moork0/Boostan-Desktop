@@ -1,3 +1,7 @@
+/*
+    * The page that show a error and run the callback_function
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
@@ -65,7 +69,7 @@ Page {
             anchors.topMargin: 10
             width: 200
             height: 60
-            // this text seems reverse. correct = if status == Critical, close page. else try again
+            // this text seems reverse. correct is: if status == Critical, close page. else try again
             text: error_page.criticalStatus == ErrorHandler.Critical ? "بستن برنامه!" : "دوباره تلاش کن!"
             font.pixelSize: 20
             bgColor: error_page.criticalStatus == ErrorHandler.Critical ? "#E53935" :  "#19B99A"

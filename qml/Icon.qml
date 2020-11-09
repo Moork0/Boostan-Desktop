@@ -1,3 +1,7 @@
+/*
+    * This control is responsible for showing an icon by using "fontello" font.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 ClickableText {

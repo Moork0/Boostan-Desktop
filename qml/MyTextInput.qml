@@ -1,10 +1,11 @@
+/*
+    * This is a custom text input component
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-/*
- *  TODO: make animation for errors (possibly with path's)
- */
 Item {
     id: root
     property alias direction: row_layout.layoutDirection
@@ -44,7 +45,7 @@ Item {
             }
 
             Rectangle {
-                id: seprator
+                // separator between icon and input
                 visible: icon.visible
                 Layout.leftMargin: 6
                 Layout.rightMargin: 6
@@ -67,6 +68,7 @@ Item {
                         return;
                     }
 
+                    // if focus released and the input is empty, make the border orange
                     if (!tfield_root.focus && tfield_root.text.trim() == "") {
                         input_container.border.color = "#E65100"
                         return;
@@ -81,6 +83,7 @@ Item {
                 }
 
 
+                // cursor component that blink when user is typing
                 cursorDelegate: Rectangle {
                     id: tfield_cursor
                     visible: tfield_root.focus
@@ -100,6 +103,7 @@ Item {
                             easing.type: Easing.InOutQuad
                         }
 
+                        /***** TODO: use PauseAnimation instead of this ****/
                         NumberAnimation {
                             duration: 500
                             easing.type: Easing.InOutQuad
@@ -113,6 +117,7 @@ Item {
                             easing.type: Easing.InOutQuad
                         }
 
+                        /***** TODO: use PauseAnimation instead of this ****/
                         NumberAnimation {
                             duration: 500
                             easing.type: Easing.InOutQuad

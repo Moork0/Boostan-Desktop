@@ -1,14 +1,15 @@
+/*
+    * This component is a animation consists of some rectangles that being short and tall
+*/
+
 import QtQuick 2.15
 
 Item {
-
-    // ----- Public Properties ----- //
     id: root
 
     property alias barCount: repeater.model
     property color color: "white"
     property int spacing: 5
-
     property bool running: true
 
     Repeater {

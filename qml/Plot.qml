@@ -1,3 +1,8 @@
+/*
+    * Plot component for drawing a Bar plot
+    * this component will be rewritten.
+*/
+
 import QtQuick 2.15
 import QtCharts 2.15
 
@@ -18,6 +23,7 @@ ChartView {
 
     BarCategoryAxis {
         id: axis_x
+        // remove below line
         categories: ["۹۷۱", "۹۷۲", "۹۸۱"]
         color: "#FFFFFF"
         gridVisible: false

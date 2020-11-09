@@ -1,3 +1,7 @@
+/*
+    * This Component is a color changing animation which is being used for loadings
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
@@ -6,6 +10,7 @@ Rectangle {
     color: "#1D2025"
     visible: true
 
+    /***  TODO: expose the colors to the root ***/
     SequentialAnimation on color {
         id: animation
         running: root.visible

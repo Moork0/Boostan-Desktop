@@ -1,3 +1,7 @@
+/*
+    * A notifier component which used for send temporary messages to user
+*/
+
 import QtQuick 2.0
 import QtQuick.Controls 2.15
 
@@ -7,6 +11,8 @@ Item {
     visible: false
     width: Math.max(notifier_text.contentWidth, notifier_solution.contentWidth) + 20
     height: notifier_text.contentHeight + notifier_solution.contentHeight + 20
+    // identify the animation direction of notifier
+    // Do not use anchors on direction of showType
     property int showType: Notifier.ShowType.DownToUp
     property alias bgColor: notifier_background.color
     property alias textColor: notifier_text.color
@@ -65,10 +71,10 @@ Item {
                 y: showType === Notifier.ShowType.DownToUp ? page_background.height - root.height - 20 : root.y
                 x: showType === Notifier.ShowType.LeftToRight ? 20 : root.x
             }
+            // start fading out slowly
             PropertyChanges {
                 target: fade_animation
                 running: true
-
             }
         },
         State {
@@ -126,6 +132,7 @@ Item {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
+        // stop fading when mouse got into area
         onEntered: {
             fade_animation.stop()
             root.opacity = 1.0

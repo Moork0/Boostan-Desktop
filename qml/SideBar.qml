@@ -1,3 +1,8 @@
+/*
+    * Side bar component
+    * this is not a reusable component and just moved to a separated file to make original code shorter
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15

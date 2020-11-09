@@ -1,4 +1,10 @@
-﻿import QtQuick 2.15
+﻿/*
+    * This is Login Page.
+    * In this page the first request will being sent(with init handler)
+    * This page has no right_pane so the right_pane should be disabled when this page is visible.
+*/
+
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import QtQuick.Layouts 1.15
@@ -23,6 +29,7 @@ Page {
     LoginHandler {
         id: login_handler
         onFinished: {
+            // login handler job is finished so the submit_loading should not be visible
             submit_loading.visible = false
             if (login_handler.success) {
                 if (remember_checkbox.checked) {
@@ -141,8 +148,8 @@ Page {
                 }
 
                 /*
-                 * Captcha Layout
-                 */
+                    * Captcha Layout
+                */
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.maximumWidth: 240
@@ -192,8 +199,8 @@ Page {
                 }
 
                 /*
-                 *  Remember me Layout
-                 */
+                     *  Remember me Layout
+                */
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.maximumWidth: 240
@@ -235,6 +242,7 @@ Page {
                     }
 
                     Rectangle {
+                        /**** TODO: the visiblity of this component should be integrated with working() signal ****/
                         id: submit_loading
                         visible: false
                         anchors.fill: submit_button
