@@ -2,10 +2,10 @@
 #define LOGINHANDLER_H
 
 /*
- * Class: LoginHandler
- * Files: loginhandler.h, loginhandler.cpp
- * This class handle login things and extract student name after successful login.
- */
+    * Class: LoginHandler
+    * Files: loginhandler.h, loginhandler.cpp
+    * This class handle login things and extract student name after successful login.
+*/
 
 #include "handler.h"
 

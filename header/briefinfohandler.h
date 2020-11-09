@@ -2,12 +2,12 @@
 #define DASHBOARDHANDLER_H
 
 /*
- * Class: BriefInfoHandler
- * Files: briefinfohandler.h, briefinfohandler.cpp
- * The task of this class is to request to the "general information" section of Golestan,
- * parse that information inclues semesters averages and identity informations
- * then create a neat structure for exposing those informations to QML(probably DashboardPage.qml)
- */
+    * Class: BriefInfoHandler
+    * Files: briefinfohandler.h, briefinfohandler.cpp
+    * The task of this class is to request to the "general information" section of Golestan,
+    * parse that information inclues semesters averages and identity informations
+    * then create a neat structure for exposing those informations to QML(probably DashboardPage.qml)
+*/
 
 #include "handler.h"
 #include <vector>
@@ -40,9 +40,9 @@ private:
     bool            requestBriefInfo();
 
     /*
-     * return student general information as a QVariantMap
-     *  with the keys 'info_title' and related values for using in QML
-     */
+        * return student general information as a QVariantMap
+        *  with the keys 'info_title' and related values for using in QML
+    */
     QVariantMap     getStudentInfo() const;
     // extract general information from 'response' and fill 'student_info'
     bool            extractStudentInfo  (const QString& response);

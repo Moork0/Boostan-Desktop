@@ -1,8 +1,8 @@
 #include "header/handler.h"
 
 /*
- * initializing static variables
- */
+     * initializing static variables
+*/
 //! TODO: make root_url inline and initialize this variable in constructor
 const QString Handler::root_url {Settings::getValue("root_url").toString()};
 
@@ -17,8 +17,8 @@ void Handler::setCookie(QString& key, QString& value)
 }
 
 /*
- * split 'keyvalue' string into key,value and pass them to setCookie()
- */
+    * split 'keyvalue' string into key,value and pass them to setCookie()
+*/
 void Handler::setCookie(QString& keyvalue)
 {
     QList<QString> splited = keyvalue.split('=');
@@ -146,10 +146,10 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
 }
 
 /**
- * TODO: since regexes are generally slower than normal string searchs,
- * i should compare the performance of this function when using REGEXes and
- * when using string searchs. then choose the fastest one.
- **/
+    * TODO: since regexes are generally slower than normal string searchs,
+    * i should compare the performance of this function when using REGEXes and
+    * when using string searchs. then choose the fastest one.
+**/
 QHashString Handler::extractFormValidators(const QString& response)
 {
     QHashString result;
@@ -208,9 +208,9 @@ QHashString Handler::extractTokens(const QString& response)
     tokens["seq"] = splited[6];
 
     /*
-     * Normally, 'tck' and 'ctck' are equal to each other and in this case, Golestan only needs 'tck'.
-     * But sometimes Golestan explicitly returns tck in other way. in that case we use both 'tck' and 'ctck'
-     */
+        * Normally, 'tck' and 'ctck' are equal to each other and in this case, Golestan only needs 'tck'.
+        * But sometimes Golestan explicitly returns tck in other way. in that case we use both 'tck' and 'ctck'
+    */
     // check if 'tck' is explicitly defined
     if (!response.contains("SetOpenerTck(") || response.contains("SetOpenerTck('')")) {
         // no 'tck' defined explicitly. use 'ctck' instead and remove 'ctck' from tokens.
@@ -245,9 +245,9 @@ int Handler::extractDataErrorCode(const QString& response)
     return code.toInt();
 }
 /*
- * This function at first try to extract code from the response.
- * if no code found, then try to find a key word that matches the custom error key words.
- */
+    * This function at first try to extract code from the response.
+    * if no code found, then try to find a key word that matches the custom error key words.
+*/
 int Handler::extractDataError(const QString& response)
 {
     if (response.contains("ErrorArr = new Array()")) return Constants::Errors::NoError;

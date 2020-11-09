@@ -2,12 +2,12 @@
 #define ERRORS_H
 
 /*
- * Class: Errors
- * Files: errors.h, errors.cpp
- * This class act as an interface for showing errors.
- * Convert raw error codes to showing-capable errors and retrieve error titles and description
- * are the tasks of this class.
- */
+    * Class: Errors
+    * Files: errors.h, errors.cpp
+    * This class act as an interface for showing errors.
+    * Convert raw error codes to showing-capable errors and retrieve error titles and description
+    * are the tasks of this class.
+*/
 
 #include <QObject>
 #include <QNetworkReply>

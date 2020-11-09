@@ -13,10 +13,10 @@ bool InitHandler::start()
 }
 
 /*
- * parse init response.
- * 1- parse cookies and set ASP_SESSIONID to a valid value.
- * 2- extract validators.
- */
+    * parse init response.
+    * 1- parse cookies and set ASP_SESSIONID to a valid value.
+    * 2- extract validators.
+*/
 bool InitHandler::parseInit(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &InitHandler::parseInit);

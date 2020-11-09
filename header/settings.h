@@ -2,11 +2,11 @@
 #define SETTINGS_H
 
 /*
- * Class: Settings
- * Files: settings.h and settings.cpp
- * This class is a wrapper on QSettings and suppose to check if settings are available
- * and set settings value and retrieve them
- */
+    * Class: Settings
+    * Files: settings.h and settings.cpp
+    * This class is a wrapper on QSettings and suppose to check if settings are available
+    * and set settings value and retrieve them
+*/
 
 #include <QObject>
 #include <QSettings>

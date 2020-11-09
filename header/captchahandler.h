@@ -2,10 +2,10 @@
 #define CAPTCHAHANDLER_H
 
 /*
- * Class: CapthcaHandler
- * Files: captchahandler.h, captchahandler.cpp
- * This class handles requesting captcha picture
- */
+    * Class: CapthcaHandler
+    * Files: captchahandler.h, captchahandler.cpp
+    * This class handles requesting captcha picture
+*/
 
 #include "handler.h"
 

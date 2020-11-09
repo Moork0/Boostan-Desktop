@@ -2,17 +2,17 @@
 #define HANDLER_H
 
 /*
- * Class: Handler
- * Files: handler.h, handler.cpp
- *
- * This is the primary class that handles every request and every response
- * sent to and recieve from Golestan system.
- * Extract validation values from every response, use validations correctly for every requests
- * and check if a response has any error(and extract possible error code) are the main responsibilities
- * of this class.
- * All the other *Handler classes are derived from this class.
- *
- */
+    * Class: Handler
+    * Files: handler.h, handler.cpp
+    *
+    * This is the primary class that handles every request and every response
+    * sent to and recieve from Golestan system.
+    * Extract validation values from every response, use validations correctly for every requests
+    * and check if a response has any error(and extract possible error code) are the main responsibilities
+    * of this class.
+    * All the other *Handler classes are derived from this class.
+    *
+*/
 
 #include <QObject>
 #include <QUrl>
@@ -42,22 +42,22 @@ private:
     /** Functions **/
 
     /*
-     * Extract toknes(not validators) from a response and return QHashString
-     * which includes token titles as key and token values as value of QHash
-     */
+        * Extract toknes(not validators) from a response and return QHashString
+        * which includes token titles as key and token values as value of QHash
+    */
     QHashString extractTokens(const QString& response);
 
     /*
-     * Extract error code from response which returned by Golestan
-     * return Constants::Errors::NoCodeFound if no code can be found in response.
+        * Extract error code from response which returned by Golestan
+        * return Constants::Errors::NoCodeFound if no code can be found in response.
      */
     int extractDataErrorCode(const QString& response);
 
     /*
-     * Extract error from response.
-     * return Constants::Errors::NoError if there is no error
-     * return Constants::Errors::UnknownError if there is error
-     * but can't find error code in custom errors
+        * Extract error from response.
+        * return Constants::Errors::NoError if there is no error
+        * return Constants::Errors::UnknownError if there is error
+        * but can't find error code in custom errors
      */
     int extractDataError(const QString& response);
 
@@ -83,15 +83,14 @@ protected:
     // Add to cookies a cookie with name of 'key' and value of 'value'
     void        setCookie(QString& key, QString& value);
     /*
-     * Add to cookies a cookie in a single string format like this:
-     * SomeCookieName=SomeValue
+        * Add to cookies a cookie in a single string format like this:
+        * SomeCookieName=SomeValue
      */
     void        setCookie(QString& keyvalue);
     // remove all cookies
     void        clearCookies();
-    /*
-     * return cookies in string format that capable of being used as a request header
-     */
+
+    // return cookies in string format that capable of being used as a request header
     QString     getCookies() const;
 
     // return 'is_finished'
@@ -117,22 +116,22 @@ protected:
     bool        hasError(QNetworkReply::NetworkError ecode);
 
     /*
-     * extract tokens and update 'cookies' and 'request_validators'
-     * return true if succeed otherwise return false
+        * extract tokens and update 'cookies' and 'request_validators'
+        * return true if succeed otherwise return false
      */
     bool        updateTokens(const QString& data);
 
     /*
-     * This is important function and will be used in almost all of the
-     * functions that parse Golestan response.
-     * 'data' can have response or be empty. if data == QString(), the function
-     * will fill it in proper moment.
-     *
-     * This function Verify a response by
-     * 1- check if there is any error in 'reply' and 'data'
-     * 2- update tokens by parsing 'data'
-     * return ture if succeed and error_code will be Constants::Errors::NoError
-     * otherwise return false and error_code will be a raw error code.
+        * This is important function and will be used in almost all of the
+        * functions that parse Golestan response.
+        * 'data' can have response or be empty. if data == QString(), the function
+        * will fill it in proper moment.
+        *
+        * This function Verify a response by
+        * 1- check if there is any error in 'reply' and 'data'
+        * 2- update tokens by parsing 'data'
+        * return ture if succeed and error_code will be Constants::Errors::NoError
+        * otherwise return false and error_code will be a raw error code.
      */
     bool        verifyResponse(QNetworkReply& reply, QString& data);
 

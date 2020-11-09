@@ -6,8 +6,8 @@ LoginHandler::LoginHandler()
 }
 
 /*
- * prepare a request and send it to log in to Golestan system
- */
+     * prepare a request and send it to log in to Golestan system
+*/
 bool LoginHandler::tryLogin(const QString username, const QString password, const QString captcha)
 {
     connect(&request, &Network::complete, this, &LoginHandler::parseLogin);

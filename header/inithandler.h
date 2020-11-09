@@ -2,11 +2,11 @@
 #define INITHANDLER_H
 
 /*
- * Class: InitHandler
- * Files: inithandler.h, inithandler.cpp
- * This class is supposed to initialize an connection between client
- * and Golestan system.
- */
+    * Class: InitHandler
+    * Files: inithandler.h, inithandler.cpp
+    * This class is supposed to initialize an connection between client
+    * and Golestan system.
+*/
 
 #include "handler.h"
 #include <QObject>

@@ -2,10 +2,10 @@
 #define NETWORK_H
 
 /*
- * Class name: Network
- * Files: network.h and network.cpp
- * This class is a wrapper on ther QNetwork classes.
- */
+    * Class: Network
+    * Files: network.h and network.cpp
+    * This class is a wrapper on ther QNetwork classes.
+*/
 
 #include <QObject>
 #include <QNetworkAccessManager>
