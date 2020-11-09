@@ -36,7 +36,7 @@ void Errors::setErrorCode(int ecode)
 }
 
 /*
- * return type of error
+ * return the type of error
  */
 //! TODO: change uint to error_type
 uint Errors::getCriticalStatus() const

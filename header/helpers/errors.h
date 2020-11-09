@@ -18,6 +18,7 @@ class Errors : public QObject
     Q_OBJECT
 private:
     Q_PROPERTY(int      errorCode       READ getErrorCode       WRITE setErrorCode  NOTIFY errorCodeChanged)
+    //! TODO: change return type to error_type
     Q_PROPERTY(uint     criticalStatus  READ getCriticalStatus  NOTIFY errorCodeChanged)
     int     error_code;
 
@@ -34,8 +35,7 @@ public:
     explicit            Errors(QObject *parent = nullptr);
 
     // Set 'value' as error code
-    //! TODO: change value to ecode
-    void                setErrorCode(int value);
+    void                setErrorCode(int ecode);
     // return error code
     int                 getErrorCode()      const;
     // return type of a 'error_code'
