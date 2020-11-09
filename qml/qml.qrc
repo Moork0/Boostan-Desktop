@@ -2,26 +2,26 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>LoginPage.qml</file>
+        <file>pages/LoginPage.qml</file>
+        <file>pages/ErrorPage.qml</file>
+        <file>pages/DashboardPage.qml</file>
+        <file>controls/MyTextInput.qml</file>
+        <file>controls/MyButton.qml</file>
+        <file>controls/ClickableText.qml</file>
+        <file>controls/Icon.qml</file>
+        <file>controls/SideBarItem.qml</file>
+        <file>controls/Notifier.qml</file>
+        <file>controls/Plot.qml</file>
+        <file>controls/LoadingAnimationColor.qml</file>
+        <file>controls/LoadingAnimationPulse.qml</file>
+        <file>helpers/SideBar.qml</file>
+        <file>helpers/ErrorHandler.qml</file>
         <file>fonts/icons.ttf</file>
-        <file>MyTextInput.qml</file>
-        <file>MyButton.qml</file>
         <file>fonts/Tanha.ttf</file>
-        <file>ClickableText.qml</file>
-        <file>ErrorPage.qml</file>
-        <file>ErrorHandler.qml</file>
+        <file>fonts/Mj_Afsoon.ttf</file>
+        <file>fonts/Sahel.ttf</file>
         <file>pics/login-logo.svg</file>
         <file>pics/loading-logo.png</file>
         <file>pics/error-logo.svg</file>
-        <file>fonts/Mj_Afsoon.ttf</file>
-        <file>SideBar.qml</file>
-        <file>Icon.qml</file>
-        <file>SideBarItem.qml</file>
-        <file>fonts/Sahel.ttf</file>
-        <file>DashboardPage.qml</file>
-        <file>Notifier.qml</file>
-        <file>Plot.qml</file>
-        <file>LoadingAnimationColor.qml</file>
-        <file>LoadingAnimationPulse.qml</file>
     </qresource>
 </RCC>
