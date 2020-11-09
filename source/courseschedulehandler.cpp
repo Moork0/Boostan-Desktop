@@ -1,8 +1,21 @@
 #include "header/courseschedulehandler.h"
 
+/*
+    * Our structure is like this:
+    * [
+    * "Saturday" = [ "8:00" = {name: course name, teacher: teacher name, exam: exam data}, "10:00" = {name: "", teacher: "", exam: ""} ... ],
+    * "Sunday"   = [ "8:00" = {name: "", teacher: "", exam: ""} ...],
+    * ...
+    * ]
+*/
 CourseScheduleHandler::CourseScheduleHandler()
 {
+    /*
+        * so we just fill our structure (explained above) with empy data's
+        * i don't know if there is better way to do this and omit the empty objects.
+    */
     QList<QVariant> temp;
+    //! TODO:  5 is the number of week days and class times. move it to a variable
     weekly_schedule.reserve(5);
     temp.reserve(5);
     for (int i{0}; i < 5; ++i) {
@@ -48,7 +61,7 @@ bool CourseScheduleHandler::requestSchedule()
                 + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 + "&TicketTextBox="         + cookies["ctck"]
 
-                // below is like this: <Root><N+UQID="15"+id="4"+F="%1"+T="%1"/></Root>
+                // below is like this: <Root><N+UQID="15"+id="4"+F="%1"+T="%1"/></Root> in url encoded format
                 + "&XmlPriPrm="             + QString("%3CRoot%3E%3CN+UQID%3D%2215%22+id%3D%224%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E").arg(year)
                 + "&Fm_Action=09&Frm_Type=&Frm_No=&F_ID=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex="};
     return request.post(data.toUtf8());
@@ -126,6 +139,7 @@ QList<QVariant> CourseScheduleHandler::dailyScheduleModel(int day) const
 
 int CourseScheduleHandler::hourIndex(QString& hour) const
 {
+    // hour is something like this: "08:00-10:00"
     const QStringList hours{"08", "10", "13", "15", "17"};
     for (int i{0}; i < hour.size(); ++i) {
         if (hour.startsWith(hours[i])) {
