@@ -2,6 +2,7 @@
 
 BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}, current_year{0}
 {
+    // we don't need to numbers being separated by thousands
     locale.setNumberOptions(QLocale::OmitGroupSeparator);
 }
 
@@ -10,6 +11,7 @@ int BriefInfoHandler::getCurrentYear() const
     return current_year;
 }
 
+// convert "QMap<String, String> student_info" to QVariantMap for using in QML
 QVariantMap BriefInfoHandler::getStudentInfo() const
 {
     QVariantMap data;
@@ -36,6 +38,7 @@ QStringList BriefInfoHandler::getSemesterYears() const
 {
     QStringList list;
     for (int year : passed_semesters) {
+        // years are like this: 3991. we just need the 991 part.
         list << locale.toString(year % 1000);
     }
     return list;
@@ -70,12 +73,16 @@ bool BriefInfoHandler::requestStuId()
     QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+                // TicketTextBox should be equal to "ctck" when both "ctck" and "tck" are available
+                //! TODO: i did this here manually by analysing the previous reponse and this request
+                //! but the process for choosing between ctck and tck should be automatic.
                 + "&TicketTextBox="         + cookies["ctck"]
                 + "&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex="};
 
     return request.post(data.toUtf8());
 }
 
+//! TODO: change name to parseStuId
 void BriefInfoHandler::parseUserNumber(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseUserNumber);
@@ -141,13 +148,14 @@ bool BriefInfoHandler::extractStudentInfo(const QString& response)
                                    "F41801"};      // Passed
     int position;
     QString value;
-    // increased START_INDEX by 2 because we want to skip the Id since we don't have Id in this data.
+    /* increased START_INDEX by 2 because we want to skip the Id since we don't have Id in this data.
+      (we did that in extractStuId) */
     for (int title_index{INDEX_START + 2}, keyindex{0}; title_index < INDEX_END; ++title_index, ++keyindex) {
         position = response.indexOf(keywords[keyindex]);
         if (position == -1) {
             return false;
         }
-        // 10 is the lentgh of actual keyword which for example is "F51851 = '"
+        // 10 is the lentgh of keyword which for example is "F51851 = '"
         // so we need to skip this
         position += 10;
         for (int i{position}; response[i] != "'"; ++i) {
