@@ -25,8 +25,7 @@ public:
     // get value of key 'key'
     Q_INVOKABLE static QVariant getValue(QString key);
     // check if settings are available
-    //! TODO: change this function to static
-    bool                        checkSettings();
+    static bool                 checkSettings();
 };
 
 #endif // SETTINGS_H
