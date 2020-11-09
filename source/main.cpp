@@ -11,13 +11,13 @@
 #include <QQuickWindow>
 #include <QSGRendererInterface>
 
-#include "header/errors.h"
-#include "header/settings.h"
-#include "header/inithandler.h"
-#include "header/loginhandler.h"
-#include "header/captchahandler.h"
-#include "header/briefinfohandler.h"
-#include "header/courseschedulehandler.h"
+#include "header/helpers/errors.h"
+#include "header/base/settings.h"
+#include "header/handlers/inithandler.h"
+#include "header/handlers/loginhandler.h"
+#include "header/handlers/captchahandler.h"
+#include "header/handlers/briefinfohandler.h"
+#include "header/handlers/courseschedulehandler.h"
 
 int main(int argc, char *argv[])
 {
