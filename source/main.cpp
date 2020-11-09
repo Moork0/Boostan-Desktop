@@ -1,8 +1,15 @@
+/*
+    * This file handles everything.
+    * QML exposures occur here.
+    * Application initialization occur here.
+*/
+
 #include <QtWidgets/QApplication>
 //#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
+#include <QSGRendererInterface>
 
 #include "header/errors.h"
 #include "header/settings.h"
@@ -15,7 +22,7 @@
 int main(int argc, char *argv[])
 {
 
-    //!Using RHI
+    //! Using RHI
      #if defined (Q_OS_WINDOWS)
          QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D12);
      #elif defined (Q_OS_MACOS)
@@ -36,7 +43,9 @@ int main(int argc, char *argv[])
 
     bool universal_error{false};
     int universal_error_code {0};
+    //! TODO: Settings will be just a static class and this shall remove
     Settings settings;
+    // check if settings are available
     if (!settings.checkSettings()) {
         universal_error = true;
         universal_error_code = Constants::Errors::SettingsError;
@@ -50,18 +59,24 @@ int main(int argc, char *argv[])
     app.setApplicationName(Constants::organization_name);
 
     QQmlApplicationEngine engine;
-    /*
-     * QML exposures
-    */
+
+    // QML exposures
+
+    /** Constants **/
+
     engine.rootContext()->setContextProperty("ApplicationPath", Constants::application_path);
     engine.rootContext()->setContextProperty("UniversalError", universal_error);
     engine.rootContext()->setContextProperty("UniversalErrorCode", universal_error_code);
+
+    /** Types **/
+
     qmlRegisterType<InitHandler>("API.InitHandler", 1, 0, "InitHandler");
     qmlRegisterType<LoginHandler>("API.LoginHandler", 1, 0, "LoginHandler");
     qmlRegisterType<CaptchaHandler>("API.LoginHandler", 1, 0, "CaptchaHandler");
     qmlRegisterType<BriefInfoHandler>("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
     qmlRegisterType<CourseScheduleHandler>("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
     qmlRegisterType<Errors>("API.Errors", 1, 0, "Error");
+    //! TODO: settings will be a non-creatable object and this should change to non creatable
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
