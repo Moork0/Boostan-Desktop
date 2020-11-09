@@ -1,7 +1,13 @@
 #ifndef CAPTCHAHANDLER_H
 #define CAPTCHAHANDLER_H
 
-#include "header/handler.h"
+/*
+ * Class: CapthcaHandler
+ * Files: captchahandler.h, captchahandler.cpp
+ * This class handles requesting captcha picture
+ */
+
+#include "handler.h"
 
 class CaptchaHandler : public Handler
 {
@@ -11,10 +17,12 @@ private:
     const QByteArray    image_path      {"captcha.png"};
 
 private slots:
+    // save captcha image to 'image_path'
     bool parseGetCaptcha(QNetworkReply& reply);
 
 public:
     CaptchaHandler();
+    // request a new captcah image
     Q_INVOKABLE bool getCaptcha();
 };
 

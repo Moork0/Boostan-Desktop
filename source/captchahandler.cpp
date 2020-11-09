@@ -14,6 +14,7 @@ bool CaptchaHandler::getCaptcha()
     return request.get();
 }
 
+//! TODO: this function need some space between lines
 bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &CaptchaHandler::parseGetCaptcha);
