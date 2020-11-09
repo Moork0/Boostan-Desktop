@@ -1,14 +1,9 @@
 #include "header/handlers/handler.h"
 
-/*
-     * initializing static variables
-*/
-//! TODO: make root_url inline and initialize this variable in constructor
-const QString Handler::root_url {Settings::getValue("root_url").toString()};
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}, error_code{-1}
 {
-
+    root_url = Settings::getValue("root_url").toString();
 }
 
 void Handler::setCookie(QString& key, QString& value)

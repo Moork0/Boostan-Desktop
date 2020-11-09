@@ -71,8 +71,7 @@ protected:
     Q_PROPERTY(bool     working         READ getWorking         NOTIFY workingChanged)
 
     inline static QHashString      cookies, request_validators;
-    //! TODO: try to remove const and add an inline expression
-    static const  QString          root_url;
+    inline static QString          root_url;
 
     Network                 request;
     bool                    is_finished, success;
