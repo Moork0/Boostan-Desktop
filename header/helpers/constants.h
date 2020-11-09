@@ -2,9 +2,9 @@
 #define CONSTANTS_H
 
 /*
- * file name: Constatns.h
- * This file suppose to store all of the constant values which other files might use.
- */
+    * file name: Constatns.h
+    * This file suppose to store all of the constant values which other files might use.
+*/
 
 #include <QDir>
 
@@ -21,18 +21,18 @@ namespace Constants {
                             settings_path {application_path + "settings.ini"};
 
     /*
-     * Constants for errors
-     * I doubt if this values should be here or not. i'm thinking about moving them to errors.h
-     * because these values are explicitly used for errors and we have such a class and by moving
-     * them to errors.h, related data would be near together.
-     */
+        * Constants for errors.
+        * I doubt if this values should be here or not. i'm thinking about moving them to errors.h
+        * because these values are explicitly used for errors and we have such a class and by moving
+        * them to errors.h, related data would be near together.
+    */
 
     namespace Errors {
 
         /*
-         * offset for QNetworkReply::NetworkError codes
-         * the reason i defined this is Golestan error codes are in conflict with Qt network error codes.
-         */
+            * 'qt_offset' is offset for QNetworkReply::NetworkError codes
+            * the reason i defined this is Golestan error codes are in conflict with Qt network error codes.
+        */
         inline constexpr int qt_offset{100};
         inline constexpr int NoCodeFound{-1};
 
@@ -71,9 +71,9 @@ namespace Constants {
         };
 
         /*
-         * Key words for identifying an error code for strings that returned by Golestan
-         * and has no built-in error codes in it.
-         */
+            * Key words for identifying an error code for strings that returned by Golestan
+            * and has no built-in error codes in it.
+        */
         inline const QHash<int, QString> error_keywords
         {
             {WrongCaptcha, "كد امنيتي"}     // error strings that has this keyword are about WrongCaptcha
