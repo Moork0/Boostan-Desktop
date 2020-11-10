@@ -20,9 +20,7 @@ int Errors::getErrorCode() const
     return error_code;
 }
 
-/*
- * set 'error_code' to proper code by parsing 'ecode'
- */
+// set 'error_code' to proper code by parsing 'ecode'
 void Errors::setErrorCode(int ecode)
 {
     if (error_code == ecode) return;
@@ -35,10 +33,7 @@ void Errors::setErrorCode(int ecode)
     emit errorCodeChanged();
 }
 
-/*
- * return the type of error
- */
-//! TODO: change uint to error_type
+// returns the type of error
 uint Errors::getCriticalStatus() const
 {
     return Constants::Errors::critical_status.value(error_code, Constants::Errors::Normal);
