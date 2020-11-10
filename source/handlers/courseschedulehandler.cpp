@@ -55,10 +55,11 @@ bool CourseScheduleHandler::requestSchedule()
     request.setUrl(root_url + schedule_url + request_validators["tck"]);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
     QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                + "&TicketTextBox="         + cookies["ctck"]
+                + "&TicketTextBox="         + ticket_tbox
 
                 // below is like this: <Root><N+UQID="15"+id="4"+F="%1"+T="%1"/></Root> in url encoded format
                 + "&XmlPriPrm="             + QString("%3CRoot%3E%3CN+UQID%3D%2215%22+id%3D%224%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E").arg(year)
