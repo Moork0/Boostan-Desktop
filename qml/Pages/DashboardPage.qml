@@ -14,12 +14,12 @@ Page {
         Component.onCompleted: {
             start()
         }
-        onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode)
+        onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode, function(){dashboard_handler.start()}, notifier)
     }
 
     CourseScheduleHandler {
         id: schedule_handler
-        onFinished: success ? console.log(" course success") : error_handler.raiseError(errorCode)
+        onFinished: success ? {}  : error_handler.raiseError(errorCode, function(){dashboard_handler.start()}, notifier)
     }
 
     Rectangle {
