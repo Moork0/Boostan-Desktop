@@ -66,13 +66,12 @@ bool BriefInfoHandler::requestStuId()
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
+    QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
     QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 // TicketTextBox should be equal to "ctck" when both "ctck" and "tck" are available
-                //! TODO: i did this here manually by analysing the previous reponse and this request
-                //! but the process for choosing between ctck and tck should be automatic.
-                + "&TicketTextBox="         + cookies["ctck"]
+                + "&TicketTextBox="         + ticket_tbox
                 + "&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex="};
 
     return request.post(data.toUtf8());
@@ -105,10 +104,11 @@ bool BriefInfoHandler::requestBriefInfo()
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
+    QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
     QString data{"__VIEWSTATE="                  + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 + "&__VIEWSTATEGENERATOR="       + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="          + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                + "&TicketTextBox="              + request_validators["tck"]
+                + "&TicketTextBox="              + ticket_tbox
                 + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info["id"].toString()
                 + "%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex="};
 
