@@ -23,5 +23,6 @@
         <file>pics/login-logo.svg</file>
         <file>pics/loading-logo.png</file>
         <file>pics/error-logo.svg</file>
+        <file>Controls/ScreenShot.qml</file>
     </qresource>
 </RCC>
