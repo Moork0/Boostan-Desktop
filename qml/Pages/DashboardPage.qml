@@ -63,7 +63,7 @@ Page {
                     color: "#FFFFFF"
                     description: "ذخیره نمودار معدل"
                     clickAble: true
-                    onClicked: file_dialog.saveItem(averages_plot, save_plot)
+                    onClicked: screenshot.saveItem(averages_plot, save_plot)
                 }
 
                 Plot {
@@ -170,7 +170,7 @@ Page {
                     color: "#FFFFFF"
                     description: "ذخیره برنامه هفتگی"
                     clickAble: true
-                    onClicked: file_dialog.saveItem(table_schedule_bg, save_schedule)
+                    onClicked: screenshot.saveItem(table_schedule_bg, save_schedule)
                 }
 
                 Item {
