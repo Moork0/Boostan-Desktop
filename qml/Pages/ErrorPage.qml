@@ -13,7 +13,9 @@ Page {
     property alias error_solution: error_solution.text
     property var callback_function: function(){}
     property int criticalStatus: ErrorHandler.SemiCritical
+    property var sideBarItem
 
+    Component.onCompleted: sideBarItem.enabled = false
     Rectangle {
         id: page_background
         anchors.fill: parent
@@ -81,6 +83,7 @@ Page {
                     Qt.quit()
                     return;
                 }
+                sideBarItem.enabled = true
                 callback_function()
             }
 
