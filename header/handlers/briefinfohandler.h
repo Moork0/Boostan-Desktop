@@ -23,8 +23,7 @@ private:
     inline static QString       user_info_url {"/Forms/F1802_PROCESS_MNG_STDJAMEHMON/F1802_01_PROCESS_MNG_STDJAMEHMON_Dat.aspx?r=0.9638806400489983&fid=0;12310&b=0&l=0&&lastm=20180201081222&tck="};
     // this is the keys of a QVariantMap that we wanna expose to qml
     const std::vector<QString>  info_title {"id", "field", "studyType", "average", "passedUnits"};
-    //! TODO: convert to QVariantMap
-    QMap<QString, QString>      student_info;
+    QVariantMap                 student_info;
     QList<int>                  passed_semesters;       // passed semesters
     QStringList                 passed_semesters_avg;   // semesters averages
     QLocale                     locale;

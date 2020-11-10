@@ -11,13 +11,9 @@ int BriefInfoHandler::getCurrentYear() const
     return current_year;
 }
 
-// convert "QMap<String, String> student_info" to QVariantMap for using in QML
 QVariantMap BriefInfoHandler::getStudentInfo() const
 {
-    QVariantMap data;
-    for (auto it {student_info.cbegin()}; it != student_info.cend(); ++it) {
-        data[it.key()] = it.value();
-    }
+    QVariantMap data {student_info};
     data[info_title[Index_Id]] = locale.toString(data[info_title[Index_Id]].toULongLong());
     data[info_title[Index_Passed]] = locale.toString(static_cast<int>(data[info_title[Index_Passed]].toFloat()));
     data[info_title[Index_TotalAvg]] = locale.toString(data[info_title[Index_TotalAvg]].toFloat());
@@ -113,7 +109,7 @@ bool BriefInfoHandler::requestBriefInfo()
                 + "&__VIEWSTATEGENERATOR="       + request_validators["__VIEWSTATEGENERATOR"]
                 + "&__EVENTVALIDATION="          + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 + "&TicketTextBox="              + request_validators["tck"]
-                + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info["id"]
+                + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info["id"].toString()
                 + "%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex="};
 
     return request.post(data.toUtf8());
@@ -151,9 +147,8 @@ bool BriefInfoHandler::extractStudentInfo(const QString& response)
       (we did that in extractStuId) */
     for (int title_index{Index_START + 2}, keyindex{0}; title_index < Index_END; ++title_index, ++keyindex) {
         position = response.indexOf(keywords[keyindex]);
-        if (position == -1) {
-            return false;
-        }
+        if (position == -1) return false;
+
         // 10 is the lentgh of keyword which for example is "F51851 = '"
         // so we need to skip this
         position += 10;
