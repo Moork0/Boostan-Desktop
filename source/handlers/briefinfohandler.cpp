@@ -18,9 +18,9 @@ QVariantMap BriefInfoHandler::getStudentInfo() const
     for (auto it {student_info.cbegin()}; it != student_info.cend(); ++it) {
         data[it.key()] = it.value();
     }
-    data[info_title[INDEX_Id]] = locale.toString(data[info_title[INDEX_Id]].toULongLong());
-    data[info_title[INDEX_Passed]] = locale.toString(static_cast<int>(data[info_title[INDEX_Passed]].toFloat()));
-    data[info_title[INDEX_TotalAvg]] = locale.toString(data[info_title[INDEX_TotalAvg]].toFloat());
+    data[info_title[Index_Id]] = locale.toString(data[info_title[Index_Id]].toULongLong());
+    data[info_title[Index_Passed]] = locale.toString(static_cast<int>(data[info_title[Index_Passed]].toFloat()));
+    data[info_title[Index_TotalAvg]] = locale.toString(data[info_title[Index_TotalAvg]].toFloat());
     return data;
 }
 
@@ -65,7 +65,7 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
 
 bool BriefInfoHandler::requestStuId()
 {
-    connect(&request, &Network::complete, this, &BriefInfoHandler::parseUserNumber);
+    connect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
     request.setUrl(root_url + user_info_url + request_validators["tck"]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
@@ -82,16 +82,15 @@ bool BriefInfoHandler::requestStuId()
     return request.post(data.toUtf8());
 }
 
-//! TODO: change name to parseStuId
-void BriefInfoHandler::parseUserNumber(QNetworkReply& reply)
+void BriefInfoHandler::parseStuId(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseUserNumber);
+    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
 
     QString data, user_number;
     if (!verifyResponse(reply, data)) return;
 
     request_validators.insert(extractFormValidators(data));
-    user_number = extractStudentNumber(data);
+    user_number = extractStuId(data);
     if (user_number == QString()) {
         setErrorCode(Constants::Errors::ExtractError);
         reply.deleteLater();
@@ -148,9 +147,9 @@ bool BriefInfoHandler::extractStudentInfo(const QString& response)
                                    "F41801"};      // Passed
     int position;
     QString value;
-    /* increased START_INDEX by 2 because we want to skip the Id since we don't have Id in this data.
+    /* increased Index_START by 2 because we want to skip the Id since we don't have Id in this data.
       (we did that in extractStuId) */
-    for (int title_index{INDEX_START + 2}, keyindex{0}; title_index < INDEX_END; ++title_index, ++keyindex) {
+    for (int title_index{Index_START + 2}, keyindex{0}; title_index < Index_END; ++title_index, ++keyindex) {
         position = response.indexOf(keywords[keyindex]);
         if (position == -1) {
             return false;
@@ -203,7 +202,7 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
     return true;
 }
 
-QString BriefInfoHandler::extractStudentNumber(const QString &response)
+QString BriefInfoHandler::extractStuId(const QString &response)
 {
     int position {response.indexOf("=&quot;")};
     QString stu_number;

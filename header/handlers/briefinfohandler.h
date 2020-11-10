@@ -49,20 +49,18 @@ private:
     // extract semester averages and fill 'passed_semesters' and 'passed_semester_avg'
     bool            extractStudentAvgs  (const QString& response);
     // extract student id from 'response' and fill related index in student_info
-    //! TODO: change name to extractStuId
-    QString         extractStudentNumber(const QString& response);
+    QString         extractStuId(const QString& response);
 
 public:
     // index of each key in info_title
-    //! TODO: change INDEX to Index
     enum info_index {
-        INDEX_START = -1,   // used to determine the start of enum in loops
-        INDEX_Id,
-        INDEX_Field,
-        INDEX_StudyType,
-        INDEX_TotalAvg,
-        INDEX_Passed,
-        INDEX_END           // used to determine the end of enum in loops
+        Index_START = -1,   // used to determine the start of enum in loops
+        Index_Id,
+        Index_Field,
+        Index_StudyType,
+        Index_TotalAvg,
+        Index_Passed,
+        Index_END           // used to determine the end of enum in loops
     };
 
 
@@ -74,8 +72,7 @@ private slots:
     // parse the response to requestBriefInfo()
     void            parseUserInfo(QNetworkReply& reply);
     // parse the response to requestStuId()
-    //! TODO: change name to parseStuId()
-    void            parseUserNumber(QNetworkReply& reply);
+    void            parseStuId(QNetworkReply& reply);
     // parse the response to requestTokens()
     void            parseTokens(QNetworkReply& reply);
 
