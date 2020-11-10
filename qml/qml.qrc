@@ -2,20 +2,20 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>pages/LoginPage.qml</file>
-        <file>pages/ErrorPage.qml</file>
-        <file>pages/DashboardPage.qml</file>
-        <file>controls/MyTextInput.qml</file>
-        <file>controls/MyButton.qml</file>
-        <file>controls/ClickableText.qml</file>
-        <file>controls/Icon.qml</file>
-        <file>controls/SideBarItem.qml</file>
-        <file>controls/Notifier.qml</file>
-        <file>controls/Plot.qml</file>
-        <file>controls/LoadingAnimationColor.qml</file>
-        <file>controls/LoadingAnimationPulse.qml</file>
-        <file>helpers/SideBar.qml</file>
-        <file>helpers/ErrorHandler.qml</file>
+        <file>Pages/LoginPage.qml</file>
+        <file>Pages/ErrorPage.qml</file>
+        <file>Pages/DashboardPage.qml</file>
+        <file>Controls/MyTextInput.qml</file>
+        <file>Controls/MyButton.qml</file>
+        <file>Controls/ClickableText.qml</file>
+        <file>Controls/Icon.qml</file>
+        <file>Controls/SideBarItem.qml</file>
+        <file>Controls/Notifier.qml</file>
+        <file>Controls/Plot.qml</file>
+        <file>Controls/LoadingAnimationColor.qml</file>
+        <file>Controls/LoadingAnimationPulse.qml</file>
+        <file>Helpers/SideBar.qml</file>
+        <file>Helpers/ErrorHandler.qml</file>
         <file>fonts/icons.ttf</file>
         <file>fonts/Tanha.ttf</file>
         <file>fonts/Mj_Afsoon.ttf</file>

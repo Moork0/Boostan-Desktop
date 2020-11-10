@@ -4,6 +4,8 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../Controls"
+import "../Helpers"
 
 Page {
     id: error_page
@@ -20,7 +22,7 @@ Page {
             id: error_logo
             sourceSize.width: parent.width / 1.5
             sourceSize.height: parent.height / 1.2
-            source: "pics/error-logo.svg"
+            source: "qrc:/pics/error-logo.svg"
             anchors.centerIn: parent
             Rectangle {
                 anchors.fill: parent

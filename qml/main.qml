@@ -4,6 +4,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "Helpers"
 
 ApplicationWindow {
     id: mainwindow
@@ -30,7 +31,7 @@ ApplicationWindow {
                 error_handler.raiseError(UniversalErrorCode)
                 return;
             }
-            stackview.push("LoginPage.qml")
+            stackview.push("Pages/LoginPage.qml")
 //            stackview.push("DashboardPage.qml")
 //            stackview.push("Test.qml")
         }

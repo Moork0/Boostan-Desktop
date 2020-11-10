@@ -11,6 +11,7 @@ import QtQuick.Layouts 1.15
 import API.InitHandler 1.0
 import API.LoginHandler 1.0
 import API.Settings 1.0
+import "../Controls"
 
 Page {
     id: login_page
@@ -79,7 +80,7 @@ Page {
             color: "#19B99A"
             Image {
                 anchors.centerIn: parent
-                source: "pics/login-logo.svg"
+                source: "qrc:/pics/login-logo.svg"
                 width: 330
                 height: 200
             }

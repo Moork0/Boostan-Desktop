@@ -26,7 +26,7 @@ Error {
         TODO: showing error in pages other than LoginPage have issues with right_pane. should fix that
         ****/
         right_pane.enabled = false
-        viewItem.push("ErrorPage.qml",
+        viewItem.push("../Pages/ErrorPage.qml",
         {
          "error_msg":       getErrorString(),
          "error_solution":  getErrorSolution(),
