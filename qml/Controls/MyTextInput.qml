@@ -103,11 +103,7 @@ Item {
                             easing.type: Easing.InOutQuad
                         }
 
-                        /***** TODO: use PauseAnimation instead of this ****/
-                        NumberAnimation {
-                            duration: 500
-                            easing.type: Easing.InOutQuad
-                        }
+                        PauseAnimation { duration: 500 }
 
                         NumberAnimation {
                             target: tfield_cursor
@@ -117,11 +113,7 @@ Item {
                             easing.type: Easing.InOutQuad
                         }
 
-                        /***** TODO: use PauseAnimation instead of this ****/
-                        NumberAnimation {
-                            duration: 500
-                            easing.type: Easing.InOutQuad
-                        }
+                        PauseAnimation { duration: 500 }
                     }
                 }
             }
