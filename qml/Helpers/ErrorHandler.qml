@@ -24,15 +24,12 @@ Error {
             return;
         }
 
-        /****
-        TODO: showing error in pages other than LoginPage have issues with right_pane. should fix that
-        ****/
-        sideBar.enabled = false
         viewItem.push("../Pages/ErrorPage.qml",
         {
-         "error_msg":       getErrorString(),
-         "error_solution":  getErrorSolution(),
-         "criticalStatus":      criticalStatus,
+         "error_msg"        :   getErrorString(),
+         "error_solution"   :   getErrorSolution(),
+         "criticalStatus"   :   criticalStatus,
+         "sideBarItem"      :   sideBar,
          "callback_function": function() {
              callback_function()
              viewItem.pop()
