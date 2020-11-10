@@ -10,16 +10,16 @@ Page {
     id: dashboard_page
 
     BriefInfoHandler {
-        id: dashboard_handler
+        id: briefinfo_handler
         Component.onCompleted: {
             start()
         }
-        onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode, function(){dashboard_handler.start()}, notifier)
+        onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
     }
 
     CourseScheduleHandler {
         id: schedule_handler
-        onFinished: success ? {}  : error_handler.raiseError(errorCode, function(){dashboard_handler.start()}, notifier)
+        onFinished: success ? {}  : error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
     }
 
     Rectangle {
@@ -53,7 +53,7 @@ Page {
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
-                property bool ready: dashboard_handler.finished && dashboard_handler.success
+                property bool ready: briefinfo_handler.finished && briefinfo_handler.success
 
                 Icon {
                     id: save_plot
@@ -70,8 +70,8 @@ Page {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: parent.height - 40
-                    xAxis: averages_plot.ready ? dashboard_handler.getSemesterYears() : []
-                    yAxis: averages_plot.ready && dashboard_handler.success ? dashboard_handler.getSemesterAvgs() : []
+                    xAxis: averages_plot.ready ? briefinfo_handler.getSemesterYears() : []
+                    yAxis: averages_plot.ready && briefinfo_handler.success ? briefinfo_handler.getSemesterAvgs() : []
                 }
 
                 LoadingAnimationColor {
@@ -103,40 +103,33 @@ Page {
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "دوره آموزشی:‌ " + dashboard_handler.briefInfo.studyType
+                        text: "دوره آموزشی:‌ " + briefinfo_handler.briefInfo.studyType
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "رشته تحصیلی: " + dashboard_handler.briefInfo.field
+                        text: "رشته تحصیلی: " + briefinfo_handler.briefInfo.field
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        property var t
-                        Component.onCompleted: {
-                            t = Qt.locale("fa_IR")
-                            t.NumberOption = Locale.OmitGroupSeparator
-                            //console.log()
-                        }
-
-                        text: "شماره دانشجویی: " + dashboard_handler.briefInfo.id
+                        text: "شماره دانشجویی: " + briefinfo_handler.briefInfo.id
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
 
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "واحد گذرانیده: " + dashboard_handler.briefInfo.passedUnits
+                        text: "واحد گذرانیده: " + briefinfo_handler.briefInfo.passedUnits
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
 
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        text: "معدل کل: " + dashboard_handler.briefInfo.average
+                        text: "معدل کل: " + briefinfo_handler.briefInfo.average
                         font.family: "Sahel"
                         color: "#FFFFFF"
                     }
@@ -145,7 +138,7 @@ Page {
                 LoadingAnimationColor {
                     anchors.fill: parent
                     radius: 10
-                    visible: !dashboard_handler.success
+                    visible: !briefinfo_handler.success
                 }
             }
         }
@@ -153,7 +146,6 @@ Page {
         RowLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height / 2
-//            spacing: 10
             spacing: 0
 
             Rectangle {
@@ -325,25 +317,13 @@ Page {
             }
         }
     }
-    FileDialog {
-        id: file_dialog
-        selectExisting: false
-        selectMultiple: false
-        property var item_to_save
-        property var item_caller
-        function saveItem(item, caller) {
-            item_to_save = item
-            item_caller = caller
-            file_dialog.open()
-        }
-        onAccepted: {
-            item_caller.visible = false
-            item_to_save.grabToImage(function(result) {
-                result.saveToFile(String(file_dialog.fileUrl).replace("file://", ""))
-                item_caller.visible = item_to_save.ready
-                notifier.text = "تصویر با موفقیت ذخیره شد!"
-                notifier.show()
-             });
+
+    ScreenShot {
+        id: screenshot
+        callback: function(){
+            exclude_item.visible = item_to_save.ready
+            notifier.text = "تصویر با موفقیت ذخیره شد!"
+            notifier.show()
         }
     }
 }
