@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Dialogs 1.2
 import API.BriefInfoHandler 1.0
 import API.CourseScheduleHandler 1.0
 import "../Controls"
