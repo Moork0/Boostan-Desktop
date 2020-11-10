@@ -3,6 +3,7 @@
     * this component will be rewritten.
 */
 
+// TODO: rewrite this component
 import QtQuick 2.15
 import QtCharts 2.15
 
