@@ -64,7 +64,7 @@ namespace Constants {
             {WrongCaptcha, Normal},
             {CaptchaStoreError, Critical},
             {SettingsError, Critical},
-            {ExtractError, Normal},
+            {ExtractError, SemiCritical},
             // this is built-in Golestan error codes that we might see.
             {1, Normal},
             {24, SemiCritical},
