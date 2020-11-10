@@ -66,7 +66,7 @@ protected:
 
     Q_PROPERTY(bool     finished        READ getFinished        NOTIFY finished)
     Q_PROPERTY(bool     success         READ getSuccess         NOTIFY successChanged)
-    //! TODO: try to change uint to Constants::Errors:error_codes
+    // returns Golestan errors or Constants::Errors:error_code
     Q_PROPERTY(uint     errorCode       READ getErrorCode       NOTIFY errorCodeChanged)
     Q_PROPERTY(bool     working         READ getWorking         NOTIFY workingChanged)
 
