@@ -15,13 +15,12 @@ CourseScheduleHandler::CourseScheduleHandler()
         * i don't know if there is better way to do this and omit the empty objects.
     */
     QList<QVariant> temp;
-    //! TODO:  5 is the number of week days and class times. move it to a variable
-    weekly_schedule.reserve(5);
-    temp.reserve(5);
-    for (int i{0}; i < 5; ++i) {
+    weekly_schedule.reserve(week_days);
+    temp.reserve(week_days);
+    for (int i{0}; i < week_days; ++i) {
         temp.append(QVariantMap {{QString("name"), ""}, {QString("exam"), ""}, {QString("teacher"), ""}});
     }
-    for (int i{0}; i < 5; ++i) {
+    for (int i{0}; i < week_days; ++i) {
         weekly_schedule.append(temp);
     }
 }
@@ -106,8 +105,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         course_data["teacher"] = attribute.value("C4").toString();
         course_data["exam"] = attribute.value("C13").toString();
 
-        // 5 is the number of a week days
-        for (int day_index{0}; day_index < 5; ++day_index) {
+        for (int day_index{0}; day_index < week_days; ++day_index) {
             hour = attribute.value("C" + QString::number(day_index + 5)).toString();
             if (hour == "") continue;
             weekly_schedule[day_index][hourIndex(hour)] = course_data;

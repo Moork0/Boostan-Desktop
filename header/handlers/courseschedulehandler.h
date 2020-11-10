@@ -23,6 +23,8 @@ private:
     QString         year;
     // our structure for store weekly schedule
     QList<QList<QVariant>> weekly_schedule;
+    // number of days of week. also the number of classe's per day is equal to this
+    const int week_days {5};
 
     /** Functions **/
 
