@@ -45,5 +45,6 @@ ApplicationWindow {
     ErrorHandler {
         id: error_handler
         viewItem: stackview
+        sideBar: right_pane
     }
 }

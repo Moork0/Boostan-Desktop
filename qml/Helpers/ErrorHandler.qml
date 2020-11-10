@@ -9,6 +9,8 @@ Error {
     id: error_handler
     // the view system which manage pages (like stackview)
     required property var viewItem
+    // the SideBar component
+    property var sideBar
 
     function raiseError(error_code, callback_function = {}, notifier = undefined)
     {
@@ -25,7 +27,7 @@ Error {
         /****
         TODO: showing error in pages other than LoginPage have issues with right_pane. should fix that
         ****/
-        right_pane.enabled = false
+        sideBar.enabled = false
         viewItem.push("../Pages/ErrorPage.qml",
         {
          "error_msg":       getErrorString(),
