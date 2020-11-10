@@ -243,7 +243,8 @@ Page {
                     }
 
                     Rectangle {
-                        /**** TODO: the visiblity of this component should be integrated with working() signal ****/
+                        // the visiblity of this component is managed by
+                        // login_handler.onFinished and submit_button.onCLicked
                         id: submit_loading
                         visible: false
                         anchors.fill: submit_button
