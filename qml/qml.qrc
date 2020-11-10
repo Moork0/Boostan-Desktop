@@ -24,5 +24,6 @@
         <file>pics/loading-logo.png</file>
         <file>pics/error-logo.svg</file>
         <file>Controls/ScreenShot.qml</file>
+        <file>Helpers/WeeklyScheduleDelegate.qml</file>
     </qresource>
 </RCC>
