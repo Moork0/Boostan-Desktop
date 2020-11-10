@@ -12,6 +12,7 @@ using QHashString = QHash <QString, QString>;
 
 namespace Constants {
 
+
     inline const QString    application_name{"Boostan"},
                             organization_name{"AVID"},
                             domain_name{"SeedPuller.space"},
