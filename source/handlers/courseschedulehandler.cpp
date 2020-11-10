@@ -104,6 +104,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         QXmlStreamAttributes attribute {reader.attributes()};
         course_data["name"] = attribute.value("C2").toString();
         course_data["teacher"] = attribute.value("C4").toString();
+        //! TODO: exam should parse to a locale-able string
         course_data["exam"] = attribute.value("C13").toString();
 
         for (int day_index{0}; day_index < week_days; ++day_index) {
