@@ -14,7 +14,6 @@ bool CaptchaHandler::getCaptcha()
     return request.get();
 }
 
-//! TODO: this function need some space between lines
 bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &CaptchaHandler::parseGetCaptcha);
@@ -24,6 +23,7 @@ bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
         setFinished(true);
         return false;
     }
+
     QFile file(image_path);
     if (!file.open(QIODevice::WriteOnly)) {
         reply.deleteLater();
@@ -32,6 +32,7 @@ bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
         setFinished(true);
         return false;
     }
+
     file.write(reply.readAll());
     file.close();
     reply.deleteLater();
