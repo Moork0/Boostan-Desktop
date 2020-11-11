@@ -21,12 +21,12 @@ namespace Constants {
                             root_url {"https://golestan.umz.ac.ir"},
                             settings_path {application_path + "settings.ini"};
 
-    /*
-        * Constants for errors.
+    /**
+        * TODO: Constants for errors.
         * I doubt if this values should be here or not. i'm thinking about moving them to errors.h
         * because these values are explicitly used for errors and we have such a class and by moving
         * them to errors.h, related data would be near together.
-    */
+    **/
 
     namespace Errors {
 
