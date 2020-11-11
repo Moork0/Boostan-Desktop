@@ -19,6 +19,9 @@
 #include "header/handlers/briefinfohandler.h"
 #include "header/handlers/courseschedulehandler.h"
 
+//! TODO: READ ABOUT STRING OPTIMIZATION
+//! use QString::at() instead of [] for readonly purpose
+
 int main(int argc, char *argv[])
 {
 
@@ -31,12 +34,10 @@ int main(int argc, char *argv[])
          QQuickWindow::setSceneGraphBackend(QSGRendererInterface::VulkanRhi);
      #endif
 
-//    CourseScheduleHandler s;
 //    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("courses.xml");
+//    QFile file("response.html");
 //    if (file.open(QIODevice::ReadOnly)) {
 //        QString rr {file.readAll()};
-//        s.extractWeeklySchedule(rr);
 //    } else {
 //        qDebug() << file.errorString();
 //    }
@@ -64,18 +65,18 @@ int main(int argc, char *argv[])
 
     /** Constants **/
 
-    engine.rootContext()->setContextProperty("ApplicationPath", Constants::application_path);
-    engine.rootContext()->setContextProperty("UniversalError", universal_error);
-    engine.rootContext()->setContextProperty("UniversalErrorCode", universal_error_code);
+    engine.rootContext()->setContextProperty(QStringLiteral("ApplicationPath"), Constants::application_path);
+    engine.rootContext()->setContextProperty(QStringLiteral("UniversalError"), universal_error);
+    engine.rootContext()->setContextProperty(QStringLiteral("UniversalErrorCode"), universal_error_code);
 
     /** Types **/
 
-    qmlRegisterType<InitHandler>("API.InitHandler", 1, 0, "InitHandler");
-    qmlRegisterType<LoginHandler>("API.LoginHandler", 1, 0, "LoginHandler");
-    qmlRegisterType<CaptchaHandler>("API.LoginHandler", 1, 0, "CaptchaHandler");
-    qmlRegisterType<BriefInfoHandler>("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
-    qmlRegisterType<CourseScheduleHandler>("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
-    qmlRegisterType<Errors>("API.Errors", 1, 0, "Error");
+    qmlRegisterType <InitHandler>            ("API.InitHandler", 1, 0, "InitHandler");
+    qmlRegisterType <LoginHandler>           ("API.LoginHandler", 1, 0, "LoginHandler");
+    qmlRegisterType <CaptchaHandler>         ("API.LoginHandler", 1, 0, "CaptchaHandler");
+    qmlRegisterType <BriefInfoHandler>       ("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
+    qmlRegisterType <CourseScheduleHandler>  ("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
+    qmlRegisterType <Errors>                 ("API.Errors", 1, 0, "Error");
     //! TODO: settings will be a non-creatable object and this should change to non creatable
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
