@@ -175,9 +175,10 @@ QHashString Handler::extractFormValidators(const QString& response)
 
 QHashString Handler::extractTokens(const QString& response)
 {
-    //! TODO: idk if i should move this variable to class data members or not
-    //! cuz this function would called alot and constructing this variable
-    //! every time the function being called would be non-optimal.
+    // i don't know if i should move this variable(tokens) to class data members or not
+    // cuz this function would called alot and constructing this variable (includes computing hash's)
+    // every time the function being called would be non-optimal.
+
     // tokens that Golestan will return at every request and we need these to be able to make
     // another requests.
     QHashString tokens {{"u", ""}, {"su", ""}, {"ft", ""}, {"f", ""}, {"lt", ""}, {"ctck", ""}, {"seq", ""}, {"tck", ""}};
@@ -190,7 +191,6 @@ QHashString Handler::extractTokens(const QString& response)
     QStringList splited = capture.split(",");
     // tokens.size() - 1(we dont wanna tck now) = 7
     if (splited.size() < 7) return QHashString {};
-    /// this could be done with a loop. but it's unnecessary i think.
     tokens["u"] = splited[0];
     tokens["su"] = splited[1];
     tokens["ft"] = splited[2];
@@ -210,12 +210,12 @@ QHashString Handler::extractTokens(const QString& response)
         tokens.remove("ctck");
     } else {
         // 'tck' is defined explicitly. we extract that.
-        //! TODO: this could be done with string search and would be faster than regex.
-        re.setPattern(tck_pattern);
-        match = re.match(response);
-        if (!match.hasMatch()) return QHashString {};
-        capture = match.captured().remove("SetOpenerTck('");
-        tokens["tck"] = capture;
+        int position {response.indexOf(tck_keyword)};
+        if (position == -1) return QHashString {};
+        // 14 is the size of tck_keyword
+        position += 14;
+        // 16 is the size of tck value.
+        tokens["tck"] = response.mid(position, 16);
     }
     return tokens;
 }
