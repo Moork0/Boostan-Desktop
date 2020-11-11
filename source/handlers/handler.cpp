@@ -137,37 +137,28 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
     return true;
 }
 
-/**
-    * TODO: since regexes are generally slower than normal string searchs,
-    * i should compare the performance of this function when using REGEXes and
-    * when using string searchs. then choose the fastest one.
-**/
 QHashString Handler::extractFormValidators(const QString& response)
 {
     QHashString result;
-    QRegularExpression re(viewstate_pattern);
-    QRegularExpressionMatch match = re.match(response);
-    QString capture;
-    if (!match.hasMatch()) return QHashString {};
-    capture = match.captured();
-    capture.remove(capture.size() -1 , 1);
-    capture.remove("__VIEWSTATE\" value=\"");
-    result["__VIEWSTATE"] = capture;
+    int position {response.indexOf(viewstate_keyword)};
+    int endpos;
 
-    re.setPattern(viewstate_gen_pattern);
-    match = re.match(response);
-    if (!match.hasMatch()) return QHashString {};
-    capture = match.captured();
-    capture.remove("__VIEWSTATEGENERATOR\" value=\"");
-    result["__VIEWSTATEGENERATOR"] = capture;
+    if (position == -1) return QHashString {};
+    position += 20;
+    endpos = response.indexOf('"', position);
+    result["__VIEWSTATE"] = response.mid(position, endpos - position);
 
-    re.setPattern(event_val_pattern);
-    match = re.match(response);
-    if (!match.hasMatch()) return QHashString {};
-    capture = match.captured();
-    capture.remove(capture.size() -1 , 1);
-    capture.remove("__EVENTVALIDATION\" value=\"");
-    result["__EVENTVALIDATION"] = capture;
+    position = response.indexOf(viewstate_gen_keyword);
+    if (position == -1) return QHashString {};
+    position += 29;
+    endpos = response.indexOf('"', position);
+    result["__VIEWSTATEGENERATOR"] = response.mid(position, endpos - position);
+
+    position = response.indexOf(event_val_keyword);
+    if (position == -1) return QHashString {};
+    position += 26;
+    endpos = response.indexOf('"', position);
+    result["__EVENTVALIDATION"] = response.mid(position, endpos - position);
 
 //    qDebug() << result;
     return result;
