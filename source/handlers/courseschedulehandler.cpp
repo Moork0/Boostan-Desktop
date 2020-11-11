@@ -94,6 +94,8 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
     QXmlStreamReader reader(match.captured());
     QMap<QString, QVariant> course_data;
     QString hour;
+    QStringList exam, exam_time;
+    QLocale locale {QLocale::Persian, QLocale::Iran};
 
     if (!reader.readNextStartElement()) return false;
     if (reader.name() != "Root") return false;
@@ -104,8 +106,14 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         QXmlStreamAttributes attribute {reader.attributes()};
         course_data["name"] = attribute.value("C2").toString();
         course_data["teacher"] = attribute.value("C4").toString();
-        //! TODO: exam should parse to a locale-able string
-        course_data["exam"] = attribute.value("C13").toString();
+        // split exam data to sth like this: ["1399.10.10", "8:30-10:30"]
+        exam = attribute.value("C13").toString().split(" ");
+        exam_time = exam[1].split("-");
+        // I don't know if this is the best solution for converting that format to a localized format
+        course_data["exam"] = locale.toString(QDateTime::fromString(exam[0], "yyyy.mm.dd"), "yyyy/mm/dd")
+                // i used exam_time[1] first to show time from left to right
+                + " " + locale.toString(QTime::fromString(exam_time[1], "hh:mm"), "h:m")
+                + " - " + locale.toString(QTime::fromString(exam_time[0], "hh:mm"), "h:m");
 
         for (int day_index{0}; day_index < week_days; ++day_index) {
             hour = attribute.value("C" + QString::number(day_index + 5)).toString();
