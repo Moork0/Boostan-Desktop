@@ -3,7 +3,7 @@
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}, error_code{-1}
 {
-    root_url = Settings::getValue("root_url").toString();
+    root_url = Settings::getValue(QStringLiteral("root_url")).toString();
 }
 
 void Handler::setCookie(QString& key, QString& value)
@@ -146,19 +146,19 @@ QHashString Handler::extractFormValidators(const QString& response)
     if (position == -1) return QHashString {};
     position += 20;
     endpos = response.indexOf('"', position);
-    result["__VIEWSTATE"] = response.mid(position, endpos - position);
+    result[QStringLiteral("__VIEWSTATE")] = response.mid(position, endpos - position);
 
     position = response.indexOf(viewstate_gen_keyword);
     if (position == -1) return QHashString {};
     position += 29;
     endpos = response.indexOf('"', position);
-    result["__VIEWSTATEGENERATOR"] = response.mid(position, endpos - position);
+    result[QStringLiteral("__VIEWSTATEGENERATOR")] = response.mid(position, endpos - position);
 
     position = response.indexOf(event_val_keyword);
     if (position == -1) return QHashString {};
     position += 26;
     endpos = response.indexOf('"', position);
-    result["__EVENTVALIDATION"] = response.mid(position, endpos - position);
+    result[QStringLiteral("__EVENTVALIDATION")] = response.mid(position, endpos - position);
 
 //    qDebug() << result;
     return result;
@@ -166,19 +166,17 @@ QHashString Handler::extractFormValidators(const QString& response)
 
 QHashString Handler::extractTokens(const QString& response)
 {
-    // i don't know if i should move this variable(tokens) to class data members or not
-    // cuz this function would called alot and constructing this variable (includes computing hash's)
-    // every time the function being called would be non-optimal.
-
     // tokens that Golestan will return at every request and we need these to be able to make
     // another requests.
-    QHashString tokens {{"u", ""}, {"su", ""}, {"ft", ""}, {"f", ""}, {"lt", ""}, {"ctck", ""}, {"seq", ""}, {"tck", ""}};
+    QHashString tokens {{QStringLiteral("u"), QString()}, {QStringLiteral("su"), QString()}, {QStringLiteral("ft"), QString()},
+                        {QStringLiteral("f"), QString()}, {QStringLiteral("lt"), QString()}, {QStringLiteral("ctck"), QString()},
+                        {QStringLiteral("seq"), QString()}, {QStringLiteral("tck"), QString()}};
     QString capture;
     QRegularExpression re {tokens_pattern};
     QRegularExpressionMatch match {re.match(response)};
 
     if (!match.hasMatch()) return QHashString {};
-    capture = match.captured().remove("SavAut(").remove("'");
+    capture = match.captured().remove(QStringLiteral("SavAut(")).remove('\'');
     QStringList splited = capture.split(",");
     // tokens.size() - 1(we dont wanna tck now) = 7
     if (splited.size() < 7) return QHashString {};
@@ -195,7 +193,7 @@ QHashString Handler::extractTokens(const QString& response)
         * But sometimes Golestan explicitly returns tck in other way. in that case we use both 'tck' and 'ctck'
     */
     // check if 'tck' is explicitly defined
-    if (!response.contains("SetOpenerTck(") || response.contains("SetOpenerTck('')")) {
+    if (!response.contains(QStringLiteral("SetOpenerTck(")) || response.contains(QStringLiteral("SetOpenerTck('')"))) {
         // no 'tck' defined explicitly. use 'ctck' instead and remove 'ctck' from tokens.
         tokens["tck"] = splited[5]; // splited[5] == ctck
         tokens.remove("ctck");
@@ -233,7 +231,7 @@ int Handler::extractDataErrorCode(const QString& response)
 */
 int Handler::extractDataError(const QString& response)
 {
-    if (response.contains("ErrorArr = new Array()")) return Constants::Errors::NoError;
+    if (response.contains(QStringLiteral("ErrorArr = new Array()"))) return Constants::Errors::NoError;
     int code {extractDataErrorCode(response)};
     if (code != Constants::Errors::NoCodeFound) return code;
     QHash<int, QString>::const_iterator it {Constants::Errors::error_keywords.cbegin()};
