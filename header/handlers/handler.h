@@ -32,8 +32,8 @@ private:
     /**  Properties **/
 
     /* Patterns for extracting necessary data from a response */
-    const QString tokens_pattern            {"SavAut\\([,a-z0-9'A-Z-]+"};                           // regex pattern for lt,ctck,u,ft,seq and ...
-    const QString error_withcode_pattern    {"ErrorArr = new Array\\('[\\w :]+"};                   // regex pattern for finding error which has a code
+    const QString tokens_pattern            {QStringLiteral("SavAut\\([,a-z0-9'A-Z-]+")};                           // regex pattern for lt,ctck,u,ft,seq and ...
+    const QString error_withcode_pattern    {QStringLiteral("ErrorArr = new Array\\('[\\w :]+")};                   // regex pattern for finding error which has a code
 
     const QString viewstate_keyword         {QStringLiteral("__VIEWSTATE\" value=\"")};             // keyword for finding view state
     const QString viewstate_gen_keyword     {QStringLiteral("__VIEWSTATEGENERATOR\" value=\"")};    // keyword for finding viewstate generator
