@@ -67,12 +67,12 @@ bool BriefInfoHandler::requestStuId()
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
-    QString data{"__VIEWSTATE="             + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                + "&__VIEWSTATEGENERATOR="  + request_validators["__VIEWSTATEGENERATOR"]
-                + "&__EVENTVALIDATION="     + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+    QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 // TicketTextBox should be equal to "ctck" when both "ctck" and "tck" are available
-                + "&TicketTextBox="         + ticket_tbox
-                + "&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex="};
+                % QStringLiteral("&TicketTextBox=")         % ticket_tbox
+                % QStringLiteral("&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex=")};
 
     return request.post(data.toUtf8());
 }
@@ -105,12 +105,12 @@ bool BriefInfoHandler::requestBriefInfo()
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
-    QString data{"__VIEWSTATE="                  + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                + "&__VIEWSTATEGENERATOR="       + request_validators["__VIEWSTATEGENERATOR"]
-                + "&__EVENTVALIDATION="          + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                + "&TicketTextBox="              + ticket_tbox
-                + "&TxtMiddle=%3Cr+F41251%3D%22" + student_info["id"].toString()
-                + "%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex="};
+    QString data{QStringLiteral("__VIEWSTATE=")                  % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=")       % request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=")          % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+                % QStringLiteral("&TicketTextBox=")              % ticket_tbox
+                % QStringLiteral("&TxtMiddle=%3Cr+F41251%3D%22") % student_info["id"].toString()
+                % QStringLiteral("%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")};
 
     return request.post(data.toUtf8());
 }
@@ -137,10 +137,10 @@ void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
 
 bool BriefInfoHandler::extractStudentInfo(const QString& response)
 {
-    const QList<QString> keywords {"F17551",        // Field
-                                   "F41351",        // StudyType
-                                   "F41701",        // TotalAvg
-                                   "F41801"};      // Passed
+    const QList<QString> keywords {QStringLiteral("F17551"),        // Field
+                                   QStringLiteral("F41351"),        // StudyType
+                                   QStringLiteral("F41701"),        // TotalAvg
+                                   QStringLiteral("F41801")};      // Passed
     int position;
     QString value;
     /* increased Index_START by 2 because we want to skip the Id since we don't have Id in this data.
@@ -165,7 +165,7 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
 {
     int year_position, avg_position;
     QString year_value, avg_value;
-    const QString year_keyword {"F4350"}, avg_keyword {"CumGPA"};
+    const QString year_keyword {QStringLiteral("F4350")}, avg_keyword {QStringLiteral("CumGPA")};
     year_position = response.indexOf(year_keyword);
     avg_position = response.indexOf(avg_keyword);
     if (year_position == -1 || avg_position == -1) {
@@ -199,12 +199,12 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
 
 QString BriefInfoHandler::extractStuId(const QString &response)
 {
-    int position {response.indexOf("=&quot;")};
+    int position {response.indexOf(QStringLiteral("=&quot;"))};
     QString stu_number;
     if (position == -1) return QString(); // return error
     // 7 is the lentgh of string we searched. we need to skip this string.
     int char_position {position + 7};
-    while (response[char_position] != "&") {
+    while (response[char_position] != '&') {
         stu_number.append(response[char_position]);
         ++char_position;
     }
