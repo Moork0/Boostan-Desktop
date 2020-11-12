@@ -15,7 +15,13 @@ Page {
     property int criticalStatus: ErrorHandler.SemiCritical
     property var sideBarItem
 
-    Component.onCompleted: sideBarItem.enabled = false
+    /** Private property  **/
+    property bool _sideBarItemVisiblity
+    Component.onCompleted: {
+        _sideBarItemVisiblity = sideBarItem.enabled
+        sideBarItem.enabled = false
+    }
+
     Rectangle {
         id: page_background
         anchors.fill: parent
@@ -83,7 +89,7 @@ Page {
                     Qt.quit()
                     return;
                 }
-                sideBarItem.enabled = true
+                sideBarItem.enabled = _sideBarItemVisiblity
                 callback_function()
             }
 
