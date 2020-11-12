@@ -12,7 +12,7 @@ ClickableText {
     area.hoverEnabled: true
     font.family: "fontello"
     font.pixelSize: 15
-    ToolTip.visible: area.containsMouse
+    ToolTip.visible: area.containsMouse && description !== ""
     ToolTip.delay: 500
     ToolTip.text: description
 }
