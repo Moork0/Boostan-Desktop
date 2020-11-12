@@ -20,10 +20,10 @@
         <file>fonts/Tanha.ttf</file>
         <file>fonts/Mj_Afsoon.ttf</file>
         <file>fonts/Sahel.ttf</file>
-        <file>pics/login-logo.svg</file>
         <file>pics/loading-logo.png</file>
         <file>pics/error-logo.svg</file>
         <file>Controls/ScreenShot.qml</file>
         <file>Helpers/WeeklyScheduleDelegate.qml</file>
+        <file>pics/boostan-logo.svg</file>
     </qresource>
 </RCC>
