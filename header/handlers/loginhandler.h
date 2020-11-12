@@ -7,6 +7,7 @@
     * This class handle login things and extract student name after successful login.
 */
 
+#include <QStringBuilder>
 #include "handler.h"
 
 class LoginHandler : public Handler

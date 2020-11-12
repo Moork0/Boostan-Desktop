@@ -12,12 +12,12 @@ bool LoginHandler::tryLogin(const QString username, const QString password, cons
 {
     connect(&request, &Network::complete, this, &LoginHandler::parseLogin);
     // credentials would bind here
-    QString logincreds = QString("<r F51851=\"\" F80351=\"%1\" F80401=\"%2\" F51701=\"%3\" F83181=\"\"/>").arg(username, password, captcha);
+    QString logincreds = QString(QStringLiteral("<r F51851=\"\" F80351=\"%1\" F80401=\"%2\" F51701=\"%3\" F83181=\"\"/>")).arg(username, password, captcha);
     // data values should be in url-encoded format
-    QString data{"__VIEWSTATE=" + QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                + "&__VIEWSTATEGENERATOR=" + request_validators["__VIEWSTATEGENERATOR"]
-                + "&__EVENTVALIDATION=" + QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                + "&TxtMiddle=" + QUrl::toPercentEncoding(logincreds) + "&Fm_Action=09&Frm_Type=&Frm_No=&TicketTextBox="};
+    QString data{QStringLiteral("__VIEWSTATE=") % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=") % request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=") % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+                % QStringLiteral("&TxtMiddle=") % QUrl::toPercentEncoding(logincreds) % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&TicketTextBox=")};
     request.setUrl(root_url + login_url);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -46,7 +46,7 @@ bool LoginHandler::parseLogin(QNetworkReply& reply)
 
 bool LoginHandler::extractName(QString& response)
 {
-    const QString keyword {"SetUsr('"};
+    const QString keyword {QStringLiteral("SetUsr('")};
     int position {response.indexOf(keyword)};
     if (position == -1) return false;
     // 8 is the length of "SetUsr('". we should skip this to capture the main value
