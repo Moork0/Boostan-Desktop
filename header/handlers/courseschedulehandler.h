@@ -10,6 +10,7 @@
 
 #include "handler.h"
 #include <QXmlStreamReader>
+#include <QStringBuilder>
 
 class CourseScheduleHandler : public Handler
 {
@@ -18,8 +19,8 @@ class CourseScheduleHandler : public Handler
 private:
     /** Properties **/
 
-    const QString   schedule_url          {"/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.7010287827974179&fid=1;73&b=0&l=0&&lastm=20190829142532&tck="};
-    const QString   xmldata_pattern       {"<Root>[\\W\\w]+<\\/Root>"};
+    const QString   schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.7010287827974179&fid=1;73&b=0&l=0&&lastm=20190829142532&tck=")};
+    const QString   xmldata_pattern       {QStringLiteral("<Root>[\\W\\w]+<\\/Root>")};
     QString         year;
     // our structure for store weekly schedule
     QList<QList<QVariant>> weekly_schedule;
