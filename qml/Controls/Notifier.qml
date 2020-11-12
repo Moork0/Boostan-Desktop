@@ -19,7 +19,7 @@ Item {
     property alias text: notifier_text.text
     property alias solution: notifier_solution.text
     property alias font: notifier_text.font
-    property real distance: showType === Notifier.ShowType.DownToUp ? page_background.height + root.height + 20 : -root.width
+    property real distance: showType === Notifier.ShowType.DownToUp ? root.parent.height + root.height + 20 : -root.width
     enum ShowType {
         DownToUp,
         LeftToRight
@@ -68,7 +68,7 @@ Item {
                 target: root
                 visible: true
                 opacity: 1.0
-                y: showType === Notifier.ShowType.DownToUp ? page_background.height - root.height - 20 : root.y
+                y: showType === Notifier.ShowType.DownToUp ? root.parent.height - root.height - 20 : root.y
                 x: showType === Notifier.ShowType.LeftToRight ? 20 : root.x
             }
             // start fading out slowly
