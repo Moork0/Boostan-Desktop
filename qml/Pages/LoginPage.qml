@@ -79,7 +79,7 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
             source: "qrc:/pics/boostan-logo.svg"
             width: 400
-            height: 300
+            height: 320
             z: 1
         }
 
