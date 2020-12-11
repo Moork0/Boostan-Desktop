@@ -165,7 +165,7 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
 {
     int year_position, avg_position;
     QString year_value, avg_value;
-    const QString year_keyword {QStringLiteral("F4350")}, avg_keyword {QStringLiteral("CumGPA")};
+    const QString year_keyword {QStringLiteral("F4350")}, avg_keyword {QStringLiteral("F4360")};
     year_position = response.indexOf(year_keyword);
     avg_position = response.indexOf(avg_keyword);
     if (year_position == -1 || avg_position == -1) {
@@ -173,15 +173,15 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
     }
 
     while (year_position != -1 && avg_position != -1) {
-        // 7  and 8 are the lentgh of actual keywords which for example is 'F51851="'
+        // 7  and 8 are the lentgh of actual keywords which for example is 'F4350="'
         // so we need to skip this
         year_position += 7;
-        avg_position += 8;
+        avg_position += 7;
         for (int i{year_position}; response[i] != '"'; ++i) {
             year_value.append(response[i]);
         }
 
-        for (int i{avg_position}; response[i] != ' '; ++i) {
+        for (int i{avg_position}; response[i] != '"'; ++i) {
             avg_value.append(response[i]);
         }
         passed_semesters.append(year_value.toInt());
