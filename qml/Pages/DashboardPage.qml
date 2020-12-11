@@ -278,7 +278,7 @@ Page {
                         spacing: 0
                         Repeater {
                             // get the courses of a day 'index' as a array of objects
-                            model: table_schedule_bg.ready ? schedule_handler.dailyScheduleModel(index) : 0
+                            model: table_schedule_bg.ready && !schedule_handler.is_empty ? schedule_handler.dailyScheduleModel(index) : 0
                             delegate: WeeklyScheduleDelegate { }
                         }
                     }
@@ -286,9 +286,25 @@ Page {
             }
 
             LoadingAnimationColor {
+                id: schedule_loading_animation
                 anchors.fill: parent
                 radius: 10
                 visible: !table_schedule_bg.ready
+            }
+
+            Rectangle {
+                id: empty_message
+                visible: !schedule_loading_animation.visible && schedule_handler.is_empty
+                anchors.fill: parent
+                color: parent.color
+                radius: parent.radius
+                z: 1
+                Label {
+                    anchors.centerIn: parent
+                    font.family: "Sahel"
+                    text: "متاسفانه اطلاعات برنامه هفتگی موجود نیست! :("
+                    color: "white"
+                }
             }
 
         }
