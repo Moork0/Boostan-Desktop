@@ -80,7 +80,7 @@ Page {
                     width: parent.width
                     height: parent.height - 40
                     xAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterYears() : []
-                    yAxis: averages_plot_bg.ready && briefinfo_handler.success ? briefinfo_handler.getSemesterAvgs() : []
+                    yAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterAvgs() : []
                 }
 
                 LoadingAnimationColor {
