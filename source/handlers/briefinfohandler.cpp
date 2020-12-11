@@ -173,8 +173,8 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
     }
 
     while (year_position != -1 && avg_position != -1) {
-        // 7  and 8 are the lentgh of actual keywords which for example is 'F4350="'
-        // so we need to skip this
+        // 7 is the lentgh of actual keywords which for example is 'F4350="'
+        // so we need to skip these characters
         year_position += 7;
         avg_position += 7;
         for (int i{year_position}; response[i] != '"'; ++i) {
