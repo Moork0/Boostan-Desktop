@@ -19,6 +19,9 @@ class CourseScheduleHandler : public Handler
 private:
     /** Properties **/
 
+    // this property indicate that if our model is totally empty or not
+    Q_PROPERTY(bool is_empty READ getIsEmpty NOTIFY isEmptyChanged)
+
     const QString   schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.7010287827974179&fid=1;73&b=0&l=0&&lastm=20190829142532&tck=")};
     const QString   xmldata_pattern       {QStringLiteral("<Root>[\\W\\w]+<\\/Root>")};
     QString         year;
@@ -26,6 +29,7 @@ private:
     QList<QList<QVariant>> weekly_schedule;
     // number of days of week. also the number of classe's per day is equal to this
     const int week_days {5};
+    bool is_empty;
 
     /** Functions **/
 
@@ -40,6 +44,8 @@ private:
     bool    requestTokens();
     // request the weekly schedule
     bool    requestSchedule();
+    // getter for is_empty
+    bool    getIsEmpty() const;
 
 private slots:
     // parse the validators from request requestTokens()
@@ -53,6 +59,9 @@ public:
     Q_INVOKABLE QVariantList    dailyScheduleModel  (int day) const;
     // start the process for recieving the schedule of 'current' semester
     Q_INVOKABLE void            start               (int current);
+
+signals:
+    void isEmptyChanged();
 };
 
 #endif // COURSESCHEDULEHANDLER_H

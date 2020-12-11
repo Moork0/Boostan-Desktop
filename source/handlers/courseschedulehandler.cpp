@@ -9,6 +9,7 @@
     * ]
 */
 CourseScheduleHandler::CourseScheduleHandler()
+    : is_empty {true}
 {
     /*
         * so we just fill our structure (explained above) with empy data's
@@ -68,6 +69,11 @@ bool CourseScheduleHandler::requestSchedule()
     return request.post(data.toUtf8());
 }
 
+bool CourseScheduleHandler::getIsEmpty () const
+{
+    return is_empty;
+}
+
 void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
@@ -103,6 +109,8 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
 
     while(reader.readNextStartElement()) {
         if(reader.name() != QStringLiteral("row")) continue;
+        // the struture is not empty
+        this->is_empty = false;
 
         QXmlStreamAttributes attribute {reader.attributes()};
         course_data["name"] = attribute.value("C2").toString();
@@ -124,8 +132,11 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         }
         reader.skipCurrentElement();
     }
+    // clear the structure to save the memory
+    if (is_empty) weekly_schedule.clear();
+    // emit the signal to check wether is_empty is set or not in qml.
+    emit isEmptyChanged();
     return true;
-//    qDebug() << weekly_schedule;
 }
 
 bool CourseScheduleHandler::extractCurrentYear(QString& response)
@@ -144,6 +155,7 @@ bool CourseScheduleHandler::extractCurrentYear(QString& response)
 
 QList<QVariant> CourseScheduleHandler::dailyScheduleModel(int day) const
 {
+    if (is_empty) return QList<QVariant>();
     return weekly_schedule[day];
 }
 
