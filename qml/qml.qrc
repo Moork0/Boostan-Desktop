@@ -26,5 +26,6 @@
         <file>Helpers/WeeklyScheduleDelegate.qml</file>
         <file>pics/boostan-logo.svg</file>
         <file>Pages/OfferedCoursePage.qml</file>
+        <file>Helpers/OfferedCourseDelegate.qml</file>
     </qresource>
 </RCC>
