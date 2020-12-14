@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        source/handlers/abstractxmldatahandler.cpp \
         source/handlers/courseschedulehandler.cpp \
         source/handlers/offeredcoursehandler.cpp \
         source/handlers/briefinfohandler.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
         source/main.cpp
 
 HEADERS += \
+        header/handlers/abstractxmldatahandler.h \
         header/handlers/courseschedulehandler.h \
         header/handlers/offeredcoursehandler.h \
         header/handlers/briefinfohandler.h \
