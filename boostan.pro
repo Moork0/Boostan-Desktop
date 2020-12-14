@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        source/models/offeredcoursemodel.cpp \
         source/handlers/abstractxmldatahandler.cpp \
         source/handlers/courseschedulehandler.cpp \
         source/handlers/offeredcoursehandler.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
         header/helpers/constants.h \
         header/base/network.h \
         header/base/settings.h \
+        header/models/offeredcoursemodel.h
 
 RESOURCES += qml/qml.qrc
 
