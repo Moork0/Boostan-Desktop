@@ -1,20 +1,24 @@
 #ifndef OFFEREDCOURSEHANDLER_H
 #define OFFEREDCOURSEHANDLER_H
 
-#include "handler.h"
-#include <QXmlStreamReader>
+#include "abstractxmldatahandler.h"
+#include "../models/offeredcoursemodel.h"
+#include <QStringBuilder>
+#include <vector>
 
-class OfferedCourseHandler : public Handler
+class OfferedCourseHandler : public AbstractXmlDataHandler
 {
     Q_OBJECT
 
 private:
-    const QString offered_course_pattern    {"<Root>[\\W\\w]+<\\/Root>"};
-
-    void extractOfferedCourses(const QString& response);
+    std::vector<std::vector<QVariant>*>* container;
+    OfferedCourseModel view_model;
+    bool    getIsEmpty() const override;
 
 public:
     OfferedCourseHandler();
+    ~OfferedCourseHandler();
+    bool extractOfferedCourses(const QString& response);
 };
 
 #endif // OFFEREDCOURSEHANDLER_H

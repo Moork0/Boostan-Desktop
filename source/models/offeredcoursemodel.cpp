@@ -1,13 +1,8 @@
-#include "hedaer/models/offeredcoursemodel.h"
+#include "header/models/offeredcoursemodel.h"
 
 OfferedCourseModel::OfferedCourseModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : QAbstractListModel(parent), data_container {nullptr}
 {
-}
-
-QVariant OfferedCourseModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    // FIXME: Implement me!
 }
 
 int OfferedCourseModel::rowCount(const QModelIndex &parent) const
@@ -16,8 +11,8 @@ int OfferedCourseModel::rowCount(const QModelIndex &parent) const
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
     if (parent.isValid())
         return 0;
-
-    // FIXME: Implement me!
+    if (data_container == nullptr) return 0;
+    return data_container->size();
 }
 
 QVariant OfferedCourseModel::data(const QModelIndex &index, int role) const
@@ -31,10 +26,12 @@ QVariant OfferedCourseModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> OfferedCourseModel::roleNames() const
 {
-    QHash<int, QByteArray> roles;
-    int column_number{0};
-    for (int i{ROLE_START + 1}; i != ROLE_END; ++i, ++column_number) {
-        roles.insert(i, this->columns[column_number]);
-    }
-    return roles;
+    // FIXME
+//    QHash<int, QByteArray> roles;
+//    int column_number{0};
+//    for (int i{ROLE_START + 1}; i != ROLE_END; ++i, ++column_number) {
+//        roles.insert(i, this->columns[column_number]);
+//    }
+//    return roles;
+    return QHash<int, QByteArray>();
 }

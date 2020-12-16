@@ -31,15 +31,14 @@ ApplicationWindow {
                 error_handler.raiseError(UniversalErrorCode)
                 return;
             }
-            stackview.push("Pages/LoginPage.qml")
-//            stackview.push("DashboardPage.qml")
-//            stackview.push("Test.qml")
+//            stackview.push("Pages/LoginPage.qml")
+            stackview.push("Pages/OfferedCoursePage.qml")
         }
     }
 
     SideBar {
         id: right_pane
-        enabled: false
+//        enabled: false
     }
 
     ErrorHandler {

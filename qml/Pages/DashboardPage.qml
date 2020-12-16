@@ -6,6 +6,8 @@ import API.CourseScheduleHandler 1.0
 import "../Controls"
 import "../Helpers"
 
+// TODO: add a logo for empty boxes
+
 Page {
     id: dashboard_page
 

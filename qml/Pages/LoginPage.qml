@@ -250,6 +250,8 @@ Page {
                         width: 40
                         height: 25
                     }
+                    // TODO: check if there is a better way to disable the mouse interaction of button
+                    // when button is in the Loading state
                     MouseArea {
                         anchors.fill: parent
                     }

@@ -18,6 +18,7 @@
 #include "header/handlers/captchahandler.h"
 #include "header/handlers/briefinfohandler.h"
 #include "header/handlers/courseschedulehandler.h"
+#include "header/handlers/offeredcoursehandler.h"
 
 //! TODO: READ ABOUT STRING OPTIMIZATION
 //! use QString::at() instead of [] for readonly purpose
@@ -34,13 +35,15 @@ int main(int argc, char *argv[])
          QQuickWindow::setSceneGraphBackend(QSGRendererInterface::VulkanRhi);
      #endif
 
-//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("response.html");
-//    if (file.open(QIODevice::ReadOnly)) {
-//        QString rr {file.readAll()};
-//    } else {
-//        qDebug() << file.errorString();
-//    }
+    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+    QFile file("res.html");
+    if (file.open(QIODevice::ReadOnly)) {
+        QString rr {file.readAll()};
+        OfferedCourseHandler obj;
+        obj.extractOfferedCourses(rr);
+    } else {
+        qDebug() << file.errorString();
+    }
 
     bool universal_error{false};
     int universal_error_code {0};
