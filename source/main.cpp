@@ -13,15 +13,17 @@
 
 #include "header/helpers/errors.h"
 #include "header/base/settings.h"
+//! handlers
 #include "header/handlers/inithandler.h"
 #include "header/handlers/loginhandler.h"
 #include "header/handlers/captchahandler.h"
 #include "header/handlers/briefinfohandler.h"
 #include "header/handlers/courseschedulehandler.h"
 #include "header/handlers/offeredcoursehandler.h"
+//! models
+#include "header/models/offeredcoursemodel.h"
 
-//! TODO: READ ABOUT STRING OPTIMIZATION
-//! use QString::at() instead of [] for readonly purpose
+/// use QString::at() instead of [] for readonly purpose
 
 int main(int argc, char *argv[])
 {
@@ -74,13 +76,16 @@ int main(int argc, char *argv[])
 
     /** Types **/
 
-    qmlRegisterType <InitHandler>            ("API.InitHandler", 1, 0, "InitHandler");
-    qmlRegisterType <LoginHandler>           ("API.LoginHandler", 1, 0, "LoginHandler");
-    qmlRegisterType <CaptchaHandler>         ("API.LoginHandler", 1, 0, "CaptchaHandler");
-    qmlRegisterType <BriefInfoHandler>       ("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
-    qmlRegisterType <CourseScheduleHandler>  ("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
-    qmlRegisterType <Errors>                 ("API.Errors", 1, 0, "Error");
-    //! TODO: settings will be a non-creatable object and this should change to non creatable
+    qmlRegisterType <InitHandler>               ("API.InitHandler", 1, 0, "InitHandler");
+    qmlRegisterType <LoginHandler>              ("API.LoginHandler", 1, 0, "LoginHandler");
+    qmlRegisterType <CaptchaHandler>            ("API.LoginHandler", 1, 0, "CaptchaHandler");
+    qmlRegisterType <BriefInfoHandler>          ("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
+    qmlRegisterType <CourseScheduleHandler>     ("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
+    qmlRegisterType <Errors>                    ("API.Errors", 1, 0, "Error");
+    qmlRegisterType <OfferedCourseHandler>      ("API.OfferedCourseHandler", 1, 0, "OfferedCourseHandler");
+    /// TODO: OfferedCourseModel should be non-creatable object
+    qmlRegisterType <OfferedCourseModel>        ("API.OfferedCourseHandler", 1, 0, "OfferedCourseModel");
+    /// TODO: settings will be a non-creatable object and this should change to non creatable
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
