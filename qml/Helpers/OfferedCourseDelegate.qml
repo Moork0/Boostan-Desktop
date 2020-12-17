@@ -11,7 +11,7 @@ import QtQuick.Controls 2.15
 
 Item {
     id: root
-    height: 60
+    height: 70
     width: listview.width
     property bool isChoosed: false
     property color textColor: isChoosed ? "#757575" : "#FFFFFF"

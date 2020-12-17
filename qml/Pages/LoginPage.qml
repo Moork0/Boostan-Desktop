@@ -211,6 +211,7 @@ Page {
                     text: "مرا به خاطر بسپار"
                     font.weight: Font.Bold
                     color: "#EEEEEE"
+                    font.family: regular_font.name
                 }
             }
 
@@ -224,6 +225,7 @@ Page {
                 bgColor: "#19B99A"
                 radius: 5
                 font.pixelSize: 15
+                font.family: regular_font.name
                 onClicked: {
                     if (username_input.isEmpty || password_input.isEmpty || captcha_input.isEmpty) {
                         notifier.text = "ورودی ها نباید خالی باشن!"
