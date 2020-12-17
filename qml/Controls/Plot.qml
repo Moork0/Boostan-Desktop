@@ -8,9 +8,10 @@ import QtQuick 2.15
 import QtCharts 2.15
 
 ChartView {
+    id: root
     title: "معدل ترمی"
     titleColor: "#FFFFFF"
-    titleFont.family: "Sahel"
+    titleFont.family: fontFamily
     antialiasing: true
     legend.visible: false
     locale: Qt.locale("fa_IR")
@@ -19,17 +20,16 @@ ChartView {
     animationOptions: ChartView.SeriesAnimations
     backgroundColor: "transparent"
 
+    property string fontFamily: "Arial"
     property alias xAxis: axis_x.categories
     property alias yAxis: bar_set.values
 
     BarCategoryAxis {
         id: axis_x
-        // remove below line
-        categories: ["۹۷۱", "۹۷۲", "۹۸۱"]
         color: "#FFFFFF"
         gridVisible: false
         labelsColor: "#FFFFFF"
-        labelsFont.family: "Sahel"
+        labelsFont.family: root.fontFamily
         lineVisible: false
     }
 
@@ -38,7 +38,7 @@ ChartView {
         color: "#FFFFFF"
         gridLineColor: "#FFFFFF"
         labelsColor: "#FFFFFF"
-        labelsFont.family: "Sahel"
+        labelsFont.family: root.fontFamily
         labelsFont.bold: true
         max: 20
         min: 10
@@ -54,12 +54,11 @@ ChartView {
         labelsPosition: AbstractBarSeries.LabelsInsideEnd
         BarSet {
             id: bar_set
-            values: ["15.2", "16.4", "17"]
             borderColor: "transparent"
             borderWidth: 0
             color: "#19B99A"
             labelColor: "#FFFFFF"
-            labelFont.family: "Sahel"
+            labelFont.family: root.fontFamily
         }
     }
 }

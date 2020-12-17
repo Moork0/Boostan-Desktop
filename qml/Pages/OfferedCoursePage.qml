@@ -23,6 +23,7 @@ Page {
         text: "برنامه ساخته شده"
         bgColor: "#19B99A"
         radius: 8
+        font.family: regular_font.name
     }
 
     // header for the listview
@@ -55,7 +56,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     Label {
                         anchors.centerIn: parent
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         font.bold: true
                         text: modelData
                         color: "#000000"

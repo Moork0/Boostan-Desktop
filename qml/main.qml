@@ -18,7 +18,7 @@ ApplicationWindow {
     FontLoader { source: "fonts/icons.ttf"; }
     FontLoader { source: "fonts/Tanha.ttf" }
     FontLoader { source: "fonts/Mj_Afsoon.ttf" }
-    FontLoader { source: "fonts/Sahel.ttf" }
+    FontLoader { id: regular_font; source: "fonts/Vazir-Regular.ttf"; }
 
     // whole application is managed by stackview system
     StackView {

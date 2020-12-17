@@ -13,7 +13,7 @@ Rectangle {
     Label {
         width: parent.width - 5
         anchors.centerIn: parent
-        font.family: "Sahel"
+        font.family: regular_font.name
         color: "#FFFFFF"
         text: modelData.name
         wrapMode: Label.WordWrap

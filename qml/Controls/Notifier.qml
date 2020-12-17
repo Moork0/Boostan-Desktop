@@ -11,6 +11,7 @@ Item {
     visible: false
     width: Math.max(notifier_text.contentWidth, notifier_solution.contentWidth) + 20
     height: notifier_text.contentHeight + notifier_solution.contentHeight + 20
+
     // identify the animation direction of notifier
     // Do not use anchors on direction of showType
     property int showType: Notifier.ShowType.DownToUp
@@ -42,7 +43,6 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "این یک متن ارور است که باید ببینید"
                 color: "#FFFFFF"
-                font.family: "Sahel"
                 font.pixelSize: 15
                 font.weight: Font.DemiBold
             }

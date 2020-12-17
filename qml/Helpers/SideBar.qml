@@ -58,7 +58,7 @@ Rectangle {
             id: student_name
             Layout.alignment: Qt.AlignHCenter
             text: "محسنی حیدریان رنجبر حسینی سلام"
-            font.family: "Sahel"
+            font.family: regular_font.name
             font.pixelSize: 12
             color: "#F8F7F2"
         }
@@ -69,7 +69,7 @@ Rectangle {
             Layout.topMargin: 10
             text: "۱۱ شهریور ۱۳۹۹"
             font.pixelSize: 12
-            font.family: "Sahel"
+            font.family: regular_font.name
             color: "#F8F7F2"
         }
 
@@ -90,7 +90,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     text: modelData
                     color: parent.isEnable ? "#19B99A" : "#F8F7F2"
-                    font.family: "Sahel"
+                    font.family: regular_font.name
                     font.pixelSize: itemSize
                     font.bold: true
                 }

@@ -15,7 +15,7 @@ Item {
     width: listview.width
     property bool isChoosed: false
     property color textColor: isChoosed ? "#757575" : "#FFFFFF"
-    property string fontFamily: "Sahel"
+    property string fontFamily: regular_font.name
 
     RowLayout {
         width: parent.width - 10

@@ -36,6 +36,7 @@ Page {
         anchors.top: parent.top
         anchors.topMargin: 50
         z: 2
+        font.family: regular_font.name
     }
 
     ScreenShot {
@@ -83,6 +84,7 @@ Page {
                     height: parent.height - 40
                     xAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterYears() : []
                     yAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterAvgs() : []
+                    fontFamily: regular_font.name
                 }
 
                 LoadingAnimationColor {
@@ -110,28 +112,28 @@ Page {
                         Layout.fillHeight: true
                         text: "نام و نام خانوادگی: " + right_pane.studentName
                         wrapMode: Text.WordWrap
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         text: "دوره آموزشی:‌ " + briefinfo_handler.briefInfo.studyType
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         text: "رشته تحصیلی: " + briefinfo_handler.briefInfo.field
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         text: "شماره دانشجویی: " + briefinfo_handler.briefInfo.id
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         color: "#FFFFFF"
                     }
 
@@ -139,7 +141,7 @@ Page {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         text: "واحد گذرانیده: " + briefinfo_handler.briefInfo.passedUnits
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         color: "#FFFFFF"
                     }
 
@@ -147,7 +149,7 @@ Page {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         text: "معدل کل: " + briefinfo_handler.briefInfo.average
-                        font.family: "Sahel"
+                        font.family: regular_font.name
                         color: "#FFFFFF"
                     }
 
@@ -195,7 +197,7 @@ Page {
                 Label {
                     anchors.centerIn: parent
                     text: "روز / ساعت"
-                    font.family: "Sahel"
+                    font.family: regular_font.name
                     color: "#FFFFFF"
                 }
             }
@@ -217,7 +219,7 @@ Page {
                         Layout.fillWidth: true
                         Label {
                             anchors.centerIn: parent
-                            font.family: "Sahel"
+                            font.family: regular_font.name
                             color: "#FFFFFF"
                             text: modelData
                         }
@@ -249,7 +251,7 @@ Page {
                         Layout.fillWidth: true
                         Label {
                             anchors.centerIn: parent
-                            font.family: "Sahel"
+                            font.family: regular_font.name
                             color: "#FFFFFF"
                             text: modelData
                         }
@@ -303,7 +305,7 @@ Page {
                 z: 1
                 Label {
                     anchors.centerIn: parent
-                    font.family: "Sahel"
+                    font.family: regular_font.name
                     text: "متاسفانه اطلاعات برنامه هفتگی موجود نیست! :("
                     color: "white"
                 }

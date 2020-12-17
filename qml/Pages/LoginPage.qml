@@ -268,5 +268,6 @@ Page {
         id: notifier
         anchors.horizontalCenter: parent.horizontalCenter
         bgColor: "#262125"
+        font.family: regular_font.name
     }
 }
