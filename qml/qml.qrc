@@ -19,7 +19,6 @@
         <file>fonts/icons.ttf</file>
         <file>fonts/Tanha.ttf</file>
         <file>fonts/Mj_Afsoon.ttf</file>
-        <file>fonts/Sahel.ttf</file>
         <file>pics/loading-logo.png</file>
         <file>pics/error-logo.svg</file>
         <file>Controls/ScreenShot.qml</file>
@@ -27,5 +26,6 @@
         <file>pics/boostan-logo.svg</file>
         <file>Pages/OfferedCoursePage.qml</file>
         <file>Helpers/OfferedCourseDelegate.qml</file>
+        <file>fonts/Vazir-Regular.ttf</file>
     </qresource>
 </RCC>
