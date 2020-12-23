@@ -42,7 +42,7 @@ namespace Constants {
             NoError                 = 0,
             CustomCode              = 800,
             UnknownError            = 1000,
-            ServerConnenctionError  = CustomCode -1,
+            ServerConnenctionError  = CustomCode -1,    // idk really why i put this one lower than CustomError...
             WrongCaptcha            = CustomCode,
             CaptchaStoreError       = CustomCode + 1,
             SettingsError           = CustomCode + 2,
@@ -68,7 +68,8 @@ namespace Constants {
             // this is built-in Golestan error codes that we might see.
             {1, Normal},
             {24, SemiCritical},
-            {27, SemiCritical}
+            {27, SemiCritical},
+            {18, Critical}
         };
 
         /*
@@ -92,7 +93,8 @@ namespace Constants {
             // this is built-in Golestan error codes that we might see.
             {1, QStringLiteral("نام کاربری یا رمز عبوری که وارد شده اشتباهه!")},
             {24, QStringLiteral("گلستان میگه دوباره باید وارد بشی!")},
-            {27, QStringLiteral("تعداد تلاش ناموفق برای ورود بیش از حد مجاز شده!")}
+            {27, QStringLiteral("تعداد تلاش ناموفق برای ورود بیش از حد مجاز شده!")},
+            {18, QStringLiteral("امکان دسترسی به محتوای مورد نظر محدود شده!")}
         };
 
         // Error description for each error code that identifyed so far
@@ -107,9 +109,11 @@ namespace Constants {
             // this is built-in Golestan error codes that we might see.
             {1, QStringLiteral("دوباره با دقت تلاش کن :)")},
             {24, QStringLiteral("دوباره برای ورود تلاش کن تا این مشکل رفع بشه. اگر نشد لطفا در گیتهاب خبر بده")},
-            {27, QStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")}
+            {27, QStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
+            {18, QStringLiteral("از خودِ سایت گلستان چک کن ببین آیا همه چیز درسته؟ اگر درست بود، این مشکل از بوستانه پس لطفا در گیتهاب به ما گزارش بده.")}
         };
-    };
-};
+
+    };  // namespace Errors
+};  // namespace Constants
 
 #endif // CONSTANTS_H
