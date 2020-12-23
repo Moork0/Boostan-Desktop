@@ -51,7 +51,8 @@ Page {
 
         Label {
             id: error_text
-            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 10
+            horizontalAlignment: Label.AlignHCenter
             anchors.top: eror_icon.bottom
             anchors.topMargin: 40
             font.family: "Tanha"
@@ -59,17 +60,20 @@ Page {
             font.weight: Font.DemiBold
             text: "این یک متن ارور است"
             color: "#F8F7F2"
+            wrapMode: Label.WordWrap
         }
 
         Label {
             id: error_solution
-            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 10
+            horizontalAlignment: Label.AlignHCenter
             anchors.top: error_text.bottom
             font.family: "Tanha"
             font.pixelSize: error_text.font.pixelSize / 2
             font.weight: Font.DemiBold
             text: "این یک توضیحات اضافه است"
             color: "#F8F7F2"
+            wrapMode: Label.WordWrap
         }
 
         MyButton {
