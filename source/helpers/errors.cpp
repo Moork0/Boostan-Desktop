@@ -25,11 +25,16 @@ void Errors::setErrorCode(int ecode)
 {
     if (error_code == ecode) return;
     // check if ecode is one of QNetworkReply::Error's then mark them all as ServerConnectionError
-    if (ecode >= (QNetworkReply::ConnectionRefusedError + Constants::Errors::qt_offset) && ecode <= (QNetworkReply::UnknownServerError + Constants::Errors::qt_offset)){
+    if (ecode >= (QNetworkReply::ConnectionRefusedError + Constants::Errors::qt_offset) && ecode <= (QNetworkReply::UnknownServerError + Constants::Errors::qt_offset))
         error_code = Constants::Errors::ServerConnenctionError;
-    } else {
+
+    // is this error code discovered befor? if not, we can't do anything about it.
+    else if (!Constants::Errors::error_strings.contains(ecode))
+        error_code = Constants::Errors::UnknownError;
+
+    else
         error_code = ecode;
-    }
+
     emit errorCodeChanged();
 }
 
