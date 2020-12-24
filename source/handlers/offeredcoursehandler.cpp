@@ -1,7 +1,6 @@
 #include "header/handlers/offeredcoursehandler.h"
 
 OfferedCourseHandler::OfferedCourseHandler()
-    : container {new std::vector<std::vector<QVariant>*>}
 {
 
 }
@@ -18,12 +17,11 @@ bool OfferedCourseHandler::getIsEmpty() const
 
 void OfferedCourseHandler::cleanUp()
 {
-    if (!container) return;
-    for (std::vector<QVariant>* element : *container) {
+    if (container.isEmpty()) return;
+    for (QVariantList* element : container) {
         delete element;
     }
-    delete container;
-    container = nullptr;
+    container.clear();
 }
 
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
@@ -33,9 +31,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
     if (!match.hasMatch()) return false;
 
     QXmlStreamReader reader(match.captured());
-    std::vector<QVariant>* row_datas;
+    QVariantList* row_datas;
     QStringRef column_data_ref;
     QString column_data;
+    QString course_id;
     QStringList splited_data;
 
     if (!reader.readNextStartElement()) return false;
@@ -45,32 +44,34 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         if(reader.name() != QStringLiteral("row")) continue;
         // the struture is not empty
         setIsEmpty(false);
-        row_datas = new std::vector<QVariant>;
+        row_datas = new QVariantList;
+        row_datas->reserve(OfferedCourseModel::columns.count());
         /*
          * the order of the values which pushed into the row_data is important
          * because the order should be equal to the order of roleNames in the OfferedCourseModel
          * otherwise the information would be false
          */
-        splited_data = reader.attributes().value("C1").toString().split("-");
-        row_datas->emplace_back(splited_data[1]);                                   // group
-        row_datas->emplace_back(splited_data[0]);                                   // course number
-        row_datas->emplace_back(reader.attributes().value("C2").toString());        // course name
-        row_datas->emplace_back(reader.attributes().value("C3").toInt());           // weight
-        row_datas->emplace_back(reader.attributes().value("C5").toInt());           // capacity
+        course_id = reader.attributes().value("C1").toString();
+        splited_data = course_id.split("-");
+        row_datas->append(splited_data[1]);                                   // group
+        row_datas->append(splited_data[0]);                                   // course number
+        row_datas->append(reader.attributes().value("C2").toString());        // course name
+        row_datas->append(reader.attributes().value("C3").toInt());           // weight
+        row_datas->append(reader.attributes().value("C5").toInt());           // capacity
         column_data_ref = reader.attributes().value("C6");
 
         // sex
         if (column_data_ref == QStringLiteral("زن"))
-            row_datas->emplace_back(QStringLiteral("female"));
+            row_datas->append(OfferedCourseModel::Female);
 
         else if (column_data_ref == QStringLiteral("مرد"))
-            row_datas->emplace_back(QStringLiteral("male"));
+            row_datas->append(OfferedCourseModel::Male);
 
         else
-            row_datas->emplace_back(QStringLiteral("none"));
+            row_datas->append(OfferedCourseModel::None);
 
         // teacher
-        row_datas->emplace_back(reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
+        row_datas->append(reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
 
         // time and exam
         column_data = reader.attributes().value("C8").toString();
@@ -85,8 +86,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         }
         column_data += splited_data[splited_data.size() - 2];
 
-        // pushing time
-        row_datas->emplace_back(column_data);
+        // time
+        row_datas->append(column_data);
 
         // place
         column_data_ref = reader.attributes().value("C9");
@@ -94,19 +95,19 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         int endpos {column_data_ref.lastIndexOf("<BR>")};
         if (underline_pos != -1 && endpos != -1)
             // we skip 2 character which is '_ '
-            row_datas->emplace_back(column_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
+            row_datas->append(column_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
         else
-            row_datas->emplace_back(column_data_ref.toString());
+            row_datas->append(column_data_ref.toString());
 
-        // pushing exam
-        row_datas->emplace_back(splited_data.last()
+        // exam
+        row_datas->append(splited_data.last()
                                 .remove(QStringLiteral("امتحان("))
                                 .remove(QStringLiteral("ساعت : "))
                                 .replace(QStringLiteral(")"), QStringLiteral("<br>")));
         // selected
-        row_datas->emplace_back(false);
+        row_datas->append(false);
 
-        container->push_back(row_datas);
+        container.insert(course_id, row_datas);
         reader.skipCurrentElement();
     }
     return true;
@@ -130,6 +131,6 @@ void OfferedCourseHandler::sendDataTo(QObject* model)
 {
     OfferedCourseModel* view_model = reinterpret_cast<OfferedCourseModel*>(model);
     view_model->setDataContainer(container);
-    container = nullptr;
+    container.clear();
 }
 

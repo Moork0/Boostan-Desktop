@@ -4,14 +4,13 @@
 #include "abstractxmldatahandler.h"
 #include "../models/offeredcoursemodel.h"
 #include <QStringBuilder>
-#include <vector>
 
 class OfferedCourseHandler : public AbstractXmlDataHandler
 {
     Q_OBJECT
 
 private:
-    ContainerType* container;
+    QHash<QString, QVariantList*> container;
     bool    getIsEmpty() const override;
     void    cleanUp();
 

@@ -6,7 +6,6 @@
 #include <vector>
 #include <QDebug>
 
-using ContainerType = std::vector<std::vector<QVariant>*>;
 
 class OfferedCourseModel : public QAbstractListModel
 {
@@ -14,7 +13,7 @@ class OfferedCourseModel : public QAbstractListModel
 
 private:
     // the container which stores the data
-    ContainerType* data_container;
+    QList<QVariantList*> data_container;
 
     enum
     {
@@ -45,6 +44,14 @@ public:
         QStringLiteral("exam"), QStringLiteral("selected")
     };
 
+    enum gender
+    {
+        Male = 0,
+        Female,
+        None
+    };
+    Q_ENUMS(gender)
+
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -54,7 +61,7 @@ public:
 
     // custom functions
     void cleanUp();
-    void setDataContainer (ContainerType* container);
+    void setDataContainer (QHash<QString, QVariantList*>& container);
 
 };
 

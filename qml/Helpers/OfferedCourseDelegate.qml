@@ -13,9 +13,12 @@ Item {
     id: root
     height: 70
     width: listview.width
-    property bool isChoosed: false
+    property bool isChoosed: model.selected
     property color textColor: isChoosed ? "#757575" : "#FFFFFF"
     property string fontFamily: regular_font.name
+    Component.onCompleted: {
+        // FIXME: implement me
+    }
 
     RowLayout {
         width: parent.width - 10
@@ -276,6 +279,7 @@ Item {
         id: mouse_area
         anchors.fill: parent
         onPressAndHold: {
+            // FIXME: implement course selecting functions
             if (isChoosed) {
                 var ind = listview.choosed.indexOf(model.index)
                 listview.choosed.splice(ind, 1)

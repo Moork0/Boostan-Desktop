@@ -1,7 +1,7 @@
 #include "header/models/offeredcoursemodel.h"
 
 OfferedCourseModel::OfferedCourseModel(QObject *parent)
-    : QAbstractListModel(parent), data_container {nullptr}
+    : QAbstractListModel(parent)
 {
 }
 
@@ -16,19 +16,18 @@ int OfferedCourseModel::rowCount(const QModelIndex &parent) const
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
     if (parent.isValid())
         return 0;
-    if (data_container == nullptr) return 0;
-    return data_container->size();
+    return data_container.size();
 }
 
 QVariant OfferedCourseModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || data_container == nullptr) return QVariant();
+    if (!index.isValid()) return QVariant();
 
-    size_t row = index.row();
+    int row = index.row();
     int column = role - ROLE_START - 1;
-    if (row >= data_container->size()) return QVariant();
+    if (row < 0 || row >= data_container.size()) return QVariant();
 
-    return data_container->at(row)->at(column);
+    return data_container.at(row)->at(column);
 }
 
 QHash<int, QByteArray> OfferedCourseModel::roleNames() const
@@ -43,14 +42,14 @@ QHash<int, QByteArray> OfferedCourseModel::roleNames() const
 
 bool OfferedCourseModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (data(index, role) == value || data_container == nullptr) return false;
+    if (data(index, role) == value) return false;
 
-    size_t row = index.row();
+    int row = index.row();
     int column = role - ROLE_START - 1;
-    if (row >= data_container->size()) return false;
+    if (row < 0 || row >= data_container.size()) return false;
 
-    data_container->at(row)->at(column) = value;
-    qDebug() << data_container->at(row)->at(column);
+    data_container[row]->replace(column , value);
+    qDebug() << data_container.at(row)->at(column);
     emit dataChanged(index, index, QVector<int>() << role);
     return true;
 }
@@ -64,16 +63,17 @@ Qt::ItemFlags OfferedCourseModel::flags(const QModelIndex &index) const
 
 void OfferedCourseModel::cleanUp()
 {
-    if (!data_container) return;
-    for (std::vector<QVariant>* element : *data_container) {
+    if (data_container.isEmpty()) return;
+    for (QVariantList* element : data_container) {
         delete element;
     }
-    delete data_container;
-    data_container = nullptr;
+    data_container.clear();
 }
 
-void OfferedCourseModel::setDataContainer(ContainerType* container)
+void OfferedCourseModel::setDataContainer(QHash<QString, QVariantList*>& container)
 {
     cleanUp();
-    data_container = container;
+    for (QVariantList* element : container) {
+        data_container.append(element);
+    }
 }
