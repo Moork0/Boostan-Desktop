@@ -36,7 +36,7 @@ QHash<int, QByteArray> OfferedCourseModel::roleNames() const
     QHash<int, QByteArray> roles;
     int column_number{0};
     for (int i{ROLE_START + 1}; i != ROLE_END; ++i, ++column_number) {
-        roles.insert(i, this->columns[column_number]);
+        roles.insert(i, this->columns[column_number].toUtf8());
     }
     return roles;
 }

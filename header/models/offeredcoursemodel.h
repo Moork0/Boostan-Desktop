@@ -16,12 +16,6 @@ private:
     // the container which stores the data
     ContainerType* data_container;
 
-    inline static const QList<QByteArray> columns
-    {
-        "group", "courseNumber", "courseName", "weight", "capacity", "sex",
-        "teacher", "time", "place", "exam", "selected"
-    };
-
     enum
     {
         ROLE_START = Qt::UserRole + 1,
@@ -42,6 +36,14 @@ private:
 public:
     explicit OfferedCourseModel(QObject *parent = nullptr);
     virtual ~OfferedCourseModel();
+
+    inline static const QStringList columns
+    {
+        QStringLiteral("group"), QStringLiteral("courseNumber"), QStringLiteral("courseName"),
+        QStringLiteral("weight"), QStringLiteral("capacity"), QStringLiteral("sex"),
+        QStringLiteral("teacher"), QStringLiteral("time"), QStringLiteral("place"),
+        QStringLiteral("exam"), QStringLiteral("selected")
+    };
 
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
