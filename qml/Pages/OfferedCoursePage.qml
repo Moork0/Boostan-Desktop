@@ -3,9 +3,24 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import "../Controls"
 import "../Helpers"
+import API.OfferedCourseHandler 1.0
 
 Page {
     id: offered_course_page
+
+    OfferedCourseHandler {
+        id: offered_course_handler
+        Component.onCompleted: start()
+        onFinished: {
+            sendDataTo(offered_course_model)
+            listview.model = offered_course_model
+        }
+    }
+
+    OfferedCourseModel {
+        id: offered_course_model
+    }
+
     Rectangle {
         id: page_background
         anchors.fill: parent
@@ -128,52 +143,9 @@ Page {
 //                }]
 //            ]
 
-        model: lmodel
+        model: 0
         delegate: OfferedCourseDelegate { }
     }
 
-
-    ListModel {
-        id: lmodel
-
-        ListElement {
-            group: "76"
-            courseNo: "5356535142"
-            courseName: "مبانی ماتریس ها و جبرخطی"
-            weight: 3
-            capacity: 50
-            sex: 1
-            teacher: "تقوی جلودار علی"
-            time: "چهارشنبه ۸:۰۰ - ۱۰:۰۰ \n دوشنبه ۸:۰۰ - ۱۰:۰۰"
-            place: "دانشکده ریاضی [409] \n [409]"
-            exam: "99/10/16 \n 8:00 - 10:00"
-        }
-        ListElement {
-            group: "76"
-            courseNo: "5356535142"
-            courseName: "مبانی ماتریس ها و جبرخطی"
-            weight: 3
-            capacity: 50
-            sex: 1
-            teacher: "تقوی جلودار علی"
-            time: "چهارشنبه ۸:۰۰ - ۱۰:۰۰ \n دوشنبه ۸:۰۰ - ۱۰:۰۰"
-            place: "دانشکده ریاضی [409] \n [409]"
-            exam: "99/10/16 \n 8:00 - 10:00"
-        }
-        ListElement {
-            group: "76"
-            courseNo: "5356535142"
-            courseName: "مبانی ماتریس ها و جبرخطی"
-            weight: 3
-            capacity: 50
-            sex: 1
-            teacher: "تقوی جلودار علی"
-            time: "چهارشنبه ۸:۰۰ - ۱۰:۰۰ \n دوشنبه ۸:۰۰ - ۱۰:۰۰"
-            place: "دانشکده ریاضی [409] \n [409]"
-            exam: "99/10/16 \n 8:00 - 10:00"
-        }
-
-
-    }
 }
 

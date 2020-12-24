@@ -8,15 +8,22 @@ OfferedCourseHandler::OfferedCourseHandler()
 
 OfferedCourseHandler::~OfferedCourseHandler()
 {
-    for (std::vector<QVariant>* element : *container) {
-        delete element;
-    }
-    delete container;
+    cleanUp();
 }
 
 bool OfferedCourseHandler::getIsEmpty() const
 {
     return is_empty;
+}
+
+void OfferedCourseHandler::cleanUp()
+{
+    if (!container) return;
+    for (std::vector<QVariant>* element : *container) {
+        delete element;
+    }
+    delete container;
+    container = nullptr;
 }
 
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
@@ -96,10 +103,33 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
                                 .remove(QStringLiteral("امتحان("))
                                 .remove(QStringLiteral("ساعت : "))
                                 .replace(QStringLiteral(")"), QStringLiteral("<br>")));
+        // selected
+        row_datas->emplace_back(false);
 
         container->push_back(row_datas);
         reader.skipCurrentElement();
     }
     return true;
+}
+
+void OfferedCourseHandler::start()
+{
+        QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+        QFile file("res.html");
+        if (file.open(QIODevice::ReadOnly)) {
+            QString rr {file.readAll()};
+            extractOfferedCourses(rr);
+        } else {
+            qDebug() << file.errorString();
+        }
+        setFinished(true);
+        setSuccess(true);
+}
+
+void OfferedCourseHandler::sendDataTo(QObject* model)
+{
+    OfferedCourseModel* view_model = reinterpret_cast<OfferedCourseModel*>(model);
+    view_model->setDataContainer(container);
+    container = nullptr;
 }
 

@@ -38,7 +38,7 @@ Item {
                 horizontalAlignment: Label.AlignHCenter
                 wrapMode: Label.WordWrap
                 font.family: root.fontFamily
-                text: model.group
+                text: model["group"]
                 color: root.textColor
             }
             Rectangle {
@@ -66,7 +66,7 @@ Item {
                 horizontalAlignment: Label.AlignHCenter
                 wrapMode: Label.WordWrap
                 font.family: root.fontFamily
-                text: model.courseNo
+                text: model.courseNumber
                 color: root.textColor
             }
             Rectangle {

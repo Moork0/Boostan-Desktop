@@ -11,14 +11,18 @@ class OfferedCourseHandler : public AbstractXmlDataHandler
     Q_OBJECT
 
 private:
-    std::vector<std::vector<QVariant>*>* container;
-    OfferedCourseModel view_model;
+    ContainerType* container;
     bool    getIsEmpty() const override;
+    void    cleanUp();
 
 public:
     OfferedCourseHandler();
-    ~OfferedCourseHandler();
+    virtual ~OfferedCourseHandler();
     bool extractOfferedCourses(const QString& response);
+
+public slots:
+    void start();
+    void sendDataTo(QObject* model);
 };
 
 #endif // OFFEREDCOURSEHANDLER_H
