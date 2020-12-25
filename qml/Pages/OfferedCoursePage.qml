@@ -116,33 +116,7 @@ Page {
         anchors.fill: listview_bg
         property var choosed: []
         clip: true
-//            model: [
-//                [{
-//                    group: "76",
-//                    courseNo: "5356535142",
-//                    courseName: "مبانی ماتریس ها و جبرخطی",
-//                    weight: 3,
-//                    capacity: 50,
-//                    sex: 1,
-//                    teacher: "تقوی جلودار علی",
-//                    time: "چهارشنبه ۸:۰۰ - ۱۰:۰۰ \n دوشنبه ۸:۰۰ - ۱۰:۰۰",
-//                    place: "دانشکده ریاضی [409] \n [409]",
-//                    exam: "99/7/16 \n 8:00 - 10:00"
-//                }],
-//                [{
-//                    group: "76",
-//                    courseNo: "5356535142",
-//                    courseName: "مبانی ماتریس ها و جبرخطی",
-//                    weight: 3,
-//                    capacity: 50,
-//                    sex: 1,
-//                    teacher: "تقوی جلودار علی",
-//                    time: "چهارشنبه ۸:۰۰ - ۱۰:۰۰ \n دوشنبه ۸:۰۰ - ۱۰:۰۰",
-//                    place: "دانشکده ریاضی [409] \n [409]",
-//                    exam: "99/7/16 \n 8:00 - 10:00"
-//                }]
-//            ]
-
+        boundsBehavior: Flickable.OvershootBounds
         model: 0
         delegate: OfferedCourseDelegate { }
     }
