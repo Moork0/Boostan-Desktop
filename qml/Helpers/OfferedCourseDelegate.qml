@@ -7,7 +7,7 @@ import QtQuick.Controls 2.15
     * I should use Repeater for this. but not now. i wanna get destroyed at refactor time.
 **/
 
-// TODO: make group and course number select and copyable.
+// TODO: use repeater and remove duplicate codes
 
 Item {
     id: root
@@ -288,11 +288,12 @@ Item {
             }
             console.log(listview.choosed)
             isChoosed = !isChoosed
+            model.selected = isChoosed
         }
     }
 
     Rectangle {
-        visible: index !== listview.count
+        visible: index !== listview.count - 1
         anchors.bottom: parent.bottom
         width: listview.width
         height: 4
