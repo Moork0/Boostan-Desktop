@@ -49,7 +49,6 @@ bool OfferedCourseModel::setData(const QModelIndex &index, const QVariant &value
     if (row < 0 || row >= data_container.size()) return false;
 
     data_container[row]->replace(column , value);
-    qDebug() << data_container.at(row)->at(column);
     emit dataChanged(index, index, QVector<int>() << role);
     return true;
 }
