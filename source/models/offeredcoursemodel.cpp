@@ -60,6 +60,11 @@ Qt::ItemFlags OfferedCourseModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEditable;
 }
 
+int OfferedCourseModel::getRole(OfferedCourseModel::roles role)
+{
+    return role - ROLE_START - 1;
+}
+
 void OfferedCourseModel::cleanUp()
 {
     if (data_container.isEmpty()) return;
