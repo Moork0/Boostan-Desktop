@@ -27,5 +27,6 @@
         <file>Pages/OfferedCoursePage.qml</file>
         <file>Helpers/OfferedCourseDelegate.qml</file>
         <file>fonts/Vazir-Regular.ttf</file>
+        <file>Controls/ScheduleTable.qml</file>
     </qresource>
 </RCC>
