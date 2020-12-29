@@ -13,6 +13,7 @@ private:
     QHash<QString, QVariantList*> container;
     bool    getIsEmpty() const override;
     void    cleanUp();
+    void    normalizeTime(QString& time);
 
 public:
     OfferedCourseHandler();

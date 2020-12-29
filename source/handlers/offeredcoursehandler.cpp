@@ -24,6 +24,12 @@ void OfferedCourseHandler::cleanUp()
     container.clear();
 }
 
+void OfferedCourseHandler::normalizeTime(QString &time)
+{
+    time.replace(QStringLiteral("ك"), QStringLiteral("ک"));
+    time = time.simplified();
+}
+
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 {
     QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
@@ -36,7 +42,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
     QString column_data;
     QString course_id;
     QStringList splited_data;
-
+    int column_count = OfferedCourseModel::columns.count();
     if (!reader.readNextStartElement()) return false;
     if (reader.name() != QStringLiteral("Root")) return false;
 
@@ -45,7 +51,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         // the struture is not empty
         setIsEmpty(false);
         row_datas = new QVariantList;
-        row_datas->reserve(OfferedCourseModel::columns.count());
+        row_datas->reserve(column_count);
+        for (int i {0}; i < column_count; ++i) row_datas->append(QVariant());
         /*
          * the order of the values which pushed into the row_data is important
          * because the order should be equal to the order of roleNames in the OfferedCourseModel
@@ -53,25 +60,35 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          */
         course_id = reader.attributes().value("C1").toString();
         splited_data = course_id.split("-");
-        row_datas->append(splited_data[1]);                                   // group
-        row_datas->append(splited_data[0]);                                   // course number
-        row_datas->append(reader.attributes().value("C2").toString());        // course name
-        row_datas->append(reader.attributes().value("C3").toInt());           // weight
-        row_datas->append(reader.attributes().value("C5").toInt());           // capacity
+        // course number
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::courseNumberRole), splited_data[0]);
+        // group
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::groupRole), splited_data[1]);
+        // course name
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::courseNameRole),
+                           reader.attributes().value("C2").toString());
+        // weight
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::weightRole),
+                           reader.attributes().value("C3").toInt());
+        // capacity
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::capacityRole),
+                           reader.attributes().value("C5").toInt());
+
         column_data_ref = reader.attributes().value("C6");
 
         // sex
         if (column_data_ref == QStringLiteral("زن"))
-            row_datas->append(OfferedCourseModel::Female);
+            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::sexRole), OfferedCourseModel::Female);
 
         else if (column_data_ref == QStringLiteral("مرد"))
-            row_datas->append(OfferedCourseModel::Male);
+            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::sexRole), OfferedCourseModel::Male);
 
         else
-            row_datas->append(OfferedCourseModel::None);
+            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::sexRole), OfferedCourseModel::None);
 
         // teacher
-        row_datas->append(reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::teacherRole),
+                           reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
 
         // time and exam
         column_data = reader.attributes().value("C8").toString();
@@ -85,9 +102,14 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
             column_data += splited_data[i] + QStringLiteral("<br>");
         }
         column_data += splited_data[splited_data.size() - 2];
-
+        normalizeTime(column_data);
         // time
-        row_datas->append(column_data);
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::timeRole), column_data);
+
+        // exam
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::examRole),
+                           splited_data.last().remove(QStringLiteral("امتحان(")).remove(QStringLiteral("ساعت : "))
+                                .replace(QStringLiteral(")"), QStringLiteral("<br>")));
 
         // place
         column_data_ref = reader.attributes().value("C9");
@@ -95,18 +117,16 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         int endpos {column_data_ref.lastIndexOf("<BR>")};
         if (underline_pos != -1 && endpos != -1)
             // we skip 2 character which is '_ '
-            row_datas->append(column_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
+            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::placeRole),
+                               column_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
         else
-            row_datas->append(column_data_ref.toString());
+            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::placeRole),
+                               column_data_ref.toString());
 
-        // exam
-        row_datas->append(splited_data.last()
-                                .remove(QStringLiteral("امتحان("))
-                                .remove(QStringLiteral("ساعت : "))
-                                .replace(QStringLiteral(")"), QStringLiteral("<br>")));
         // selected
-        row_datas->append(false);
-
+//        row_datas->replace(false);
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::selectedRole),
+                           (row_datas->at(0).toInt() % 2 == 0) ? true : false);
         container.insert(course_id, row_datas);
         reader.skipCurrentElement();
     }
