@@ -65,7 +65,7 @@ Item {
         spacing: 0
         Repeater {
             id: hours_repeater
-            model: ["۸-۱۰", "۱۰-۱۲", "۱۳-۱۵", "۱۵-۱۷", "۱۷-۱۹"]
+            model: ["۸-۱۰", "۱۰-۱۲", "۱۳-۱۵", "۱۵-۱۷", "۱۷-۱۹"]            
             Rectangle {
                 Layout.alignment: Qt.AlignRight
                 color: "transparent"
