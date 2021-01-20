@@ -81,3 +81,46 @@ void OfferedCourseModel::setDataContainer(QHash<QString, QVariantList*>& contain
         data_container.append(element);
     }
 }
+
+QVariantMap OfferedCourseModel::getCourse(int index) const
+{
+    QVariantMap map;
+    if (index < 0 || index >= data_container.size()) return map;
+    map[QStringLiteral("teacher")] = data_container[index]->at(getRole(teacherRole));
+    map[QStringLiteral("name")] = data_container[index]->at(getRole(courseNameRole));
+    QStringList times =data_container[index]->at(getRole(timeRole)).toString().split("<br>");
+    QVariantList rows, columns;
+    for (QString& time : times) {
+        time = time.trimmed();
+        // the length of '00:00-00:00' is 11. so for extract the they we don't need the last 12 char's
+        rows.append(calculateScheduleRow(time.chopped(12)));
+        columns.append(calculateScheduleColumn(time.right(11)));
+    }
+    map[QStringLiteral("row")] = rows;
+    map[QStringLiteral("column")] = columns;
+    map[QStringLiteral("code")] = data_container[index]->at(getRole(groupRole)).toString()
+            + data_container[index]->at(getRole(courseNumberRole)).toString();
+
+    return map;
+}
+
+
+int OfferedCourseModel::calculateScheduleRow(const QString &day) const
+{
+    for (int i {0}; i < 5; ++i) {
+        if (day.startsWith(days_keyword[i])) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int OfferedCourseModel::calculateScheduleColumn(const QString &hour) const
+{
+    for (int i {0}; i < 5; ++i) {
+        if (hour.startsWith(hours_keyword[i])) {
+            return i;
+        }
+    }
+    return -1;
+}

@@ -13,7 +13,12 @@ class OfferedCourseModel : public QAbstractListModel
 
 private:
     // the container which stores the data
-    QList<QVariantList*> data_container;
+    QList<QVariantList*>    data_container;
+    const QStringList       days_keyword{   QStringLiteral("شنبه"), QStringLiteral("یک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار") };
+    const QStringList       hours_keyword{  QStringLiteral("08"),   QStringLiteral("10"), QStringLiteral("13"), QStringLiteral("15"), QStringLiteral("17") };
+
+    int            calculateScheduleRow(const QString& day) const;
+    int            calculateScheduleColumn(const QString& hour) const;
 
 public:
     explicit OfferedCourseModel(QObject *parent = nullptr);
@@ -64,6 +69,8 @@ public:
     void cleanUp();
     void setDataContainer (QHash<QString, QVariantList*>& container);
 
+public slots:
+    QVariantMap getCourse(int index) const;
 };
 
 #endif // OFFEREDCOURSEMODEL_H
