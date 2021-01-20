@@ -1,35 +1,54 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import Qt.labs.qmlmodels 1.0
 
 Item {
     id: root
-    required property var model
-    property alias headerTitles: hours_repeater.model
-    property alias sideTitles: days_repeater.model
-    property alias headerDescription: table_desc.text
+    required property var   model
+    property alias          headerTitles: hours_repeater.model
+    property alias          sideTitles: days_repeater.model
+    property alias          headerDescription: table_desc.text
+    property var            courseColors: [
+        "#01579B", "#FF5252", "#6A1B9A", "#33691E", "#FF6D00",
+        "#00C853", "#0091EA", "#D32F2F", "#AA00FF", "#0D47A1",
+        "#FFB300", "#00E676", "#00B8D4", "#BA68C8", "#3D5AFE",
+        "#FFC400", "#8D6E63", "#757575", "#00796B", "#9C27B0"
+                                          ]
+    property int __courseColorIndex: 0
 
-    function setEelement(row, column, object)
+    function addElement(model_item)
     {
-        var len = row.length
+        var element_length = model_item.row.length
+        var element_uid = getUid(model_item)
+        var element_color = root.courseColors[root.__courseColorIndex]
+        courses.courseObjects[element_uid] = []
+        for (var j = 0; j < element_length; ++j) {
+            var obj = table_element.createObject(courses, {dataModel: model_item, modelIndex: j, color: element_color})
+            courses.courseObjects[element_uid].push(obj)
+        }
+        root.__courseColorIndex = (root.__courseColorIndex + 1) % root.courseColors.length
+    }
+
+    function removeElement(model_item)
+    {
+        var len = model_item.row.length
+        var uid = getUid(model_item)
         for (var i = 0; i < len; ++i) {
-            day_row.itemAt(row[i]).visibleChildren[1]["element_rep"].itemAt(column[i])["dataModel"] = object
+            courses.courseObjects[uid][i].destroy()
         }
     }
 
-    function clearEelement(row, column)
+    function getUid(model_item)
     {
-        var len = row.length
-        for (var i = 0; i < len; ++i) {
-            day_row.itemAt(row[i]).visibleChildren[1]["element_rep"].itemAt(column[i])["dataModel"] = null
-        }
+        return String(model_item.row[0]) + String(model_item.column[0])
     }
 
     Component.onCompleted: {
-        var len = root.model.length
-        for (var i = 0; i < len; ++i) {
-            setEelement(root.model[i].row, root.model[i].column, root.model[i])
+        var model_length = root.model.length
+        root.__courseColorIndex = parseInt(Math.random() * root.courseColors.length)
+        for (var i = 0; i < model_length; ++i) {
+            addElement(root.model[i])
         }
     }
 
@@ -58,19 +77,21 @@ Item {
 
     RowLayout {
         id: hours
-//        y: -2
         layoutDirection: Qt.RightToLeft
         width: parent.width - blank_space.width
         height: blank_space.height
         spacing: 0
+
+        property real hour_element_width: hours.width / hours_repeater.count
+
         Repeater {
             id: hours_repeater
-            model: ["۸-۱۰", "۱۰-۱۲", "۱۳-۱۵", "۱۵-۱۷", "۱۷-۱۹"]            
+            model: ["۸", "۹", "۱۰", "۱۱", "۱۲", "۱۳", "۱۴", "۱۵", "۱۶", "۱۷", "۱۸", "۱۹", "۲۰"]
             Rectangle {
                 Layout.alignment: Qt.AlignRight
                 color: "transparent"
                 Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: hours.hour_element_width
                 Label {
                     anchors.centerIn: parent
                     font.family: regular_font.name
@@ -80,8 +101,17 @@ Item {
                 Rectangle {
                     x: parent.width
                     width: 2
-                    height: root.height
+                    height: index == 0 ? root.height : hours.height
+//                    height: root.height
                     color: "#262A2F"
+                }
+                Rectangle {
+                    x: parent.width
+                    y: hours.height
+                    width: 1
+                    height: root.height - hours.height
+                    color: "#262A2F"
+                    opacity: 0.5
                 }
             }
         }
@@ -95,81 +125,80 @@ Item {
         spacing: 0
         width: blank_space.width
         height: table_schedule_bg.height - blank_space.height + 4
+        property real days_element_height: days.height / days_repeater.count
         Repeater {
             id: days_repeater
             model: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه"]
             Rectangle {
-                Layout.alignment: Qt.AlignRight
                 color: "transparent"
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: days.width
+                Layout.preferredHeight: days.days_element_height
                 Label {
                     anchors.centerIn: parent
                     font.family: regular_font.name
                     color: "#FFFFFF"
                     text: modelData
                 }
+                Rectangle {
+                    y: 1
+//                    width: index == 0 ? root.width : 0
+                    width: root.width
+                    x: -root.width + parent.width
+                    height: 2
+                    color: "#262A2F"
+                }
+
+//                Rectangle {
+//                    y: 1
+//                    width: days.width
+////                    width: root.width
+////                    x: -root.width + parent.width
+//                    height: 2
+//                    color: "#262A2F"
+//                }
             }
         }
     }
 
-    ColumnLayout {
+    Item {
         id: courses
         anchors.top: hours.bottom
         width: parent.width - days.width
         height: parent.height - hours.height
-        spacing: 0
-        Repeater {
-            id: day_row
-            model: days_repeater.count
-            Item {
-                width: parent.width
-                Layout.fillHeight: true
-                Rectangle {
-                    anchors.top: parent.top
-                    color: "#262A2F"
-                    width: root.width
-                    height: 2
-                }
-                RowLayout {
-                    width: parent.width
-                    height: parent.height
-                    layoutDirection: Qt.RightToLeft
-                    spacing: 0
-                    property var element_rep: element_repeater
-                    Repeater {
-                        id: element_repeater
-                        // get the courses of a day 'index' as a array of objects
-                        model: hours_repeater.count
-                        delegate: table_element
-                    }
-                }
-            }
-        }
+        property var courseObjects: ({})
     }
 
     Component {
         id: table_element
         Rectangle {
-            Layout.alignment: Qt.AlignRight
-            color: "transparent"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+            id: model_element
+            color: "#9C27B0"
+            radius: 8
 
-            property var dataModel: null
+            required property var dataModel
+            required property int modelIndex
 
-            ToolTip.visible: course_area.containsMouse && dataModel != null
+            width: hours.hour_element_width * (dataModel.length[modelIndex])
+            height: dataModel.row[modelIndex] === days_repeater.count - 1 ? (days.days_element_height / 1) - 8 : (days.days_element_height / 1) - 4
+            x: courses.width - width - (dataModel.column[modelIndex] * hours.hour_element_width) - 3
+//            y: days.days_element_height * dataModel.row[modelIndex] + 2 + (height / 4)
+            y: days.days_element_height * dataModel.row[modelIndex] + 2
+
+            ToolTip.visible: course_area.containsMouse
             ToolTip.delay: 500
-            ToolTip.text: dataModel != null ? "استاد: " + dataModel.teacher + "<br>تاریخ امتحان:‌ " + dataModel.exam : ""
+            ToolTip.text: "استاد: " + dataModel.teacher + "<br>تاریخ امتحان:‌ " + dataModel.exam
 
             Label {
+                id: model_element_text
                 width: parent.width - 5
                 anchors.centerIn: parent
                 font.family: regular_font.name
+//                font.pixelSize: contentHeight - model_element.height > 5 ? 11 : 14
                 color: "#FFFFFF"
-                text: dataModel == null ? "" : dataModel.name
+                text: dataModel.name
                 wrapMode: Label.WordWrap
                 horizontalAlignment: Label.AlignHCenter
+//                Component.onCompleted: console.log(contentHeight, model_element.height)
             }
             MouseArea {
                 id: course_area
@@ -180,3 +209,5 @@ Item {
     }
 
 }
+
+
