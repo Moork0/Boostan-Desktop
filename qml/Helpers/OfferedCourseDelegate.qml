@@ -279,6 +279,7 @@ Item {
         id: mouse_area
         anchors.fill: parent
         onPressAndHold: {
+            offered_course_model.getCourse(index)
             // FIXME: implement course selecting functions
             if (isChoosed) {
                 var ind = listview.choosed.indexOf(model.index)
