@@ -33,6 +33,7 @@ ApplicationWindow {
             }
 //            stackview.push("Pages/LoginPage.qml")
             stackview.push("Pages/OfferedCoursePage.qml")
+
         }
     }
 
