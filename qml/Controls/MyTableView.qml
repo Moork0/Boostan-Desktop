@@ -146,7 +146,6 @@ Item {
                         root.choosedList.push(index);
                         root.choosed(index)
                     }
-                    console.log(root.choosedList)
                     delegate_root.rowData.isChoosed = !delegate_root.rowData.isChoosed
                     column_repeater.model = 0
                     column_repeater.model = root.columnKey
