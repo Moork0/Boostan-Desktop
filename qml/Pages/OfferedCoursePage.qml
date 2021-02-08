@@ -29,7 +29,7 @@ Page {
 
     MyButton {
         id: constructed_schedule_btn
-        anchors.right: container_level1.right
+        anchors.right: listview.right
 //        anchors.rightMargin: 10
         y: 20
         width: 170
@@ -41,85 +41,14 @@ Page {
         font.family: regular_font.name
     }
 
-    // header for the listview
-    Rectangle {
-        id: container_level1
-        color: "#19B99A"
+    MyTableView {
+        id: listview
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: constructed_schedule_btn.bottom
         anchors.topMargin: 10
         width: parent.width - 30
         height: parent.height - constructed_schedule_btn.height - 50
-        radius: 10
-        RowLayout {
-            id: table_header_layout
-            width: parent.width - 10
-            height: 50
-            anchors.horizontalCenter: parent.horizontalCenter
-            layoutDirection: Qt.RightToLeft
-            spacing: 0
-            Repeater {
-                id: table_header_repeater
-                model: ["گروه", "شماره درس", "نام درس", "واحد", "ظرفیت", "استاد", "زمان", "محل برگزاری", "امتحان"]
-                property var sizes: [0.05, 0.11, 0.18, 0.04, 0.06, 0.13, 0.16, 0.11, 0.1]
-                Item {
-                    Layout.preferredHeight: 50
-                    Layout.preferredWidth: table_header_layout.width * table_header_repeater.sizes[index]
-//                    border.color: "red"
-//                    border.width: 1
-//                    color: "transparent"
-                    Layout.alignment: Qt.AlignVCenter
-                    Label {
-                        anchors.centerIn: parent
-                        font.family: regular_font.name
-                        font.bold: true
-                        text: modelData
-                        color: "#000000"
-                    }
-                    Rectangle {
-                        visible: index !== 0
-                        anchors.right: parent.right
-                        height: 60 // summation of container_level2 and listview_bg margins from the container_level1
-                        width: 2
-                        color: "#262A2F"
-                    }
-                }
-            }
-        }
-    }
-
-    Rectangle {
-        id: container_level2
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: container_level1.top
-        anchors.topMargin: 50
-        width: container_level1.width
-        height: container_level1.height - 50
-        radius: 8
-        color: "#262A2F"
-        opacity: 0.7
-    }
-
-    Rectangle {
-        id: listview_bg
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: container_level2.top
-        anchors.topMargin: 10
-        width: container_level2.width
-        height: container_level2.height - 10
-        radius: 8
-        color: "#262A2F"
-        opacity: 0.5
-    }
-    ListView {
-        id: listview
-        anchors.fill: listview_bg
-        property var choosed: []
-        clip: true
-        boundsBehavior: Flickable.OvershootBounds
         model: 0
-        delegate: OfferedCourseDelegate { }
     }
-
 }
 
