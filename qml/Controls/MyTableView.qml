@@ -178,7 +178,6 @@ Item {
         id: column_repeater_delegate
         BaseColumnItem {
             Label {
-                id: group_text
                 anchors.centerIn: parent
                 width: parent.width - 5
                 horizontalAlignment: Label.AlignHCenter
