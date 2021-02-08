@@ -7,7 +7,7 @@ Item {
 
     /**  Properties  **/
 
-    property var model: []
+    property alias model: listview.model
     property var columnKey: ["group", "courseNumber", "courseName", "weight", "capacity", "teacher", "time", "place", "exam"]
     property alias columnTitle: table_header_repeater.model
     property alias columnSizes: table_header_repeater.sizes
@@ -87,7 +87,6 @@ Item {
         property var choosed: []
         clip: true
         boundsBehavior: Flickable.OvershootBounds
-        model: root.model.length
         delegate: delegate
     }
 
@@ -97,8 +96,10 @@ Item {
             id: delegate_root
             height: 70
             width: listview.width
-            property var rowData: root.model[index]
-            Component.onCompleted: rowData["isChoosed"] = rowData.isChoosed ?? false
+            property var rowData: model
+            Component.onCompleted: {
+                rowData["isChoosed"] = rowData.isChoosed ?? false;
+            }
 
             RowLayout {
                 width: parent.width - 10
@@ -139,7 +140,7 @@ Item {
                 anchors.fill: parent
                 onPressAndHold: {
                     if (delegate_root.rowData.isChoosed) {
-                        var ind = root.choosedList.indexOf(modelData.index)
+                        var ind = root.choosedList.indexOf(index)
                         root.choosedList.splice(ind, 1)
                         root.unchoosed(index)
                     }else {
