@@ -13,7 +13,7 @@ Page {
         Component.onCompleted: start()
         onFinished: {
             sendDataTo(offered_course_model)
-            listview.model = offered_course_model
+            table_view.model = offered_course_model
         }
     }
 
@@ -29,7 +29,7 @@ Page {
 
     MyButton {
         id: constructed_schedule_btn
-        anchors.right: listview.right
+        anchors.right: table_view.right
 //        anchors.rightMargin: 10
         y: 20
         width: 170
@@ -42,7 +42,7 @@ Page {
     }
 
     MyTableView {
-        id: listview
+        id: table_view
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: constructed_schedule_btn.bottom
         anchors.topMargin: 10
