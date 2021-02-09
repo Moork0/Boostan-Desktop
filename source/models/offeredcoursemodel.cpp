@@ -68,8 +68,9 @@ int OfferedCourseModel::getRole(OfferedCourseModel::roles role)
 void OfferedCourseModel::cleanUp()
 {
     if (data_container.isEmpty()) return;
-    for (QVariantList* element : data_container) {
+    for(QVariantList* element : qAsConst(data_container)) {
         delete element;
+        element = nullptr;
     }
     data_container.clear();
 }
