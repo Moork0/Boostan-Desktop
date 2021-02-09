@@ -29,7 +29,7 @@ public:
         QStringLiteral("group"), QStringLiteral("courseNumber"), QStringLiteral("courseName"),
         QStringLiteral("weight"), QStringLiteral("capacity"), QStringLiteral("sex"),
         QStringLiteral("teacher"), QStringLiteral("time"), QStringLiteral("place"),
-        QStringLiteral("exam"), QStringLiteral("selected")
+        QStringLiteral("exam"), QStringLiteral("isChoosed")
     };
 
     enum roles
@@ -45,7 +45,7 @@ public:
         timeRole,
         placeRole,
         examRole,
-        selectedRole,
+        isChoosedRole,
         ROLE_END
     };
 
