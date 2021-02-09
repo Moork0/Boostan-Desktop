@@ -125,7 +125,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 
         // selected
 //        row_datas->replace(false);
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::selectedRole),
+        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::isChoosedRole),
                            (row_datas->at(0).toInt() % 2 == 0) ? true : false);
         container.insert(course_id, row_datas);
         reader.skipCurrentElement();
