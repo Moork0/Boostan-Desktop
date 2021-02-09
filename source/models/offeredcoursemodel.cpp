@@ -93,7 +93,7 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     QVariantList rows, columns;
     for (QString& time : times) {
         time = time.trimmed();
-        // the length of '00:00-00:00' is 11. so for extract the they we don't need the last 12 char's
+        // the length of '00:00-00:00' is 11. so for extract them we don't need the last 12 char's
         rows.append(calculateScheduleRow(time.chopped(12)));
         columns.append(calculateScheduleColumn(time.right(11)));
     }
