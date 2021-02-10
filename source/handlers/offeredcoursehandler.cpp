@@ -61,33 +61,33 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         course_id = reader.attributes().value("C1").toString();
         splited_data = course_id.split("-");
         // course number
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::courseNumberRole), splited_data[0]);
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::courseNumberRole), splited_data[0]);
         // group
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::groupRole), splited_data[1]);
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::groupRole), splited_data[1]);
         // course name
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::courseNameRole),
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::courseNameRole),
                            reader.attributes().value("C2").toString());
         // weight
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::weightRole),
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::weightRole),
                            reader.attributes().value("C3").toInt());
         // capacity
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::capacityRole),
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::capacityRole),
                            reader.attributes().value("C5").toInt());
 
         column_data_ref = reader.attributes().value("C6");
 
         // sex
         if (column_data_ref == QStringLiteral("زن"))
-            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::sexRole), OfferedCourseModel::Female);
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::Female);
 
         else if (column_data_ref == QStringLiteral("مرد"))
-            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::sexRole), OfferedCourseModel::Male);
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::Male);
 
         else
-            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::sexRole), OfferedCourseModel::None);
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::None);
 
         // teacher
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::teacherRole),
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::teacherRole),
                            reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
 
         // time and exam
@@ -104,10 +104,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         column_data += splited_data[splited_data.size() - 2];
         normalizeTime(column_data);
         // time
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::timeRole), column_data);
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::timeRole), column_data);
 
         // exam
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::examRole),
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole),
                            splited_data.last().remove(QStringLiteral("امتحان(")).remove(QStringLiteral("ساعت : "))
                                 .replace(QStringLiteral(")"), QStringLiteral("<br>")));
 
@@ -117,15 +117,15 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         int endpos {column_data_ref.lastIndexOf("<BR>")};
         if (underline_pos != -1 && endpos != -1)
             // we skip 2 character which is '_ '
-            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::placeRole),
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::placeRole),
                                column_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
         else
-            row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::placeRole),
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::placeRole),
                                column_data_ref.toString());
 
         // selected
 //        row_datas->replace(false);
-        row_datas->replace(OfferedCourseModel::getRole(OfferedCourseModel::isChoosedRole),
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole),
                            (row_datas->at(0).toInt() % 2 == 0) ? true : false);
         container.insert(course_id, row_datas);
         reader.skipCurrentElement();

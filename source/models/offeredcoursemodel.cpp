@@ -60,7 +60,7 @@ Qt::ItemFlags OfferedCourseModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEditable;
 }
 
-int OfferedCourseModel::getRole(OfferedCourseModel::roles role)
+int OfferedCourseModel::roleToIndex(OfferedCourseModel::roles role)
 {
     return role - ROLE_START - 1;
 }
@@ -87,9 +87,9 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
 {
     QVariantMap map;
     if (index < 0 || index >= data_container.size()) return map;
-    map[QStringLiteral("teacher")] = data_container[index]->at(getRole(teacherRole));
-    map[QStringLiteral("name")] = data_container[index]->at(getRole(courseNameRole));
-    QStringList times = data_container[index]->at(getRole(timeRole)).toString().split("<br>");
+    map[QStringLiteral("teacher")] = data_container[index]->at(roleToIndex(teacherRole));
+    map[QStringLiteral("name")] = data_container[index]->at(roleToIndex(courseNameRole));
+    QStringList times = data_container[index]->at(roleToIndex(timeRole)).toString().split("<br>");
     QVariantList rows, columns;
     for (QString& time : times) {
         time = time.trimmed();

@@ -65,7 +65,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     // custom functions
-    static int getRole(roles role);
+    static int roleToIndex(roles role);
     void cleanUp();
     void setDataContainer (const QHash<QString, QVariantList*>& container);
 
