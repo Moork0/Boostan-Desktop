@@ -14,7 +14,6 @@ class OfferedCourseModel : public QAbstractListModel
 private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
-    const QStringList       days_keyword{   QStringLiteral("شنبه"), QStringLiteral("یک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
 
     int            calculateScheduleRow(const QString& day) const;
     int            calculateScheduleColumn(const QString& hour) const;

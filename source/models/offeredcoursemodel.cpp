@@ -108,6 +108,7 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
 
 int OfferedCourseModel::calculateScheduleRow(const QString &day) const
 {
+    static const QStringList days_keyword{   QStringLiteral("شنبه"), QStringLiteral("یک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
     for (int i {0}; i < 5; ++i) {
         if (day.startsWith(days_keyword[i])) {
             return i;
