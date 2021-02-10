@@ -18,8 +18,9 @@ bool OfferedCourseHandler::getIsEmpty() const
 void OfferedCourseHandler::cleanUp()
 {
     if (container.isEmpty()) return;
-    for (QVariantList* element : container) {
+    for (QVariantList* element : qAsConst(container)) {
         delete element;
+        element = nullptr;
     }
     container.clear();
 }
