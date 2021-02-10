@@ -89,7 +89,7 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     if (index < 0 || index >= data_container.size()) return map;
     map[QStringLiteral("teacher")] = data_container[index]->at(getRole(teacherRole));
     map[QStringLiteral("name")] = data_container[index]->at(getRole(courseNameRole));
-    QStringList times =data_container[index]->at(getRole(timeRole)).toString().split("<br>");
+    QStringList times = data_container[index]->at(getRole(timeRole)).toString().split("<br>");
     QVariantList rows, columns;
     for (QString& time : times) {
         time = time.trimmed();
@@ -99,8 +99,8 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     }
     map[QStringLiteral("row")] = rows;
     map[QStringLiteral("column")] = columns;
-    map[QStringLiteral("code")] = data_container[index]->at(getRole(groupRole)).toString()
-            + data_container[index]->at(getRole(courseNumberRole)).toString();
+//    map[QStringLiteral("code")] = data_container[index]->at(getRole(groupRole)).toString()
+//            + data_container[index]->at(getRole(courseNumberRole)).toString();
 
     return map;
 }
@@ -118,10 +118,17 @@ int OfferedCourseModel::calculateScheduleRow(const QString &day) const
 
 int OfferedCourseModel::calculateScheduleColumn(const QString &hour) const
 {
-    for (int i {0}; i < 5; ++i) {
-        if (hour.startsWith(hours_keyword[i])) {
+    constexpr int first_hour {8};
+    constexpr int last_hour {20};
+    constexpr int columns_length {last_hour - first_hour};
+    QString current_hour;
+    for (int i {0}; i < columns_length; ++i) {
+        current_hour = QString::number(first_hour + i);
+        if (current_hour.size() == 1)
+            current_hour = QString(QStringLiteral("0")) + current_hour;
+
+        if (hour.startsWith(current_hour))
             return i;
-        }
     }
     return -1;
 }
