@@ -75,7 +75,7 @@ void OfferedCourseModel::cleanUp()
     data_container.clear();
 }
 
-void OfferedCourseModel::setDataContainer(QHash<QString, QVariantList*>& container)
+void OfferedCourseModel::setDataContainer(const QHash<QString, QVariantList*>& container)
 {
     cleanUp();
     for (QVariantList* element : container) {
