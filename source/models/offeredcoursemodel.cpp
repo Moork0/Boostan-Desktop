@@ -90,15 +90,19 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     map[QStringLiteral("teacher")] = data_container[index]->at(roleToIndex(teacherRole));
     map[QStringLiteral("name")] = data_container[index]->at(roleToIndex(courseNameRole));
     QStringList times = data_container[index]->at(roleToIndex(timeRole)).toString().split("<br>");
-    QVariantList rows, columns;
+    QVariantList rows, columns, lengths;
+    float calculated_column;
     for (QString& time : times) {
         time = time.trimmed();
         // the length of '00:00-00:00' is 11. so for extracting them we don't need the last 12 char's
         rows.append(calculateScheduleRow(time.chopped(12)));
-        columns.append(calculateScheduleColumn(time.right(11)));
+        calculated_column = calculateScheduleColumn(time.right(11));
+        columns.append(calculated_column);
+        lengths.append(calculateScheduleLen(time.right(11), calculated_column));
     }
     map[QStringLiteral("row")] = rows;
     map[QStringLiteral("column")] = columns;
+    map[QStringLiteral("length")] = lengths;
 //    map[QStringLiteral("code")] = data_container[index]->at(getRole(groupRole)).toString()
 //            + data_container[index]->at(getRole(courseNumberRole)).toString();
 
@@ -106,7 +110,7 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
 }
 
 
-int OfferedCourseModel::calculateScheduleRow(const QString &day) const
+int OfferedCourseModel::calculateScheduleRow(const QString& day) const
 {
     static const QStringList days_keyword{   QStringLiteral("شنبه"), QStringLiteral("یک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
     for (int i {0}; i < 5; ++i) {
@@ -117,7 +121,7 @@ int OfferedCourseModel::calculateScheduleRow(const QString &day) const
     return -1;
 }
 
-int OfferedCourseModel::calculateScheduleColumn(const QString &hour) const
+float OfferedCourseModel::calculateScheduleColumn(const QString& hour) const
 {
     constexpr int first_hour {8};
     constexpr int last_hour {20};
@@ -129,7 +133,21 @@ int OfferedCourseModel::calculateScheduleColumn(const QString &hour) const
             current_hour = QString(QStringLiteral("0")) + current_hour;
 
         if (hour.startsWith(current_hour))
-            return i;
+            return i + (hour.midRef(3, 2).toFloat() / 60);
     }
     return -1;
 }
+
+float OfferedCourseModel::calculateScheduleLen(const QString& hour, const float start_column) const
+{
+    // 5 is the length of the last 5 character of "12:34-56:78" which is "56:78"
+    float end_column {calculateScheduleColumn(hour.right(5))};
+    return end_column - start_column;
+}
+
+
+
+
+
+
+

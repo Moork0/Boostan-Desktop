@@ -15,8 +15,9 @@ private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
 
-    int            calculateScheduleRow(const QString& day) const;
-    int            calculateScheduleColumn(const QString& hour) const;
+    int         calculateScheduleRow(const QString& day) const;
+    float       calculateScheduleColumn(const QString& hour) const;
+    float       calculateScheduleLen(const QString& hour, const float start_column) const;
 
 public:
     explicit OfferedCourseModel(QObject *parent = nullptr);
