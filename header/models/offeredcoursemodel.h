@@ -67,7 +67,7 @@ public:
     // custom functions
     static int getRole(roles role);
     void cleanUp();
-    void setDataContainer (QHash<QString, QVariantList*>& container);
+    void setDataContainer (const QHash<QString, QVariantList*>& container);
 
 public slots:
     QVariantMap getCourse(int index) const;
