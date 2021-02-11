@@ -94,8 +94,9 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     float calculated_column;
     for (QString& time : times) {
         time = time.trimmed();
-        // the length of '00:00-00:00' is 11. so for extracting them we don't need the last 12 char's
+        // the first 12 character of the 'time' is name of the day.
         rows.append(calculateScheduleRow(time.chopped(12)));
+        // the length of '00:00-00:00' is 11. (the last 11 character of the 'time' string)
         calculated_column = calculateScheduleColumn(time.right(11));
         columns.append(calculated_column);
         lengths.append(calculateScheduleLen(time.right(11), calculated_column));
@@ -103,17 +104,15 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     map[QStringLiteral("row")] = rows;
     map[QStringLiteral("column")] = columns;
     map[QStringLiteral("length")] = lengths;
-//    map[QStringLiteral("code")] = data_container[index]->at(getRole(groupRole)).toString()
-//            + data_container[index]->at(getRole(courseNumberRole)).toString();
 
     return map;
 }
 
-
 int OfferedCourseModel::calculateScheduleRow(const QString& day) const
 {
-    static const QStringList days_keyword{   QStringLiteral("شنبه"), QStringLiteral("یک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
-    for (int i {0}; i < 5; ++i) {
+    static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
+    static const int keyword_size {days_keyword.size()};
+    for (int i {0}; i < keyword_size; ++i) {
         if (day.startsWith(days_keyword[i])) {
             return i;
         }
