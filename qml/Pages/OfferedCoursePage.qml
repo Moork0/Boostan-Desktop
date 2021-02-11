@@ -27,6 +27,21 @@ Page {
         color: "#262A2F"
     }
 
+    Popup {
+        id: schedule_popup
+        modal: true
+        width: parent.width
+        height: parent.height / 1.5
+        anchors.centerIn: Overlay.overlay
+        background: Rectangle { color: "transparent" }
+        ScheduleTable {
+            id: schedule_table
+            width: parent.width
+            height: parent.height
+            model: 0
+        }
+    }
+
     MyButton {
         id: constructed_schedule_btn
         anchors.right: table_view.right
@@ -39,6 +54,7 @@ Page {
         bgColor: "#19B99A"
         radius: 8
         font.family: regular_font.name
+        onClicked: schedule_popup.open()
     }
 
     MyTableView {
@@ -49,6 +65,34 @@ Page {
         width: parent.width - 30
         height: parent.height - constructed_schedule_btn.height - 50
         model: 0
+        columnItem: tableview_column
+        onChoosed: schedule_table.addElement(offered_course_model.getCourse(index))
+        onUnchoosed: schedule_table.removeElement(offered_course_model.getCourse(index))
+    }
+
+    Component {
+        id: tableview_column
+        MyTableView.BaseColumnItem {
+            Column {
+                anchors.centerIn: parent
+                width: parent.width - 5
+                Label {
+                    width: parent.width
+                    horizontalAlignment: Label.AlignHCenter
+                    wrapMode: Label.WordWrap
+                    font.family: regular_font.name
+                    text: model[role]
+                    color: model.isChoosed ? "#757575" : "#FFFFFF"
+                }
+                Icon {
+                    visible: role == "capacity" && model.sex !== OfferedCourseModel.None
+                    width: parent.width
+                    text: model.sex
+                    horizontalAlignment: Label.AlignHCenter
+                    color: model.isChoosed ? "#757575" : "#FFFFFF"
+                }
+            }
+        }
     }
 }
 
