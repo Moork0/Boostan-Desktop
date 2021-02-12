@@ -110,12 +110,12 @@ QVariantMap OfferedCourseModel::toScheduleFormat(int index) const
 
 void OfferedCourseModel::appendChoosedList(const int row_number)
 {
-    choosed_list.append(row_number);
+    choosed_list.append(toScheduleFormat(row_number));
 }
 
 void OfferedCourseModel::removeChoosedList(const int row_number)
 {
-    choosed_list.removeOne(row_number);
+    choosed_list.removeOne(toScheduleFormat(row_number));
 }
 
 int OfferedCourseModel::calculateScheduleRow(const QString& day) const

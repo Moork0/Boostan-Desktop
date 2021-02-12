@@ -15,7 +15,7 @@ private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
     // list of selected courses indexes(row numbers)
-    QList<int>              choosed_list;
+    QList<QVariantMap>              choosed_list;
 
     int         calculateScheduleRow(const QString& day) const;
     float       calculateScheduleColumn(const QString& hour) const;
@@ -56,7 +56,16 @@ public:
         Female,
         None
     };
+
+    enum collision_errors
+    {
+        NoCollision = 0,
+        ExamCollision,
+        TimeCollision,
+    };
+
     Q_ENUMS(gender)
+    Q_ENUMS(collision_errors)
 
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
