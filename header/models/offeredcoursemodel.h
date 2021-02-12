@@ -15,7 +15,7 @@ private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
     // list of selected courses indexes(row numbers)
-    QList<QVariantMap>              choosed_list;
+    QMap<int, QVariantMap>              choosed_list;
 
     int         calculateScheduleRow(const QString& day) const;
     float       calculateScheduleColumn(const QString& hour) const;
