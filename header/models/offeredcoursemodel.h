@@ -3,7 +3,6 @@
 
 #include <QAbstractListModel>
 #include <QHash>
-#include <vector>
 #include <QDebug>
 
 
