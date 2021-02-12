@@ -14,6 +14,8 @@ class OfferedCourseModel : public QAbstractListModel
 private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
+    // list of selected courses indexes(row numbers)
+    QList<int>              choosed_list;
 
     int         calculateScheduleRow(const QString& day) const;
     float       calculateScheduleColumn(const QString& hour) const;
@@ -70,6 +72,8 @@ public:
 
 public slots:
     QVariantMap getCourse(int index) const;
+    void appendChoosedList(const int row_number);
+    void removeChoosedList(const int row_number);
 };
 
 #endif // OFFEREDCOURSEMODEL_H

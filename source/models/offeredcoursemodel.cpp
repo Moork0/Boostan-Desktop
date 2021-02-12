@@ -108,6 +108,16 @@ QVariantMap OfferedCourseModel::getCourse(int index) const
     return map;
 }
 
+void OfferedCourseModel::appendChoosedList(const int row_number)
+{
+    choosed_list.append(row_number);
+}
+
+void OfferedCourseModel::removeChoosedList(const int row_number)
+{
+    choosed_list.removeOne(row_number);
+}
+
 int OfferedCourseModel::calculateScheduleRow(const QString& day) const
 {
     static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
@@ -143,9 +153,6 @@ float OfferedCourseModel::calculateScheduleLen(const QString& hour, const float 
     float end_column {calculateScheduleColumn(hour.right(5))};
     return end_column - start_column;
 }
-
-
-
 
 
 
