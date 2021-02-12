@@ -83,7 +83,7 @@ void OfferedCourseModel::setDataContainer(const QHash<QString, QVariantList*>& c
     }
 }
 
-QVariantMap OfferedCourseModel::toScheduleFormat(int index) const
+QVariantMap OfferedCourseModel::toScheduleFormat(const int index) const
 {
     QVariantMap map;
     if (index < 0 || index >= data_container.size()) return map;

@@ -80,7 +80,7 @@ public:
     void setDataContainer (const QHash<QString, QVariantList*>& container);
 
 public slots:
-    QVariantMap toScheduleFormat(int index) const;
+    QVariantMap toScheduleFormat(const int index) const;
     void appendChoosedList(const int row_number);
     void removeChoosedList(const int row_number);
 };
