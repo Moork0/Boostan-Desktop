@@ -71,7 +71,7 @@ public:
     void setDataContainer (const QHash<QString, QVariantList*>& container);
 
 public slots:
-    QVariantMap getCourse(int index) const;
+    QVariantMap toScheduleFormat(int index) const;
     void appendChoosedList(const int row_number);
     void removeChoosedList(const int row_number);
 };
