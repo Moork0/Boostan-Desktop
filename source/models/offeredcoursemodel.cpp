@@ -126,6 +126,7 @@ QVariantList OfferedCourseModel::checkCollision(const int row_number)
     const QVariantList columns (course.value("column").toList());
     const QVariantList rows (course.value("row").toList());
     const QVariantList lengths (course.value("length").toList());
+    const QString exam {course.value("exam").toString()};
     const int sessions_number {columns.size()};
 
     QMap<int, QVariantMap>::const_iterator iterator = choosed_list.cbegin();
@@ -134,6 +135,10 @@ QVariantList OfferedCourseModel::checkCollision(const int row_number)
     QVariantMap iterator_value;
     for (; iterator != end; ++iterator) {
         iterator_value = iterator.value();
+
+        if (iterator_value.value("exam").toString() == exam)
+            return QVariantList {ExamCollision, course.value("name").toString()};
+
         iterator_columns = iterator_value.value("column").toList();
         iterator_rows = iterator_value.value("row").toList();
         iterator_lengths = iterator_value.value("length").toList();
