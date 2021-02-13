@@ -94,6 +94,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         // time and exam
         column_data = reader.attributes().value("C8").toString();
         column_data.remove(QStringLiteral("درس(ت): "));
+        /// FIXME: determine theory and practical courses
 
         splited_data = column_data.split(QStringLiteral("<BR>"));
         splited_data.pop_back();
@@ -110,7 +111,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         // exam
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole),
                            splited_data.last().remove(QStringLiteral("امتحان(")).remove(QStringLiteral("ساعت : "))
-                                .replace(QStringLiteral(")"), QStringLiteral("<br>")));
+                                .replace(QStringLiteral(")"), QStringLiteral("<br>")).remove(QChar(' ')));
 
         // place
         column_data_ref = reader.attributes().value("C9");
@@ -124,10 +125,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::placeRole),
                                column_data_ref.toString());
 
-        // selected
-//        row_datas->replace(false);
-        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole),
-                           (row_datas->at(0).toInt() % 2 == 0) ? true : false);
+        // isChoosed
+//        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole),
+//                           (row_datas->at(0).toInt() % 2 == 0) ? true : false);
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole), false);
         container.insert(course_id, row_datas);
         reader.skipCurrentElement();
     }
