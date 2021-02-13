@@ -118,6 +118,45 @@ void OfferedCourseModel::removeChoosedList(const int row_number)
     choosed_list.remove(row_number);
 }
 
+QVariantList OfferedCourseModel::checkCollision(const int row_number)
+{
+    const QVariantMap course {toScheduleFormat(row_number)};
+    const QVariantList columns (course.value("column").toList());
+    const QVariantList rows (course.value("row").toList());
+    const QVariantList lengths (course.value("length").toList());
+    const int sessions_number {columns.size()};
+
+    QMap<int, QVariantMap>::const_iterator iterator = choosed_list.cbegin();
+    QMap<int, QVariantMap>::const_iterator end = choosed_list.cend();
+    QVariantList iterator_columns, iterator_rows, iterator_lengths;
+    QVariantMap iterator_value;
+    for (; iterator != end; ++iterator) {
+        iterator_value = iterator.value();
+        iterator_columns = iterator_value.value("column").toList();
+        iterator_rows = iterator_value.value("row").toList();
+        iterator_lengths = iterator_value.value("length").toList();
+
+        int size {iterator_columns.size()};
+        for (int iter_index {0}; iter_index < size; ++iter_index) {
+            float iter_column {iterator_columns[iter_index].toFloat()};
+            float iter_len {iterator_lengths[iter_index].toFloat()};
+
+            for (int orig_index {0}; orig_index < sessions_number; ++orig_index) {
+                if (iterator_rows[iter_index] != rows[orig_index]) continue;
+                float orig_column {columns[orig_index].toFloat()};
+                float orig_len {lengths[orig_index].toFloat()};
+
+                if (iter_column >= orig_column and iter_column < (orig_column + orig_len))
+                    return QVariantList {TimeCollision, course.value("name").toString()};
+
+                if (orig_column >= iter_column and orig_column < (iter_column + iter_len))
+                    return QVariantList {TimeCollision, course.value("name").toString()};
+            }
+        }
+    }
+    return QVariantList {NoCollision, QString()};
+}
+
 int OfferedCourseModel::calculateScheduleRow(const QString& day) const
 {
     static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };

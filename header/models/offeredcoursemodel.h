@@ -82,6 +82,8 @@ public slots:
     QVariantMap toScheduleFormat(const int index) const;
     void appendChoosedList(const int row_number);
     void removeChoosedList(const int row_number);
+    QVariantList checkCollision(const int row_number);
+
 };
 
 #endif // OFFEREDCOURSEMODEL_H
