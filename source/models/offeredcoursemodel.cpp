@@ -154,10 +154,10 @@ QVariantList OfferedCourseModel::checkCollision(const int row_number)
                 float orig_len {lengths[orig_index].toFloat()};
 
                 if (iter_column >= orig_column and iter_column < (orig_column + orig_len))
-                    return QVariantList {TimeCollision, course.value("name").toString()};
+                    return QVariantList {TimeCollision, iterator_value.value("name").toString()};
 
                 if (orig_column >= iter_column and orig_column < (iter_column + iter_len))
-                    return QVariantList {TimeCollision, course.value("name").toString()};
+                    return QVariantList {TimeCollision, iterator_value.value("name").toString()};
             }
         }
     }
