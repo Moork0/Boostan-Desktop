@@ -18,6 +18,13 @@ Item {
     signal choosed(int index)
     signal unchoosed(int index)
 
+    function undoChoose(index)
+    {
+        listview.itemAtIndex(index).rowData["isChoosed"] = false
+        var ind = root.choosedList.indexOf(index)
+        root.choosedList.splice(ind, 1)
+    }
+
     // header for the listview
     Rectangle {
         id: container_level1
@@ -112,8 +119,10 @@ Item {
                     id: column_repeater
                     model: root.columnKey
                     property var rowIndex: index
+                    property var aaaaaaaaaaaaaaaaaaaaaaa: "asssssssss"
                     Item {
                         id: column_repeater_root_delegate
+                        property var bbbbbbbbbbbbbbb: "asssssssss"
                         Layout.preferredWidth: parent.width * table_header_repeater.sizes[index]
                         Layout.preferredHeight: parent.height
                         Layout.alignment: Qt.AlignVCenter
@@ -142,12 +151,13 @@ Item {
                     if (delegate_root.rowData.isChoosed) {
                         var ind = root.choosedList.indexOf(index)
                         root.choosedList.splice(ind, 1)
+                        delegate_root.rowData.isChoosed = false
                         root.unchoosed(index)
                     }else {
                         root.choosedList.push(index);
+                        delegate_root.rowData.isChoosed = true
                         root.choosed(index)
                     }
-                    delegate_root.rowData.isChoosed = !delegate_root.rowData.isChoosed
                     column_repeater.model = 0
                     column_repeater.model = root.columnKey
                 }

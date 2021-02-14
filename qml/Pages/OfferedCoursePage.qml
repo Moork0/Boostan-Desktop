@@ -66,8 +66,20 @@ Page {
         height: parent.height - constructed_schedule_btn.height - 50
         model: 0
         columnItem: tableview_column
-        onChoosed: schedule_table.addElement(offered_course_model.toScheduleFormat(index))
-        onUnchoosed: schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
+        onChoosed: {
+            var collision_result = offered_course_model.checkCollision(index)
+            if (collision_result[0] === OfferedCourseModel.NoCollision) {
+                offered_course_model.appendChoosedList(index)
+                schedule_table.addElement(offered_course_model.toScheduleFormat(index))
+                return;
+            }
+            undoChoose(index)
+        }
+
+        onUnchoosed: {
+            schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
+            offered_course_model.removeChoosedList(index)
+        }
     }
 
     Component {
