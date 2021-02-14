@@ -137,7 +137,7 @@ QVariantList OfferedCourseModel::checkCollision(const int row_number)
         iterator_value = iterator.value();
 
         if (iterator_value.value("exam").toString() == exam)
-            return QVariantList {ExamCollision, course.value("name").toString()};
+            return QVariantList {ExamCollision, iterator_value.value("name").toString()};
 
         iterator_columns = iterator_value.value("column").toList();
         iterator_rows = iterator_value.value("row").toList();
