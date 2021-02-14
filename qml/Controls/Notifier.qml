@@ -51,6 +51,7 @@ Item {
                 visible: text !== ""
                 anchors.horizontalCenter: parent.horizontalCenter
 //                text: "این یک متن راهنماست"
+                text: ""
                 color: notifier_text.color
                 font.family: notifier_text.font.family
                 font.pixelSize: 14
