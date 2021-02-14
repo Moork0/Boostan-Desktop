@@ -50,7 +50,7 @@ Item {
                 id: notifier_solution
                 visible: text !== ""
                 anchors.horizontalCenter: parent.horizontalCenter
-//                text: "این یک متن ارور است که باید ببینید"
+//                text: "این یک متن راهنماست"
                 color: notifier_text.color
                 font.family: notifier_text.font.family
                 font.pixelSize: 14
