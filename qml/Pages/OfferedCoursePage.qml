@@ -27,6 +27,15 @@ Page {
         color: "#262A2F"
     }
 
+    Notifier {
+        id: notifier
+        showType: Notifier.ShowType.LeftToRight
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        z: 2
+        font.family: regular_font.name
+    }
+
     Popup {
         id: schedule_popup
         modal: true
@@ -74,6 +83,9 @@ Page {
                 return;
             }
             undoChoose(index)
+            notifier.text = qsTr("%1 درس مورد نظر با درس %2 تداخل دارد!").arg(collision_result[0] === OfferedCourseModel.TimeCollision ? "زمان" : "امتحان")
+                                                                            .arg(collision_result[1])
+            notifier.show()
         }
 
         onUnchoosed: {
