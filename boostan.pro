@@ -27,6 +27,7 @@ SOURCES += \
         source/base/settings.cpp \
         source/base/network.cpp \
         source/helpers/errors.cpp \
+        source/controls/scheduletable.cpp \
         source/main.cpp
 
 HEADERS += \
@@ -42,7 +43,8 @@ HEADERS += \
         header/helpers/constants.h \
         header/base/network.h \
         header/base/settings.h \
-        header/models/offeredcoursemodel.h
+        header/models/offeredcoursemodel.h \
+        header/controls/scheduletable.h
 
 RESOURCES += qml/qml.qrc
 
