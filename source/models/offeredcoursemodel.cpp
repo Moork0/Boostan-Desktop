@@ -90,6 +90,7 @@ QVariantMap OfferedCourseModel::toScheduleFormat(const int index) const
     map[QStringLiteral("teacher")] = data_container[index]->at(roleToIndex(teacherRole));
     map[QStringLiteral("name")] = data_container[index]->at(roleToIndex(courseNameRole));
     map[QStringLiteral("exam")] = data_container[index]->at(roleToIndex(examRole)).toString().replace(QStringLiteral("<br>"), QStringLiteral(" "));
+    map[QStringLiteral("warningForCourses")] = QVariantList();
 
     QStringList times = data_container[index]->at(roleToIndex(timeRole)).toString().split("<br>");
     QVariantList rows, columns, lengths;
