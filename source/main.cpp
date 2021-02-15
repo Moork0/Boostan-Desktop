@@ -22,8 +22,10 @@
 #include "header/handlers/offeredcoursehandler.h"
 //! models
 #include "header/models/offeredcoursemodel.h"
+//! Controls
+#include "header/controls/scheduletable.h"
 
-/// use QString::at() instead of [] for readonly purpose
+/// TODO: use QString::at() instead of [] for readonly purpose
 
 int main(int argc, char *argv[])
 {
@@ -76,17 +78,25 @@ int main(int argc, char *argv[])
 
     /** Types **/
 
+    /*  Controls back-end  */
+    qmlRegisterType <ScheduleTable>             ("API.Controls.ScheduleTable", 1, 0, "ScheduleTableBackEnd");
+
+    /* Handler types */
     qmlRegisterType <InitHandler>               ("API.InitHandler", 1, 0, "InitHandler");
     qmlRegisterType <LoginHandler>              ("API.LoginHandler", 1, 0, "LoginHandler");
     qmlRegisterType <CaptchaHandler>            ("API.LoginHandler", 1, 0, "CaptchaHandler");
     qmlRegisterType <BriefInfoHandler>          ("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
     qmlRegisterType <CourseScheduleHandler>     ("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
-    qmlRegisterType <Errors>                    ("API.Errors", 1, 0, "Error");
     qmlRegisterType <OfferedCourseHandler>      ("API.OfferedCourseHandler", 1, 0, "OfferedCourseHandler");
-    /// TODO: OfferedCourseModel should be non-creatable object
+
+    /*   Models   */
     qmlRegisterType <OfferedCourseModel>        ("API.OfferedCourseHandler", 1, 0, "OfferedCourseModel");
+
+    /*   Helper types   */
+    qmlRegisterType <Errors>                    ("API.Errors", 1, 0, "Error");
     /// TODO: settings will be a non-creatable object and this should change to non creatable
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
+
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app,
