@@ -7,7 +7,7 @@
 */
 
 //! TODO: separate delegate as a component so we can set the delegate would be flexible
-//! TODO: move functionalities into c++ side
+//!  TODO: move functionalities into c++ side
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
