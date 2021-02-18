@@ -104,8 +104,8 @@ Item {
         var uid = getUid(model_item)
         for (var i = 0; i < len; ++i) {
             courses.courseObjects[uid][i].destroy()
-            // delete the course object
         }
+        delete courses.courseObjects[uid]
         __back_end.removeEelement(uid)
     }
 
