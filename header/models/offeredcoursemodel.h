@@ -13,8 +13,6 @@ class OfferedCourseModel : public QAbstractListModel
 private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
-    // list of selected courses indexes(row numbers)
-    QMap<int, QVariantMap>              choosed_list;
 
     int         calculateScheduleRow(const QString& day) const;
     float       calculateScheduleColumn(const QString& hour) const;
@@ -56,15 +54,7 @@ public:
         None
     };
 
-    enum collision_errors
-    {
-        NoCollision = 0,
-        ExamCollision,
-        TimeCollision,
-    };
-
     Q_ENUMS(gender)
-    Q_ENUMS(collision_errors)
 
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -80,10 +70,6 @@ public:
 
 public slots:
     QVariantMap toScheduleFormat(const int index) const;
-    void appendChoosedList(const int row_number);
-    void removeChoosedList(const int row_number);
-    QVariantList checkCollision(const int row_number);
-
 };
 
 #endif // OFFEREDCOURSEMODEL_H
