@@ -74,7 +74,7 @@ Item {
             if (warning_number === root.__warningNumber) {
                 root.__warningNumber += 1
             }
-            warning_string = __back_end.getCourseNames(model_item.warningForCourses)
+            warning_string = "امتحان این درس با درس های زیر در یک روز است:<br>" + __back_end.getCourseNames(model_item.warningForCourses)
             integrateAddedWarning(model_item, model_item.warningForCourses, warning_number)
         }
 
