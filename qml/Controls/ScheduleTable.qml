@@ -50,6 +50,7 @@ Item {
     // index of the color from 'courseColors'
     property int __courseColorIndex: 0
     property int __warningNumber: 1
+    property string __warningStringPrefix: "امتحان این درس با درس های زیر در یک روز است:<br>"
 
     /* Functions */
 
@@ -74,7 +75,7 @@ Item {
             if (warning_number === root.__warningNumber) {
                 root.__warningNumber += 1
             }
-            warning_string = "امتحان این درس با درس های زیر در یک روز است:<br>" + __back_end.getCourseNames(model_item.warningForCourses)
+            warning_string = __warningStringPrefix + __back_end.getCourseNames(model_item.warningForCourses)
             integrateAddedWarning(model_item, model_item.warningForCourses, warning_number)
         }
 
@@ -147,7 +148,7 @@ Item {
             if (courses.courseObjects[uid][0].dataModel.warningForCourses.length === 0) {
                 courses.courseObjects[uid][0].warningNumber = 0
             } else {
-                courses.courseObjects[uid][0].warningString = __back_end.getCourseNames(courses.courseObjects[uid][0].dataModel.warningForCourses)
+                courses.courseObjects[uid][0].warningString = root.__warningStringPrefix + __back_end.getCourseNames(courses.courseObjects[uid][0].dataModel.warningForCourses)
             }
             courses.courseObjects[uid][0].dataModelChanged()
         }
