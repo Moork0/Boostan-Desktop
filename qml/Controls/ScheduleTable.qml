@@ -102,6 +102,7 @@ Item {
     {
         var len = model_item.row.length
         var uid = getUid(model_item)
+        integrateRemovedWarning(uid)
         for (var i = 0; i < len; ++i) {
             courses.courseObjects[uid][i].destroy()
         }
@@ -135,20 +136,22 @@ Item {
         }
     }
 
-//    function integrateRemovedWarning (element_uid)
-//    {
-
-//    }
-
-//    function test(model_item)
-//    {
-//        var uid = getUid(model_item)
-//        console.log(courses.courseObjects[uid][0].dataModel.name)
-//        courses.courseObjects[uid][0].dataModel.name = "asdasdasdasd"
-//        courses.courseObjects[uid][0].dataModelChanged()
-//        courses.courseObjects[uid][1].dataModelChanged()
-//        console.log(courses.courseObjects[uid][0].dataModel.name)
-//    }
+    function integrateRemovedWarning (element_uid)
+    {
+        var obj = courses.courseObjects[element_uid][0].dataModel
+        var uid = "";
+        for (var i = 0; i < obj.warningForCourses.length; ++i) {
+            uid = obj.warningForCourses[i]
+            var index = courses.courseObjects[uid][0].dataModel.warningForCourses.indexOf(element_uid)
+            courses.courseObjects[uid][0].dataModel.warningForCourses.splice(index, 1)
+            if (courses.courseObjects[uid][0].dataModel.warningForCourses.length === 0) {
+                courses.courseObjects[uid][0].warningNumber = 0
+            } else {
+                courses.courseObjects[uid][0].warningString = __back_end.getCourseNames(courses.courseObjects[uid][0].dataModel.warningForCourses)
+            }
+            courses.courseObjects[uid][0].dataModelChanged()
+        }
+    }
 
     // initialize the component
     Component.onCompleted: {
