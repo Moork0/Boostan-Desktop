@@ -103,7 +103,9 @@ Item {
     {
         var len = model_item.row.length
         var uid = getUid(model_item)
-        integrateRemovedWarning(uid)
+        if (root.hasWarning) {
+            integrateRemovedWarning(uid)
+        }
         for (var i = 0; i < len; ++i) {
             courses.courseObjects[uid][i].destroy()
         }
