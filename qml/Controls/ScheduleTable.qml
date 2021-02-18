@@ -3,20 +3,22 @@
     * I tried to make this component reusable.(as it is, generally)
     * the model for this component must have these 3 properties: row, column, length
     * each of the properties listed above must be a list. so at least the model could be like this:
-    * { row: [0], column: [0], length: [] }
+    * { row: [0], column: [0], length: [0] }
 */
 
 //! TODO: separate delegate as a component so we can set the delegate would be flexible
+//! TODO: move functionalities into c++ side
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import Qt.labs.qmlmodels 1.0
+//import Qt.labs.qmlmodels 1.0
+import API.Controls.ScheduleTable 1.0
 
 Item {
     id: root
 
-    /* Public properties */
+    /** Public properties **/
 
     required property var   model
     // the top header of the table
@@ -25,6 +27,8 @@ Item {
     property alias          sideTitles: days_repeater.model
     // the description of the headers. this text would be placed in the first cell (from top-right)
     property alias          headerDescription: table_desc.text
+    // determine if the delegate should show warnings (based on model)
+    property bool hasWarning: false
     // colors of each element
     property var            courseColors: [
         "#01579B", "#FF5252", "#6A1B9A", "#33691E", "#FF6D00",
@@ -32,10 +36,20 @@ Item {
         "#FFB300", "#00E676", "#00B8D4", "#BA68C8", "#3D5AFE",
         "#FFC400", "#8D6E63", "#757575", "#00796B", "#9C27B0"
                                           ]
-    /* private properties */
+
+    // copy of the scheduletable.h enum 'collision_errors'
+    enum CollisionErrors {
+        NoCollision = 0,
+        ExamCollision,
+        TimeCollision,
+        ExamWarning
+    }
+
+    /** private properties **/
 
     // index of the color from 'courseColors'
     property int __courseColorIndex: 0
+    property int __warningNumber: 1
 
     /* Functions */
 
@@ -45,10 +59,37 @@ Item {
         var element_length = model_item.row.length
         var element_uid = getUid(model_item)
         var element_color = root.courseColors[root.__courseColorIndex]
+        var warning_string = ""
+        var warning_number = 0
+
+        if (root.hasWarning && model_item.warningForCourses.length) {
+            warning_number = root.__warningNumber;
+            for (var i = 0; i < model_item.warningForCourses.length; ++i) {
+                var w_number = courses.courseObjects[model_item.warningForCourses[i]][0].warningNumber
+                if (w_number !== 0) {
+                    warning_number = w_number
+                    break
+                }
+            }
+            if (warning_number === root.__warningNumber) {
+                root.__warningNumber += 1
+            }
+            warning_string = __back_end.getCourseNames(model_item.warningForCourses)
+            integrateAddedWarning(model_item, model_item.warningForCourses, warning_number)
+        }
+
+        // add item to back-end container
+        __back_end.addEelement(element_uid, model_item)
+
         // create an empty list for the object unique id
         courses.courseObjects[element_uid] = []
         for (var j = 0; j < element_length; ++j) {
-            var obj = table_element.createObject(courses, {dataModel: model_item, modelIndex: j, color: element_color})
+            var obj;
+            if (j === 0) {
+                obj = table_element.createObject(courses, {dataModel: model_item, modelIndex: j, color: element_color, warningNumber: warning_number, warningString: warning_string})
+            } else {
+                obj = table_element.createObject(courses, {dataModel: model_item, modelIndex: j, color: element_color})
+            }
             // store the object
             courses.courseObjects[element_uid].push(obj)
         }
@@ -63,7 +104,9 @@ Item {
         var uid = getUid(model_item)
         for (var i = 0; i < len; ++i) {
             courses.courseObjects[uid][i].destroy()
+            // delete the course object
         }
+        __back_end.removeEelement(uid)
     }
 
     // generate a unique id for a element
@@ -71,6 +114,41 @@ Item {
     {
         return String(model_item.row[0]) + String(model_item.column[0])
     }
+
+    function checkCollision (model_item)
+    {
+        return __back_end.checkCollision(model_item)
+    }
+
+    function integrateAddedWarning (model_item, destinations_uids, warning_number)
+    {
+        var source_uid = getUid(model_item)
+        var dest_uid = ""
+        var name = model_item.name + "<br>"
+        for (var i = 0; i < destinations_uids.length; ++i)
+        {
+            dest_uid = destinations_uids[i]
+            courses.courseObjects[dest_uid][0].dataModel.warningForCourses.push(source_uid)
+            courses.courseObjects[dest_uid][0].warningString = courses.courseObjects[dest_uid][0].warningString + name
+            courses.courseObjects[dest_uid][0].warningNumber = warning_number
+            courses.courseObjects[dest_uid][0].dataModelChanged()
+        }
+    }
+
+//    function integrateRemovedWarning (element_uid)
+//    {
+
+//    }
+
+//    function test(model_item)
+//    {
+//        var uid = getUid(model_item)
+//        console.log(courses.courseObjects[uid][0].dataModel.name)
+//        courses.courseObjects[uid][0].dataModel.name = "asdasdasdasd"
+//        courses.courseObjects[uid][0].dataModelChanged()
+//        courses.courseObjects[uid][1].dataModelChanged()
+//        console.log(courses.courseObjects[uid][0].dataModel.name)
+//    }
 
     // initialize the component
     Component.onCompleted: {
@@ -81,6 +159,9 @@ Item {
             addElement(root.model[i])
         }
     }
+
+    // back end of the ScheduleTable. this should be private Component
+    ScheduleTableBackEnd { id: __back_end }
 
     Rectangle {
         id: table_schedule_bg
@@ -206,15 +287,17 @@ Item {
     Component {
         id: table_element
         Rectangle {
-            id: model_element
+            id: table_element_root
             color: "#9C27B0"
             radius: 8
 
             required property var dataModel
             // index for identifying which row, column and length element should we use.
             required property int modelIndex
+            property string warningString
+            property int warningNumber
 
-            width: hours.hour_element_width * (dataModel.length[modelIndex])
+            width: hours.hour_element_width * (dataModel["length"][modelIndex])
             height: dataModel.row[modelIndex] === days_repeater.count - 1 ? (days.days_element_height / 1) - 8 : (days.days_element_height / 1) - 4
             x: courses.width - width - (dataModel.column[modelIndex] * hours.hour_element_width) - 3
 //            y: days.days_element_height * dataModel.row[modelIndex] + 2 + (height / 4)
@@ -224,23 +307,61 @@ Item {
             ToolTip.delay: 500
             ToolTip.text: "استاد: " + dataModel.teacher + "<br>تاریخ امتحان:‌ " + dataModel.exam
 
+            Component.onCompleted: {
+                dataModelChanged.connect(warningStringChanged)
+                dataModelChanged.connect(warningNumberChanged)
+            }
+
             Label {
-                id: model_element_text
+                id: table_element_root_text
                 width: parent.width - 5
                 anchors.centerIn: parent
                 font.family: regular_font.name
-//                font.pixelSize: contentHeight - model_element.height > 5 ? 11 : 14
+//                font.pixelSize: contentHeight - table_element_root.height > 5 ? 11 : 14
                 color: "#FFFFFF"
                 text: dataModel.name
                 wrapMode: Label.WordWrap
                 horizontalAlignment: Label.AlignHCenter
-//                Component.onCompleted: console.log(contentHeight, model_element.height)
+//                Component.onCompleted: console.log(contentHeight, table_element_root.height)
             }
             MouseArea {
                 id: course_area
                 anchors.fill: parent
                 hoverEnabled: true
             }
+
+            Rectangle {
+                id: warning
+                visible: root.hasWarning && table_element_root.warningNumber !== 0
+                anchors.right: parent.right
+                anchors.rightMargin: 2
+                anchors.top: parent.top
+                anchors.topMargin: 2
+                width: parent.width / 10
+                height: width
+                radius: width / 2
+                border.color: "#FFFFFF"
+                border.width: 1
+                color: "transparent"
+                ToolTip.visible: warning_area.containsMouse
+                ToolTip.delay: 500
+                ToolTip.text: table_element_root.warningString
+                Label {
+                    id: warning_number
+                    color: "#FFFFFF"
+                    text: table_element_root.warningNumber
+                    font.pixelSize: 10
+                    anchors.centerIn: parent
+                    font.weight: Font.Black
+                }
+            }
+            MouseArea {
+                id: warning_area
+                visible: warning.visible
+                anchors.fill: warning
+                hoverEnabled: true
+            }
+
         }
     }
 
