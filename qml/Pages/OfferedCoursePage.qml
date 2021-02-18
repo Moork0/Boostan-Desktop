@@ -34,6 +34,7 @@ Page {
         anchors.topMargin: 50
         z: 2
         font.family: regular_font.name
+        bgColor: "#E65100"
     }
 
     Popup {
@@ -48,6 +49,7 @@ Page {
             width: parent.width
             height: parent.height
             model: 0
+            hasWarning: true
         }
     }
 
@@ -76,21 +78,23 @@ Page {
         model: 0
         columnItem: tableview_column
         onChoosed: {
-            var collision_result = offered_course_model.checkCollision(index)
-            if (collision_result[0] === OfferedCourseModel.NoCollision) {
-                offered_course_model.appendChoosedList(index)
-                schedule_table.addElement(offered_course_model.toScheduleFormat(index))
+            var obj = offered_course_model.toScheduleFormat(index);
+            var collision_result = schedule_table.checkCollision(obj);
+
+            if (collision_result[0] === ScheduleTable.NoCollision || ScheduleTable.ExamWarning) {
+                if (collision_result[0] === ScheduleTable.ExamWarning) {
+                    obj.warningForCourses = collision_result[1]
+                }
+                schedule_table.addElement(obj)
                 return;
             }
             undoChoose(index)
-            notifier.text = qsTr("%1 درس مورد نظر با درس %2 تداخل دارد!").arg(collision_result[0] === OfferedCourseModel.TimeCollision ? "زمان" : "امتحان")
-                                                                            .arg(collision_result[1])
+            notifier.text = qsTr("%1 درس مورد نظر با درس %2 تداخل دارد!").arg(collision_result[0] === OfferedCourseModel.TimeCollision ? "زمان" : "امتحان").arg(collision_result[1])
             notifier.show()
         }
 
         onUnchoosed: {
             schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
-            offered_course_model.removeChoosedList(index)
         }
     }
 
