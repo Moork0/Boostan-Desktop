@@ -121,7 +121,7 @@ Page {
                 return;
             }
             undoChoose(index)
-            notifier.text = qsTr("%1 درس مورد نظر با درس %2 تداخل دارد!").arg(collision_result[0] === OfferedCourseModel.TimeCollision ? "زمان" : "امتحان").arg(collision_result[1])
+            notifier.text = qsTr("%1 درس مورد نظر با درس %2 تداخل دارد!").arg(collision_result[0] === ScheduleTable.TimeCollision ? "زمان" : "امتحان").arg(collision_result[1])
             notifier.show()
         }
 
