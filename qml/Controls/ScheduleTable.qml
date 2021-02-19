@@ -144,7 +144,8 @@ Item {
         {
             dest_uid = destinations_uids[i]
             courses.courseObjects[dest_uid][0].dataModel.warningForCourses.push(source_uid)
-            courses.courseObjects[dest_uid][0].warningString = courses.courseObjects[dest_uid][0].warningString + name
+            var war_str = courses.courseObjects[dest_uid][0].warningString
+            courses.courseObjects[dest_uid][0].warningString = (war_str === "" ? root.__warningStringPrefix : war_str) + name
             courses.courseObjects[dest_uid][0].warningNumber = warning_number
             courses.courseObjects[dest_uid][0].dataModelChanged()
         }
