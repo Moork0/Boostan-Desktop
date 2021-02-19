@@ -28,6 +28,7 @@ public slots:
     void addEelement(const QString uid, QVariantMap element);
     void removeEelement(const QString& uid);
     QVariantList checkCollision(const QVariantMap element) const;
+    void clearAll();
 
     /** specialized function member for storing courses **/
     QString getCourseNames(const QVariantList uids) const;

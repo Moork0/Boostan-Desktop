@@ -113,6 +113,17 @@ Item {
         __back_end.removeEelement(uid)
     }
 
+    function clear ()
+    {
+        for (var uid in courses.courseObjects) {
+            for (var i = 0; i < courses.courseObjects[uid].length; ++i) {
+                courses.courseObjects[uid][i].destroy()
+            }
+        }
+        courses.courseObjects = ({})
+        __back_end.clearAll()
+    }
+
     // generate a unique id for a element
     function getUid(model_item)
     {

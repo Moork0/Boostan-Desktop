@@ -69,6 +69,11 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
 
 }
 
+void ScheduleTable::clearAll()
+{
+    model_data.clear();
+}
+
 QString ScheduleTable::getCourseNames(const QVariantList uids) const
 {
     QString names;
