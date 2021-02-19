@@ -51,6 +51,34 @@ Page {
             model: 0
             hasWarning: true
         }
+        MyButton {
+            id: clear_schedule_btn
+            anchors.top: schedule_table.bottom
+            anchors.topMargin: 5
+            anchors.right: schedule_table.right
+            bgColor: "#19B99A"
+            radius: 8
+            font.family: regular_font.name
+            width: 150
+            height: 50
+            text: "یادت نگهدار"
+            iconText: "\ue80a" // bookmark icon
+            iconSize: 17
+        }
+        MyButton {
+            id: save_schedule_btn
+            anchors.top: clear_schedule_btn.top
+            anchors.right: clear_schedule_btn.left
+            anchors.rightMargin: 5
+            bgColor: "#e54304"
+            radius: 8
+            font.family: regular_font.name
+            width: 150
+            height: 50
+            iconText: "\ue808" // trash icon
+            iconSize: 17
+            text: "پاک کن"
+        }
     }
 
     MyButton {
