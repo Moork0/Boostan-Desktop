@@ -81,7 +81,7 @@ Page {
             var obj = offered_course_model.toScheduleFormat(index);
             var collision_result = schedule_table.checkCollision(obj);
 
-            if (collision_result[0] === ScheduleTable.NoCollision || ScheduleTable.ExamWarning) {
+            if (collision_result[0] === ScheduleTable.NoCollision || collision_result[0] === ScheduleTable.ExamWarning) {
                 if (collision_result[0] === ScheduleTable.ExamWarning) {
                     obj.warningForCourses = collision_result[1]
                 }
