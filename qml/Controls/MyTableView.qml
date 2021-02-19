@@ -25,6 +25,15 @@ Item {
         root.choosedList.splice(ind, 1)
     }
 
+    function clearAllChoosed ()
+    {
+        for (var i = 0; i < choosedList.length; ++i) {
+            var obj = listview.itemAtIndex(choosedList[i])
+            obj.rowData["isChoosed"] = false
+        }
+        root.choosedList = []
+    }
+
     // header for the listview
     Rectangle {
         id: container_level1
@@ -119,10 +128,8 @@ Item {
                     id: column_repeater
                     model: root.columnKey
                     property var rowIndex: index
-                    property var aaaaaaaaaaaaaaaaaaaaaaa: "asssssssss"
                     Item {
                         id: column_repeater_root_delegate
-                        property var bbbbbbbbbbbbbbb: "asssssssss"
                         Layout.preferredWidth: parent.width * table_header_repeater.sizes[index]
                         Layout.preferredHeight: parent.height
                         Layout.alignment: Qt.AlignVCenter
@@ -158,8 +165,6 @@ Item {
                         delegate_root.rowData.isChoosed = true
                         root.choosed(index)
                     }
-                    column_repeater.model = 0
-                    column_repeater.model = root.columnKey
                 }
             }
 
