@@ -78,6 +78,10 @@ Page {
             iconText: "\ue808" // trash icon
             iconSize: 17
             text: "پاک کن"
+            onClicked: {
+                schedule_table.clear()
+                table_view.clearAllChoosed()
+            }
         }
     }
 
