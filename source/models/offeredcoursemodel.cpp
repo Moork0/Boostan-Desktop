@@ -111,6 +111,11 @@ QVariantMap OfferedCourseModel::toScheduleFormat(const int index) const
     return map;
 }
 
+int OfferedCourseModel::getCourseWeight(const int index) const
+{
+    return data_container.at(index)->at(roleToIndex(weightRole)).toInt();
+}
+
 int OfferedCourseModel::calculateScheduleRow(const QString& day) const
 {
     static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };

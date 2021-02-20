@@ -70,6 +70,7 @@ public:
 
 public slots:
     QVariantMap toScheduleFormat(const int index) const;
+    int getCourseWeight (const int index) const;
 };
 
 #endif // OFFEREDCOURSEMODEL_H
