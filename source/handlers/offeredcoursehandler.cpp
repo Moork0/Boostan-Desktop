@@ -94,7 +94,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         // time and exam
         column_data = reader.attributes().value("C8").toString();
         column_data.remove(QStringLiteral("درس(ت): "));
-        /// FIXME: determine theory and practical courses
+        column_data.remove(QStringLiteral("درس(ع): "));
+        /// TODO: determine theory and practical courses
 
         splited_data = column_data.split(QStringLiteral("<BR>"));
         splited_data.pop_back();
