@@ -177,6 +177,7 @@ Page {
             schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
             weightOfChoosed -= offered_course_model.getCourseWeight(index)
         }
+        onChoosedCleared: weightOfChoosed = 0
     }
 
     Component {

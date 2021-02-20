@@ -17,6 +17,7 @@ Item {
     /**  Signals  **/
     signal choosed(int index)
     signal unchoosed(int index)
+    signal choosedCleared()
 
     function undoChoose(index)
     {
@@ -32,6 +33,7 @@ Item {
             obj.rowData["isChoosed"] = false
         }
         root.choosedList = []
+        root.choosedCleared()
     }
 
     // header for the listview
