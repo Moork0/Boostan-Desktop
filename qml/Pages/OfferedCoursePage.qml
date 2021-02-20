@@ -37,25 +37,71 @@ Page {
         bgColor: "#E65100"
     }
 
+    ScreenShot {
+        id: screenshot
+        callback: function(){
+            exclude_item.visible = true
+            notifier.text = "تصویر با موفقیت ذخیره شد!"
+            notifier.show()
+        }
+    }
+
     Popup {
         id: schedule_popup
         modal: true
         width: parent.width
-        height: parent.height / 1.5
+        height: parent.height / 1.45
         anchors.centerIn: Overlay.overlay
         background: Rectangle { color: "transparent" }
-        ScheduleTable {
-            id: schedule_table
+        Rectangle {
+            id: popup_contents
             width: parent.width
             height: parent.height
-            model: 0
-            hasWarning: true
+            color: "transparent"
+            Rectangle {
+                id: extra_rec
+                anchors.left: parent.left
+                anchors.leftMargin: 3
+                width: 100
+                height: 35
+                color: "#1D2025"
+                radius: 5
+                Icon {
+                    id: schedule_save_icon
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 6
+                    text: "\u1f4b" // save icon
+                    color: "#FFFFFF"
+                    description: "ذخیره برنامه هفتگی"
+                    clickAble: true
+                    onClicked: screenshot.saveItem(popup_contents, schedule_save_icon)
+                }
+
+                Label {
+                    id: schedule_weight_lable
+                    color: "white"
+                    text: qsTr("%1 واحد").arg(Number(table_view.weightOfChoosed).toLocaleString(Qt.locale("fa_IR"), "f", 0))
+                    font.pixelSize: 14
+                    font.family: regular_font.name
+                    anchors.centerIn: parent
+                }
+            }
+
+            ScheduleTable {
+                id: schedule_table
+                anchors.top: extra_rec.bottom
+                width: parent.width
+                height: parent.height - extra_rec.height
+                model: 0
+                hasWarning: true
+            }
         }
         MyButton {
             id: clear_schedule_btn
-            anchors.top: schedule_table.bottom
+            anchors.top: popup_contents.bottom
             anchors.topMargin: 5
-            anchors.right: schedule_table.right
+            anchors.right: popup_contents.right
             bgColor: "#19B99A"
             radius: 8
             font.family: regular_font.name
@@ -102,6 +148,7 @@ Page {
 
     MyTableView {
         id: table_view
+        property int weightOfChoosed: 0
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: constructed_schedule_btn.bottom
         anchors.topMargin: 10
@@ -118,6 +165,7 @@ Page {
                     obj.warningForCourses = collision_result[1]
                 }
                 schedule_table.addElement(obj)
+                weightOfChoosed += offered_course_model.getCourseWeight(index)
                 return;
             }
             undoChoose(index)
@@ -127,6 +175,7 @@ Page {
 
         onUnchoosed: {
             schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
+            weightOfChoosed -= offered_course_model.getCourseWeight(index)
         }
     }
 
