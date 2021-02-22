@@ -9,7 +9,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
-#include <QSGRendererInterface>
 
 #include "header/helpers/errors.h"
 #include "header/base/settings.h"
