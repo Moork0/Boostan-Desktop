@@ -31,6 +31,9 @@ public slots:
     void clearAll();
 
     /** specialized function member for storing courses **/
+    static QString getUid(const int course_number, const int course_group);
+    static QString getUid(const QString& course_number, const QString& course_group);
+
     QString getCourseNames(const QVariantList uids) const;
 
 signals:

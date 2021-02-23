@@ -6,7 +6,7 @@
     * { row: [0], column: [0], length: [0] }
 */
 
-//! TODO: separate delegate as a component so we can set the delegate would be flexible
+//! TODO: separate delegate as a component so we can set the delegate. the component would be flexible
 //!  TODO: move functionalities into c++ side
 
 import QtQuick 2.15
@@ -58,7 +58,7 @@ Item {
     function addElement(model_item)
     {
         var element_length = model_item.row.length
-        var element_uid = getUid(model_item)
+        var element_uid = model_item.uid
         var element_color = root.courseColors[root.__courseColorIndex]
         var warning_string = ""
         var warning_number = 0
@@ -102,7 +102,7 @@ Item {
     function removeElement(model_item)
     {
         var len = model_item.row.length
-        var uid = getUid(model_item)
+        var uid = model_item.uid
         if (root.hasWarning) {
             integrateRemovedWarning(uid)
         }
@@ -124,12 +124,6 @@ Item {
         __back_end.clearAll()
     }
 
-    // generate a unique id for a element
-    function getUid(model_item)
-    {
-        return String(model_item.row[0]) + String(model_item.column[0])
-    }
-
     function checkCollision (model_item)
     {
         return __back_end.checkCollision(model_item)
@@ -137,7 +131,7 @@ Item {
 
     function integrateAddedWarning (model_item, destinations_uids, warning_number)
     {
-        var source_uid = getUid(model_item)
+        var source_uid = model_item.uid
         var dest_uid = ""
         var name = model_item.name + "<br>"
         for (var i = 0; i < destinations_uids.length; ++i)

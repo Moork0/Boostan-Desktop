@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QDebug>
 
+#include "../controls/scheduletable.h"
 
 class OfferedCourseModel : public QAbstractListModel
 {

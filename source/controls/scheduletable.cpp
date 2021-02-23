@@ -74,6 +74,16 @@ void ScheduleTable::clearAll()
     model_data.clear();
 }
 
+QString ScheduleTable::getUid(const int course_number, const int course_group)
+{
+    return QString::number(course_number) + QString::number(course_group);
+}
+
+QString ScheduleTable::getUid(const QString &course_number, const QString &course_group)
+{
+    return course_number + course_group;
+}
+
 QString ScheduleTable::getCourseNames(const QVariantList uids) const
 {
     QString names;
