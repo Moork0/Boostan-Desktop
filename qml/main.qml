@@ -38,7 +38,7 @@ ApplicationWindow {
 
     SideBar {
         id: right_pane
-///        enabled: false
+//        enabled: false
     }
 
     ErrorHandler {
