@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 import "../Controls"
 import "../Helpers"
 import API.OfferedCourseHandler 1.0
+import API.Settings 1.0
 
 Page {
     id: offered_course_page
@@ -110,6 +111,9 @@ Page {
             text: "یادت نگهدار"
             iconText: "\ue80a" // bookmark icon
             iconSize: 17
+            onClicked: {
+                Settings.setValue("offeredSchedule", schedule_table.serialize())
+            }
         }
         MyButton {
             id: save_schedule_btn
