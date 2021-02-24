@@ -162,6 +162,16 @@ Item {
         }
     }
 
+    function serialize ()
+    {
+        return __back_end.serialize()
+    }
+
+    function deserialize (data)
+    {
+        return __back_end.deserialize(data)
+    }
+
     // initialize the component
     Component.onCompleted: {
         var model_length = root.model.length

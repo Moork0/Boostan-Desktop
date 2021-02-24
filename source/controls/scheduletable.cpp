@@ -74,6 +74,14 @@ void ScheduleTable::clearAll()
     model_data.clear();
 }
 
+QString ScheduleTable::serialize() const
+{
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+    stream << model_data;
+    return data.toBase64();
+}
+
 QString ScheduleTable::getUid(const int course_number, const int course_group)
 {
     return QString::number(course_number) + QString::number(course_group);

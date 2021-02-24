@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QDataStream>
+#include <QDebug>
 
 class ScheduleTable : public QObject
 {
@@ -29,6 +31,7 @@ public slots:
     void removeEelement(const QString& uid);
     QVariantList checkCollision(const QVariantMap element) const;
     void clearAll();
+    QString serialize() const;
 
     /** specialized function member for storing courses **/
     static QString getUid(const int course_number, const int course_group);
