@@ -23,8 +23,8 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
     const QString exam {element.value("exam").toString()};
     const int sessions_number {columns.size()};
 
-    QMap<QString, QVariantMap>::const_iterator iterator = model_data.cbegin();
-    QMap<QString, QVariantMap>::const_iterator end = model_data.cend();
+    QHash<QString, QVariantMap>::const_iterator iterator = model_data.cbegin();
+    QHash<QString, QVariantMap>::const_iterator end = model_data.cend();
     QVariantList iterator_columns, iterator_rows, iterator_lengths, exam_warnings;
     QVariantMap iterator_value;
     for (; iterator != end; ++iterator) {

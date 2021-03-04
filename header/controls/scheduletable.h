@@ -12,7 +12,7 @@ class ScheduleTable : public QObject
 
 private:
 
-    QMap<QString, QVariantMap> model_data;
+    QHash<QString, QVariantMap> model_data;
 
 public:
 
