@@ -82,6 +82,16 @@ QString ScheduleTable::serialize() const
     return data.toBase64();
 }
 
+QHash<QString, QVariantMap> ScheduleTable::deserialize(const QString& data)
+{
+    QHash<QString, QVariantMap> container;
+    QByteArray raw_data {data.toUtf8()};
+    raw_data = QByteArray::fromBase64(raw_data);
+    QDataStream stream(raw_data);
+    stream >> container;
+    return container;
+}
+
 QString ScheduleTable::getUid(const int course_number, const int course_group)
 {
     return QString::number(course_number) + QString::number(course_group);

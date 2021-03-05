@@ -32,6 +32,7 @@ public slots:
     QVariantList checkCollision(const QVariantMap element) const;
     void clearAll();
     QString serialize() const;
+    static QHash<QString, QVariantMap> deserialize(const QString& data);
 
     /** specialized function member for storing courses **/
     static QString getUid(const int course_number, const int course_group);
