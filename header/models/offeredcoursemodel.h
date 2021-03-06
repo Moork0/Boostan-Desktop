@@ -67,7 +67,7 @@ public:
     // custom functions
     static int roleToIndex(roles role);
     void cleanUp();
-    void setDataContainer (const QHash<QString, QVariantList*>& container);
+    void setDataContainer (QList<QVariantList*>& container);
 
 public slots:
     QVariantMap toScheduleFormat(const int index) const;

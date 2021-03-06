@@ -75,12 +75,10 @@ void OfferedCourseModel::cleanUp()
     data_container.clear();
 }
 
-void OfferedCourseModel::setDataContainer(const QHash<QString, QVariantList*>& container)
+void OfferedCourseModel::setDataContainer(QList<QVariantList*>& container)
 {
     cleanUp();
-    for (QVariantList* element : container) {
-        data_container.append(element);
-    }
+    data_container.swap(container);
 }
 
 QVariantMap OfferedCourseModel::toScheduleFormat(const int index) const
