@@ -42,8 +42,8 @@ Page {
         id: screenshot
         callback: function(){
             exclude_item.visible = true
-            notifier.text = "تصویر با موفقیت ذخیره شد!"
-            notifier.show()
+            popup_notifier.text = "تصویر با موفقیت ذخیره شد!"
+            popup_notifier.show()
         }
     }
 
@@ -54,6 +54,14 @@ Page {
         height: parent.height / 1.45
         anchors.centerIn: Overlay.overlay
         background: Rectangle { color: "transparent" }
+        Notifier {
+            id: popup_notifier
+            showType: Notifier.ShowType.LeftToRight
+            anchors.top: parent.top
+            anchors.topMargin: 50
+            z: 2
+            font.family: regular_font.name
+        }
         Rectangle {
             id: popup_contents
             width: parent.width
@@ -114,6 +122,8 @@ Page {
             iconSize: 17
             onClicked: {
                 Settings.setValue("offeredSchedule", schedule_table.serialize())
+                popup_notifier.text = "برنامه هفتگی برای استفاده های بعدی ذخیره شد!"
+                popup_notifier.show()
             }
         }
         MyButton {
