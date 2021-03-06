@@ -55,7 +55,7 @@ Item {
     /* Functions */
 
     // create component 'table_element' and place it in the right place in the table.
-    function addElement(model_item)
+    function addElement(model_item, is_initializing = false)
     {
         var element_length = model_item.row.length
         var element_uid = model_item.uid
@@ -66,7 +66,8 @@ Item {
         if (root.hasWarning && model_item.warningForCourses.length) {
             warning_number = root.__warningNumber;
             for (var i = 0; i < model_item.warningForCourses.length; ++i) {
-                var w_number = courses.courseObjects[model_item.warningForCourses[i]][0].warningNumber
+                var temp_obj = courses.courseObjects[model_item.warningForCourses[i]]
+                var w_number = temp_obj !== undefined ? temp_obj[0].warningNumber : 0
                 if (w_number !== 0) {
                     warning_number = w_number
                     break
@@ -76,11 +77,13 @@ Item {
                 root.__warningNumber += 1
             }
             warning_string = __warningStringPrefix + __back_end.getCourseNames(model_item.warningForCourses)
-            integrateAddedWarning(model_item, model_item.warningForCourses, warning_number)
+            if (!is_initializing)
+                integrateAddedWarning(model_item, model_item.warningForCourses, warning_number)
         }
 
         // add item to back-end container
-        __back_end.addEelement(element_uid, model_item)
+        if (!is_initializing)
+            __back_end.addEelement(element_uid, model_item)
 
         // create an empty list for the object unique id
         courses.courseObjects[element_uid] = []
@@ -138,6 +141,7 @@ Item {
         {
             dest_uid = destinations_uids[i]
             courses.courseObjects[dest_uid][0].dataModel.warningForCourses.push(source_uid)
+            __back_end.setCourseWarnings(dest_uid, courses.courseObjects[dest_uid][0].dataModel.warningForCourses)
             var war_str = courses.courseObjects[dest_uid][0].warningString
             courses.courseObjects[dest_uid][0].warningString = (war_str === "" ? root.__warningStringPrefix : war_str) + name
             courses.courseObjects[dest_uid][0].warningNumber = warning_number
@@ -153,6 +157,7 @@ Item {
             uid = obj.warningForCourses[i]
             var index = courses.courseObjects[uid][0].dataModel.warningForCourses.indexOf(element_uid)
             courses.courseObjects[uid][0].dataModel.warningForCourses.splice(index, 1)
+            __back_end.setCourseWarnings(uid, courses.courseObjects[uid][0].dataModel.warningForCourses)
             if (courses.courseObjects[uid][0].dataModel.warningForCourses.length === 0) {
                 courses.courseObjects[uid][0].warningNumber = 0
             } else {
@@ -178,7 +183,11 @@ Item {
         // set a random number as a start point for courseColorIndex
         root.__courseColorIndex = parseInt(Math.random() * root.courseColors.length)
         for (var i = 0; i < model_length; ++i) {
-            addElement(root.model[i])
+            __back_end.addEelement(root.model[i].uid, root.model[i])
+        }
+
+        for (var j = 0; j < model_length; ++j) {
+            addElement(root.model[j], true)
         }
     }
 

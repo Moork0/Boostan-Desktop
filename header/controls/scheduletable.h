@@ -39,9 +39,7 @@ public slots:
     static QString getUid(const QString& course_number, const QString& course_group);
 
     QString getCourseNames(const QVariantList uids) const;
-
-signals:
-
+    void setCourseWarnings(const QString uid, const QVariantList warning_list);
 };
 
 #endif // SCHEDULETABLE_H

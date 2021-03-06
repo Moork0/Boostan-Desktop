@@ -94,10 +94,11 @@ Page {
                 anchors.top: extra_rec.bottom
                 width: parent.width
                 height: parent.height - extra_rec.height
-                model: 0
                 hasWarning: true
+                model: offered_course_handler.restoreSchedule()
             }
         }
+
         MyButton {
             id: clear_schedule_btn
             anchors.top: popup_contents.bottom

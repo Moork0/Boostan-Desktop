@@ -110,3 +110,10 @@ QString ScheduleTable::getCourseNames(const QVariantList uids) const
     }
     return names;
 }
+
+void ScheduleTable::setCourseWarnings(const QString uid, const QVariantList warning_list)
+{
+    if (!model_data.contains(uid)) return;
+    model_data[uid][QStringLiteral("warningForCourses")] = warning_list;
+}
+
