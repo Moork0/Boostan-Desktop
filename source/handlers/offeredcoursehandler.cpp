@@ -1,6 +1,7 @@
 #include "header/handlers/offeredcoursehandler.h"
 
 OfferedCourseHandler::OfferedCourseHandler()
+    :     schedule (ScheduleTable::deserialize(Settings::getValue(QStringLiteral("offeredSchedule")).toString()))
 {
 
 }
@@ -31,6 +32,11 @@ void OfferedCourseHandler::normalizeTime(QString &time)
     time = time.simplified();
 }
 
+bool OfferedCourseHandler::CheckIsChoosed(const QString& key, const QHash<QString, QVariantMap> &schedule) const
+{
+    return schedule.contains(key);
+}
+
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 {
     QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
@@ -39,9 +45,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 
     QXmlStreamReader reader(match.captured());
     QVariantList* row_datas;
+    /// TODO: change column_data* to temp_data
     QStringRef column_data_ref;
     QString column_data;
-    QString course_id;
+    QString course_uid;
     QStringList splited_data;
     int column_count = OfferedCourseModel::columns.count();
     if (!reader.readNextStartElement()) return false;
@@ -59,8 +66,9 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          * because the order should be equal to the order of roleNames in the OfferedCourseModel
          * otherwise the information would be false
          */
-        course_id = reader.attributes().value("C1").toString();
-        splited_data = course_id.split("-");
+        column_data = reader.attributes().value("C1").toString();
+        splited_data = column_data.split("-");
+        course_uid = ScheduleTable::getUid(splited_data[0], splited_data[1]);
         // course number
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::courseNumberRole), splited_data[0]);
         // group
@@ -127,10 +135,14 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
                                column_data_ref.toString());
 
         // isChoosed
-//        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole),
-//                           (row_datas->at(0).toInt() % 2 == 0) ? true : false);
-        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole), false);
-        container.insert(course_id, row_datas);
+        if (CheckIsChoosed(course_uid, schedule)) {
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole), true);
+            container.push_front(row_datas);
+        } else {
+            row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole), false);
+            container.push_back(row_datas);
+        }
+
         reader.skipCurrentElement();
     }
     return true;
@@ -154,6 +166,17 @@ void OfferedCourseHandler::sendDataTo(QObject* model)
 {
     OfferedCourseModel* view_model = reinterpret_cast<OfferedCourseModel*>(model);
     view_model->setDataContainer(container);
-    container.clear();
 }
 
+QVariantList OfferedCourseHandler::restoreSchedule() const
+{
+    if (schedule.isEmpty()) return QVariantList();
+
+    QVariantList schedule_list;
+    QHash<QString, QVariantMap>::const_iterator iterator = schedule.cbegin();
+    QHash<QString, QVariantMap>::const_iterator end = schedule.cend();
+    for (; iterator != end; ++iterator) {
+        schedule_list.push_back(iterator.value());
+    }
+    return schedule_list;
+}
