@@ -17,6 +17,7 @@ Item {
     /**  Signals  **/
     signal choosed(int index)
     signal unchoosed(int index)
+    signal initialChoose(int index)
     signal choosedCleared()
 
     function undoChoose(index)
@@ -117,6 +118,10 @@ Item {
             property var rowData: model
             Component.onCompleted: {
                 rowData["isChoosed"] = rowData.isChoosed ?? false;
+                if (rowData["isChoosed"]) {
+                    choosedList.push(index)
+                    initialChoose(index)
+                }
             }
 
             RowLayout {

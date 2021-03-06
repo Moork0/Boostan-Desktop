@@ -161,6 +161,10 @@ Page {
         height: parent.height - constructed_schedule_btn.height - 50
         model: 0
         columnItem: tableview_column
+
+        onInitialChoose: weightOfChoosed += offered_course_model.getCourseWeight(index)
+        onChoosedCleared: weightOfChoosed = 0
+
         onChoosed: {
             var obj = offered_course_model.toScheduleFormat(index);
             var collision_result = schedule_table.checkCollision(obj);
@@ -182,7 +186,6 @@ Page {
             schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
             weightOfChoosed -= offered_course_model.getCourseWeight(index)
         }
-        onChoosedCleared: weightOfChoosed = 0
     }
 
     Component {
