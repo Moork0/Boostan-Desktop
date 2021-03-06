@@ -12,6 +12,7 @@ ChartView {
     title: "معدل ترمی"
     titleColor: "#FFFFFF"
     titleFont.family: fontFamily
+    titleFont.weight: Font.Black
     antialiasing: true
     legend.visible: false
     locale: Qt.locale("fa_IR")
@@ -30,6 +31,7 @@ ChartView {
         gridVisible: false
         labelsColor: "#FFFFFF"
         labelsFont.family: root.fontFamily
+        labelsFont.weight: Font.Black
         lineVisible: false
     }
 
@@ -39,7 +41,7 @@ ChartView {
         gridLineColor: "#FFFFFF"
         labelsColor: "#FFFFFF"
         labelsFont.family: root.fontFamily
-        labelsFont.bold: true
+        labelsFont.weight: Font.Black
         max: 20
         min: 10
 //        gridVisible: false
