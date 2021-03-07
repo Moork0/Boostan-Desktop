@@ -9,7 +9,6 @@
         <file>Controls/MyButton.qml</file>
         <file>Controls/ClickableText.qml</file>
         <file>Controls/Icon.qml</file>
-        <file>Controls/SideBarItem.qml</file>
         <file>Controls/Notifier.qml</file>
         <file>Controls/Plot.qml</file>
         <file>Controls/LoadingAnimationColor.qml</file>
@@ -28,5 +27,7 @@
         <file>fonts/Vazir-Regular.ttf</file>
         <file>Controls/ScheduleTable.qml</file>
         <file>Controls/MyTableView.qml</file>
+        <file>Helpers/SideBarItem.qml</file>
+        <file>Helpers/SideBarDelegate.qml</file>
     </qresource>
 </RCC>
