@@ -31,14 +31,24 @@ ApplicationWindow {
                 error_handler.raiseError(UniversalErrorCode)
                 return;
             }
-//            stackview.push("Pages/LoginPage.qml")
-            stackview.push("Pages/OfferedCoursePage.qml")
+            stackview.push("Pages/LoginPage.qml")
+//            stackview.push("Pages/OfferedCoursePage.qml")
         }
     }
 
     SideBar {
         id: right_pane
-//        enabled: false
+        enabled: false
+
+        SideBarItem {
+            title: "پیشخوان"
+            componentPath: "Pages/DashboardPage.qml"
+        }
+
+        SideBarItem {
+            title: "دروس ارائه شده"
+            componentPath: "Pages/OfferedCoursePage.qml"
+        }
     }
 
     ErrorHandler {
