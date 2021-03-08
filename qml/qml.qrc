@@ -29,5 +29,6 @@
         <file>Controls/MyTableView.qml</file>
         <file>Helpers/SideBarItem.qml</file>
         <file>Helpers/SideBarDelegate.qml</file>
+        <file>Controls/PageBase.qml</file>
     </qresource>
 </RCC>
