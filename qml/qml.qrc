@@ -30,5 +30,6 @@
         <file>Helpers/SideBarItem.qml</file>
         <file>Helpers/SideBarDelegate.qml</file>
         <file>Controls/PageBase.qml</file>
+        <file>Controls/ViewManager.qml</file>
     </qresource>
 </RCC>
