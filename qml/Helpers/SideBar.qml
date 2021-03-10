@@ -16,15 +16,14 @@ Rectangle {
     height: mainwindow.height
 
     property alias studentName: student_name.text
-
+    default property list<SideBarItem> options
     property real itemSize: width * 0.06
-    property var options: ["پیشخوان", "دروس ارائه شده", "کارنامه", "حساب کاربری"]
     property int currentOption: -1
 
     /*
      * this function needs refactor
      */
-    function toOption(option) {
+    function toOption(option, cache_current = true) {
         if (currentOption < 0) {
             currentOption = option
         } else {
@@ -32,6 +31,8 @@ Rectangle {
             currentOption = option
         }
         repeater.itemAt(option).isEnable = true
+
+        stackview.showPage(side_bar.options[option].componentPath, side_bar.options[option].componentPath, cache_current)
     }
 
     ColumnLayout {
@@ -57,7 +58,7 @@ Rectangle {
         Label {
             id: student_name
             Layout.alignment: Qt.AlignHCenter
-            text: "محسنی حیدریان رنجبر حسینی سلام"
+            text: "متن تستی شماره یک و دو و سه"
             font.family: regular_font.name
             font.pixelSize: 12
             color: "#F8F7F2"
@@ -80,7 +81,7 @@ Rectangle {
         Repeater {
             id: repeater
             model: options
-            delegate: SideBarItem {
+            delegate: SideBarDelegate {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
                 onClicked: side_bar.toOption(index)
@@ -88,7 +89,7 @@ Rectangle {
                     anchors.right: parent.right
                     anchors.rightMargin: 30
                     anchors.verticalCenter: parent.verticalCenter
-                    text: modelData
+                    text: model.title
                     color: parent.isEnable ? "#19B99A" : "#F8F7F2"
                     font.family: regular_font.name
                     font.pixelSize: itemSize
