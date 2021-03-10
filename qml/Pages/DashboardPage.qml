@@ -8,12 +8,14 @@ import "../Helpers"
 
 // TODO: add a logo for empty boxes
 
-Page {
+PageBase {
     id: dashboard_page
 
     BriefInfoHandler {
         id: briefinfo_handler
         Component.onCompleted: {
+            // disable navigation between pages while network-job is working
+            right_pane.disableNavigator()
             start()
         }
         onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
@@ -21,7 +23,13 @@ Page {
 
     CourseScheduleHandler {
         id: schedule_handler
-        onFinished: success ? {}  : error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+        onFinished: {
+            if (!success)
+                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+
+            // enable the navigation between pages
+            right_pane.enableNavigator()
+        }
     }
 
     Rectangle {
