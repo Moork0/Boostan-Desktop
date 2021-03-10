@@ -13,7 +13,7 @@ import API.LoginHandler 1.0
 import API.Settings 1.0
 import "../Controls"
 
-Page {
+PageBase {
     id: login_page
 
     InitHandler {
@@ -37,10 +37,10 @@ Page {
                     Settings.setValue("username", username_input.text)
                     Settings.setValue("password", password_input.text)
                 }
-                stackview.replace("DashboardPage.qml", StackView.PushTransition)
                 right_pane.studentName = getName()
                 right_pane.enabled = true;
-                right_pane.toOption(0);
+                // redirect to dashboard page and don't cache current page
+                right_pane.toOption(0, false);
                 return;
             }
             error_handler.raiseError(login_handler.errorCode,
