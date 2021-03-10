@@ -6,7 +6,7 @@ import "../Helpers"
 import API.OfferedCourseHandler 1.0
 import API.Settings 1.0
 
-Page {
+PageBase {
     id: offered_course_page
 
     OfferedCourseHandler {
