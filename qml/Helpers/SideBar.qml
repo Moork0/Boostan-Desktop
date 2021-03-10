@@ -19,6 +19,7 @@ Rectangle {
     default property list<SideBarItem> options
     property real itemSize: width * 0.06
     property int currentOption: -1
+    property bool disableNav: false
 
     /*
      * this function needs refactor
@@ -35,12 +36,23 @@ Rectangle {
         stackview.showPage(side_bar.options[option].componentPath, side_bar.options[option].componentPath, cache_current)
     }
 
+    function enableNavigator()
+    {
+        side_bar.disableNav = false
+    }
+
+    function disableNavigator()
+    {
+        side_bar.disableNav = true
+    }
+
     ColumnLayout {
         anchors.left: parent.left
 //        anchors.leftMargin: 10
         anchors.top: parent.top
         anchors.topMargin: 20
         width: parent.width - side_bar_right.width + 5
+        height: parent.height
         spacing: 0
         Label {
             Layout.alignment: Qt.AlignHCenter
@@ -78,23 +90,38 @@ Rectangle {
             height: 20
         }
 
-        Repeater {
-            id: repeater
-            model: options
-            delegate: SideBarDelegate {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 40
-                onClicked: side_bar.toOption(index)
-                Label {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 30
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: model.title
-                    color: parent.isEnable ? "#19B99A" : "#F8F7F2"
-                    font.family: regular_font.name
-                    font.pixelSize: itemSize
-                    font.bold: true
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Column {
+                width: parent.width
+                height: parent.height
+                Repeater {
+                    id: repeater
+                    model: options
+                    delegate: SideBarDelegate {
+                        width: parent.width
+                        height: 40
+                        onClicked: side_bar.toOption(index)
+                        Label {
+                            anchors.right: parent.right
+                            anchors.rightMargin: 30
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: model.title
+                            color: parent.isEnable ? "#19B99A" : "#F8F7F2"
+                            font.family: regular_font.name
+                            font.pixelSize: itemSize
+                            font.bold: true
+                        }
+                    }
                 }
+            }
+            MouseArea {
+                id: navigator_disabler
+                enabled: side_bar.disableNav
+                anchors.fill: parent
+                cursorShape: enabled ? Qt.BusyCursor : Qt.ArrowCursor
+                hoverEnabled: enabled
             }
         }
     }
