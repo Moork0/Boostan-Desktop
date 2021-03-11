@@ -37,6 +37,44 @@ bool OfferedCourseHandler::CheckIsChoosed(const QString& key, const QHash<QStrin
     return schedule.contains(key);
 }
 
+void OfferedCourseHandler::start()
+{
+    connect(&request, &Network::complete, this, &OfferedCourseHandler::parseRequest);
+    request.setUrl(root_url + offered_course_url + request_validators["tck"]);
+    request.addHeader("Cookie", getCookies().toUtf8());
+    request.get();
+
+//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+//    QFile file("res.html");
+//    if (file.open(QIODevice::ReadOnly)) {
+//        QString rr {file.readAll()};
+//        extractOfferedCourses(rr);
+//    } else {
+//        qDebug() << file.errorString();
+//    }
+//    setFinished(true);
+//    setSuccess(true);
+
+}
+
+void OfferedCourseHandler::parseRequest(QNetworkReply &reply)
+{
+    disconnect(&request, &Network::complete, this, &OfferedCourseHandler::parseRequest);
+    QString data;
+    if (!verifyResponse(reply, data)) return;
+
+    if (!extractOfferedCourses(data)) {
+        setErrorCode(Constants::Errors::ExtractError);
+        setSuccess(false);
+        setFinished(true);
+        reply.deleteLater();
+        return;
+    }
+    setSuccess(true);
+    setFinished(true);
+    reply.deleteLater();
+}
+
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 {
     QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
@@ -44,6 +82,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
     if (!match.hasMatch()) return false;
 
     QXmlStreamReader reader(match.captured());
+    /* REGEX patterns for extracting exam date/time */
+    QRegularExpression re_exam_date {QStringLiteral("\\.(\\d{2}.\\d{2})"), QRegularExpression::UseUnicodePropertiesOption};
+    QRegularExpression re_exam_time {QStringLiteral("(\\d{2}:\\d{2})-\\d{2}:\\d{2}"), QRegularExpression::UseUnicodePropertiesOption};
+
     QVariantList* row_datas;
     /// TODO: change column_data* to temp_data
     QStringRef column_data_ref;
@@ -64,7 +106,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         /*
          * the order of the values which pushed into the row_data is important
          * because the order should be equal to the order of roleNames in the OfferedCourseModel
-         * otherwise the information would be false
+         * otherwise the information would be incorrect
          */
         column_data = reader.attributes().value("C1").toString();
         splited_data = column_data.split("-");
@@ -105,22 +147,58 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         column_data.remove(QStringLiteral("درس(ع): "));
         /// TODO: determine theory and practical courses
 
+        /*
+         * This part of information was not clear for me. So i developed a more generic solution for extracting
+         * time and exam date/time from the text.
+         * The approximate form of the splited data would be like this:
+         * [course time1, course time 2,..., Exam data1(could be one or more exam), Exam data2((could be one or more exam))]
+         * Exam data's could be not available.
+         */
         splited_data = column_data.split(QStringLiteral("<BR>"));
-        splited_data.pop_back();
         column_data.clear();
-        // i decreased the size by 2 because i want to add the last class time without a <br> tag
-        for (int i {0}; i < splited_data.size() - 2; ++i) {
+        splited_data.pop_back();
+        // First index of the exam information occurance
+        int exam_index {-1};
+        // number of course times
+        int class_time_number {splited_data.size()};
+        for (int i {0}; i < class_time_number; ++i) {
+            // find the first occurance of exam informations
+            if (splited_data.at(i).contains(QStringLiteral("امتحان"))) {
+                exam_index = i;
+                class_time_number = i;
+                break;
+            }
+        }
+
+        for (int i {0}; i < class_time_number; ++i) {
             column_data += splited_data[i] + QStringLiteral("<br>");
         }
-        column_data += splited_data[splited_data.size() - 2];
+        // remove the '<br>' from end of the string
+        column_data.chop(4);
         normalizeTime(column_data);
         // time
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::timeRole), column_data);
 
+        column_data = QStringLiteral("نامشخص");
+        if (exam_index != -1) {
+            column_data.clear();
+            // iterate over exam informations and extract the data's by using REGEX
+            for (; exam_index < splited_data.size(); ++exam_index) {
+               QRegularExpressionMatchIterator date_match = re_exam_date.globalMatch(splited_data[exam_index]);
+               QRegularExpressionMatchIterator time_match = re_exam_time.globalMatch(splited_data[exam_index]);
+               while (date_match.hasNext()) {
+                   if (row_datas->at(OfferedCourseModel::roleToIndex(OfferedCourseModel::groupRole)).toInt() == 95) {
+                   }
+                   // template: month.day/hour:minute
+                   /// TODO: change template to a more-readable form
+                   column_data += date_match.next().captured(1) % QStringLiteral("/") % time_match.next().captured(1) % QStringLiteral("<br>");
+               }
+            }
+            // remove the '<br>' from end of the string
+            column_data.chop(4);
+        }
         // exam
-        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole),
-                           splited_data.last().remove(QStringLiteral("امتحان(")).remove(QStringLiteral("ساعت : "))
-                                .replace(QStringLiteral(")"), QStringLiteral("<br>")).remove(QChar(' ')));
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole), column_data);
 
         // place
         column_data_ref = reader.attributes().value("C9");
@@ -146,20 +224,6 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         reader.skipCurrentElement();
     }
     return true;
-}
-
-void OfferedCourseHandler::start()
-{
-        QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-        QFile file("res.html");
-        if (file.open(QIODevice::ReadOnly)) {
-            QString rr {file.readAll()};
-            extractOfferedCourses(rr);
-        } else {
-            qDebug() << file.errorString();
-        }
-        setFinished(true);
-        setSuccess(true);
 }
 
 void OfferedCourseHandler::sendDataTo(QObject* model)
