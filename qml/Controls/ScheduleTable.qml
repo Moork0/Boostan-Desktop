@@ -28,13 +28,12 @@ Item {
     // the description of the headers. this text would be placed in the first cell (from top-right)
     property alias          headerDescription: table_desc.text
     // determine if the delegate should show warnings (based on model)
-    property bool hasWarning: false
+    property bool           hasWarning: false
     // colors of each element
     property var            courseColors: [
-        "#01579B", "#FF5252", "#6A1B9A", "#33691E", "#FF6D00",
-        "#00C853", "#0091EA", "#D32F2F", "#AA00FF", "#0D47A1",
-        "#FFB300", "#00E676", "#00B8D4", "#BA68C8", "#3D5AFE",
-        "#FFC400", "#8D6E63", "#757575", "#00796B", "#9C27B0"
+        "#536A66", "#A23B02", "#985454", "#5C4664",
+        "#125B4D", "#B85B18", "#B01B1B", "#802A9D",
+        "#459285", "#E29740", "#FF5050", "#B075C5"
                                           ]
 
     // copy of the scheduletable.h enum 'collision_errors'
