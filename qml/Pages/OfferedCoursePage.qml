@@ -11,8 +11,18 @@ PageBase {
 
     OfferedCourseHandler {
         id: offered_course_handler
-        Component.onCompleted: start()
+        Component.onCompleted: {
+            right_pane.disableNavigator()
+            start()
+        }
+
         onFinished: {
+            right_pane.enableNavigator()
+            if (!success) {
+                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+                return;
+            }
+
             sendDataTo(offered_course_model)
             table_view.model = offered_course_model
         }
