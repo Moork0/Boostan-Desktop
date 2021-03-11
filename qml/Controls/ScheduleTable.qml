@@ -36,6 +36,14 @@ Item {
         "#459285", "#E29740", "#FF5050", "#B075C5"
                                           ]
 
+    /** private properties **/
+
+    // index of the color from 'courseColors'
+    property int __courseColorIndex: 0
+    property int __warningNumber: 1
+    property string __warningStringPrefix: "امتحان این درس با درس های زیر در یک روز است:<br>"
+
+
     // copy of the scheduletable.h enum 'collision_errors'
     enum CollisionErrors {
         NoCollision = 0,
@@ -43,13 +51,6 @@ Item {
         TimeCollision,
         ExamWarning
     }
-
-    /** private properties **/
-
-    // index of the color from 'courseColors'
-    property int __courseColorIndex: 0
-    property int __warningNumber: 1
-    property string __warningStringPrefix: "امتحان این درس با درس های زیر در یک روز است:<br>"
 
     /* Functions */
 
@@ -123,6 +124,7 @@ Item {
             }
         }
         courses.courseObjects = ({})
+        root.__warningNumber = 1
         __back_end.clearAll()
     }
 
