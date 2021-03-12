@@ -3,13 +3,15 @@ import QtQuick.Controls 2.15
 
 Page {
     id: root
+
+    property bool noDestruct: false
     property bool __isActive: true
     property var __viewManUid
 
     signal __timedOut(var uid)
 
     on__IsActiveChanged: {
-        if (__isActive === false) {
+        if (__isActive === false && noDestruct === false) {
             __destruction_timer.restart()
         } else {
             __destruction_timer.stop()
