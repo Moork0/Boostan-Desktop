@@ -19,7 +19,7 @@ PageBase {
         onFinished: {
             right_pane.enableNavigator()
             if (!success) {
-                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+                error_handler.raiseError(errorCode, function(){offered_course_handler.start()}, notifier)
                 return;
             }
 
