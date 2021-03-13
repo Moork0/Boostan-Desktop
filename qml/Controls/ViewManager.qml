@@ -29,7 +29,7 @@ StackView {
         if (enable_cache)
             current_obj.__isActive = false
         else
-            current_obj.destroy()
+            removePage(current_obj.__viewManUid)
     }
 
     function rawPush(comp, comp_name, is_url = true)
