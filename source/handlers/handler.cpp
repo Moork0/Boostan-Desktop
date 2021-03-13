@@ -6,7 +6,7 @@ Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success
     root_url = Settings::getValue(QStringLiteral("root_url")).toString();
 }
 
-void Handler::setCookie(QString& key, QString& value)
+void Handler::setCookie(const QString& key, const QString& value)
 {
     cookies[key] = value;
 }
@@ -14,7 +14,7 @@ void Handler::setCookie(QString& key, QString& value)
 /*
     * split 'keyvalue' string into key,value and pass them to setCookie()
 */
-void Handler::setCookie(QString& keyvalue)
+void Handler::setCookie(const QString& keyvalue)
 {
     QList<QString> splited = keyvalue.split('=');
     QString key {splited.takeFirst()};

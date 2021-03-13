@@ -81,12 +81,12 @@ protected:
     /** Functions **/
 
     // Add to cookies a cookie with name of 'key' and value of 'value'
-    void        setCookie(QString& key, QString& value);
+    void        setCookie(const QString& key, const QString& value);
     /*
         * Add to cookies a cookie in a single string format like this:
         * SomeCookieName=SomeValue
      */
-    void        setCookie(QString& keyvalue);
+    void        setCookie(const QString& keyvalue);
     // remove all cookies
     void        clearCookies();
 
