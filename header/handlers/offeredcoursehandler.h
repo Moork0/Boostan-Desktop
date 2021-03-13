@@ -20,7 +20,8 @@ private:
     void    cleanUp();
     void    normalizeTime(QString& time);
     bool    CheckIsChoosed (const QString& key, const QHash<QString, QVariantMap>& schedule) const;
-    void    parseRequest(QNetworkReply& reply);
+    void    requestCourses();
+    void    parseCourses(QNetworkReply& reply);
 
 public:
     OfferedCourseHandler();

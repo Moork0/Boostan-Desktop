@@ -39,27 +39,33 @@ bool OfferedCourseHandler::CheckIsChoosed(const QString& key, const QHash<QStrin
 
 void OfferedCourseHandler::start()
 {
-    connect(&request, &Network::complete, this, &OfferedCourseHandler::parseRequest);
-    request.setUrl(root_url + offered_course_url + request_validators["tck"]);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.get();
-
-//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("res.html");
-//    if (file.open(QIODevice::ReadOnly)) {
-//        QString rr {file.readAll()};
-//        extractOfferedCourses(rr);
-//    } else {
-//        qDebug() << file.errorString();
-//    }
-//    setFinished(true);
-//    setSuccess(true);
-
+    requestCourses();
+    /*
+    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+    QFile file("res.html");
+    if (file.open(QIODevice::ReadOnly)) {
+        QString rr {file.readAll()};
+        extractOfferedCourses(rr);
+    } else {
+        qDebug() << file.errorString();
+    }
+    setSuccess(true);
+    setFinished(true);
+    */
 }
 
-void OfferedCourseHandler::parseRequest(QNetworkReply &reply)
+void OfferedCourseHandler::requestCourses()
 {
-    disconnect(&request, &Network::complete, this, &OfferedCourseHandler::parseRequest);
+    connect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
+    QString tck_token {cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck")};
+    request.setUrl(root_url + offered_course_url + tck_token);
+    request.addHeader("Cookie", getCookies().toUtf8());
+    request.get();
+}
+
+void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
+{
+    disconnect(&request, &Network::complete, this, &OfferedCourseHandler::requestCourses);
     QString data;
     if (!verifyResponse(reply, data)) return;
 
