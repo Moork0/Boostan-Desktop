@@ -18,7 +18,6 @@
         <file>fonts/icons.ttf</file>
         <file>fonts/Tanha.ttf</file>
         <file>fonts/Mj_Afsoon.ttf</file>
-        <file>pics/loading-logo.png</file>
         <file>pics/error-logo.svg</file>
         <file>Controls/ScreenShot.qml</file>
         <file>Helpers/WeeklyScheduleDelegate.qml</file>
@@ -31,5 +30,7 @@
         <file>Helpers/SideBarDelegate.qml</file>
         <file>Controls/PageBase.qml</file>
         <file>Controls/ViewManager.qml</file>
+        <file>pics/icon-boy.svg</file>
+        <file>pics/icon-girl.svg</file>
     </qresource>
 </RCC>
