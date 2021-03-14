@@ -103,9 +103,9 @@ Item {
     ListView {
         id: listview
         anchors.fill: listview_bg
-        property var choosed: []
         clip: true
         boundsBehavior: Flickable.OvershootBounds
+        ScrollBar.vertical: ScrollBar { }
         delegate: delegate
     }
 
