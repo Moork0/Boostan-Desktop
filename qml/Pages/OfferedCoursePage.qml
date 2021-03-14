@@ -225,9 +225,12 @@ PageBase {
                 Icon {
                     visible: role == "capacity" && model.sex !== OfferedCourseModel.None
                     width: parent.width
-                    text: model.sex
+                    text: model.sex === OfferedCourseModel.Male ? "\ue80b" : "\ue80c"
                     horizontalAlignment: Label.AlignHCenter
                     color: model.isChoosed ? "#757575" : "#FFFFFF"
+                    description: model.sex === OfferedCourseModel.Male ? "آقا" : "خانم"
+                    clickAble: true
+                    font.pixelSize: 25
                 }
             }
         }
