@@ -194,6 +194,11 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
         avg_position = response.indexOf(avg_keyword, avg_position);
     }
     current_year = passed_semesters.last();
+
+    if (passed_semesters_avg.last().isEmpty()) {
+        passed_semesters_avg.pop_back();
+        passed_semesters.pop_back();
+    }
     emit currentYearChanged();
     return true;
 }
