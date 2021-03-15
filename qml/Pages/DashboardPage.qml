@@ -10,6 +10,7 @@ import "../Helpers"
 
 PageBase {
     id: dashboard_page
+//    noDestruct: true;
 
     BriefInfoHandler {
         id: briefinfo_handler
@@ -18,17 +19,22 @@ PageBase {
             right_pane.disableNavigator()
             start()
         }
-        onFinished: success ? schedule_handler.start(currentYear) : error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+        onFinished: {
+            if (!success)
+                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+            schedule_handler.start();
+        }
     }
 
     CourseScheduleHandler {
         id: schedule_handler
         onFinished: {
-            if (!success)
-                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+//            if (!success)
+//                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
 
             // enable the navigation between pages
             right_pane.enableNavigator()
+            weekly_schedule.model = schedule_handler.getSchedule()
         }
     }
 
@@ -170,132 +176,38 @@ PageBase {
             }
         }
 
-        Rectangle {
+        Item {
             id: table_schedule_bg
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height / 2
             width: layout.width
             height: layout.height / 2
-            color: "#1D2025"
-            radius: 10
+//            color: "#1D2025"
+//            radius: 10
             property bool ready: schedule_handler.finished && schedule_handler.success
 
-            Icon {
-                id: save_schedule
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    leftMargin: 10
-                    topMargin: 10
-                }
-                text: "\u1f4b"
-                color: "#FFFFFF"
-                description: "ذخیره برنامه هفتگی"
-                clickAble: true
-                onClicked: screenshot.saveItem(table_schedule_bg, save_schedule)
+            ScheduleTable {
+                id: weekly_schedule
+                width: parent.width
+                height: parent.height
+                model: []
             }
 
-            // this is the first cell (from top-right) of the table.
-            Item {
-                id: blank_space
-                anchors.right: parent.right
-                anchors.top: parent.top
-                width: 90
-                height: 40
-                Label {
-                    anchors.centerIn: parent
-                    text: "روز / ساعت"
-                    font.family: regular_font.name
-                    color: "#FFFFFF"
-                }
-            }
+//            Icon {
+//                id: save_schedule
+//                anchors {
+//                    top: parent.top
+//                    left: parent.left
+//                    leftMargin: 10
+//                    topMargin: 10
+//                }
+//                text: "\u1f4b"
+//                color: "#FFFFFF"
+//                description: "ذخیره برنامه هفتگی"
+//                clickAble: true
+//                onClicked: screenshot.saveItem(table_schedule_bg, save_schedule)
+//            }
 
-            RowLayout {
-                id: hours
-                y: -2
-                layoutDirection: Qt.RightToLeft
-                width: parent.width - blank_space.width
-                height: blank_space.height
-                spacing: 0
-                Repeater {
-                    id: hours_repeater
-                    model: ["۸-۱۰", "۱۰-۱۲", "۱۳-۱۵", "۱۵-۱۷", "۱۷-۱۹"]
-                    Rectangle {
-                        Layout.alignment: Qt.AlignRight
-                        color: "transparent"
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Label {
-                            anchors.centerIn: parent
-                            font.family: regular_font.name
-                            color: "#FFFFFF"
-                            text: modelData
-                        }
-                        Rectangle {
-                            x: parent.width
-                            width: 2
-                            height: parent.height
-                            color: "#262A2F"
-                        }
-                    }
-                }
-            }
-
-            ColumnLayout {
-                id: days
-                anchors.right: parent.right
-                anchors.top: blank_space.bottom
-                anchors.topMargin: -4
-                spacing: 0
-                width: blank_space.width
-                height: table_schedule_bg.height - blank_space.height + 4
-                Repeater {
-                    id: days_repeater
-                    model: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه"]
-                    Rectangle {
-                        Layout.alignment: Qt.AlignRight
-                        color: "transparent"
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Label {
-                            anchors.centerIn: parent
-                            font.family: regular_font.name
-                            color: "#FFFFFF"
-                            text: modelData
-                        }
-                        Rectangle {
-                            y: 0
-                            width: parent.width
-                            height: 2
-                            color: "#262A2F"
-                        }
-                    }
-                }
-            }
-
-            ColumnLayout {
-                id: courses
-                anchors.top: hours.bottom
-                anchors.topMargin: -1
-                width: parent.width - days.width
-                height: parent.height - hours.height
-                spacing: 0
-                Repeater {
-                    id: day_row
-                    model: 5
-                    RowLayout {
-                        width: parent.width
-                        Layout.fillHeight: true
-                        layoutDirection: Qt.RightToLeft
-                        spacing: 0
-                        Repeater {
-                            // get the courses of a day 'index' as a array of objects
-                            model: table_schedule_bg.ready && !schedule_handler.is_empty ? schedule_handler.dailyScheduleModel(index) : 0
-                            delegate: WeeklyScheduleDelegate { }
-                        }
-                    }
-                }
-            }
 
             LoadingAnimationColor {
                 id: schedule_loading_animation
@@ -308,8 +220,9 @@ PageBase {
                 id: empty_message
                 visible: !schedule_loading_animation.visible && schedule_handler.is_empty
                 anchors.fill: parent
-                color: parent.color
-                radius: parent.radius
+//                color: parent.color
+                color: "#1D2025"
+//                radius: parent.radius
                 z: 1
                 Label {
                     anchors.centerIn: parent
