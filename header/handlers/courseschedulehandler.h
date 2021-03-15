@@ -9,6 +9,7 @@
 */
 
 #include "abstractxmldatahandler.h"
+#include "../controls/scheduletable.h"
 #include <QStringBuilder>
 
 class CourseScheduleHandler : public AbstractXmlDataHandler
@@ -19,17 +20,12 @@ private:
     /** Properties **/
 
     const QString   schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.7010287827974179&fid=1;73&b=0&l=0&&lastm=20190829142532&tck=")};
-    QString         year;
-    // our structure for store weekly schedule
-    QList<QList<QVariant>> weekly_schedule;
-    // number of days of week. also the number of classe's per day is equal to this
-    const int week_days {5};
+    // container for storing the ScheduleTable material
+    QVariantList    weekly_schedule;
+    QString year{"00"};
 
     /** Functions **/
 
-    // return the index of a time of a class in the structure ( for example: 8:00 is the first class
-    // (so the index is 0) and 17:00 is the last class)
-    int     hourIndex               (QString& hour) const;
     // extract weekly course schedule from 'response' and fill 'weekly_schedule'
     bool    extractWeeklySchedule   (QString& response);
     // extract the current semester from 'response'
@@ -38,7 +34,14 @@ private:
     bool    requestTokens();
     // request the weekly schedule
     bool    requestSchedule();
-    // getter for is_empty
+    // calculate the corresponding row(in scheduleTable component) for the given day
+    int     calculateScheduleRow(const QString& day) const;
+    // calculate the corresponding column(in scheduleTable component) for the given hour
+    float   calculateScheduleColumn(const QString& hour) const;
+    // calculate the the duration of a course in hour.
+    float   calculateScheduleLen(const QString& hour, const float start_column) const;
+
+    // forced getter implementation (because of abstract parent class) for is_empty
     bool    getIsEmpty() const override;
 
 private slots:
@@ -47,12 +50,14 @@ private slots:
     // parse the weekly schedule
     void    parseSchedule           (QNetworkReply& reply);
 
+public slots:
+    // start the process for recieving data from Golestan
+    void            start               ();
+    // return the ScheduleTable materials
+    QVariantList    getSchedule         () const;
+
 public:
     CourseScheduleHandler();
-    // return a schedule for specific day 'day' (0 is Saturday)
-    Q_INVOKABLE QVariantList    dailyScheduleModel  (int day) const;
-    // start the process for recieving the schedule of 'current' semester
-    Q_INVOKABLE void            start               (int current);
 };
 
 #endif // COURSESCHEDULEHANDLER_H

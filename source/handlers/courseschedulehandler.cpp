@@ -1,34 +1,27 @@
 #include "header/handlers/courseschedulehandler.h"
 
-/*
-    * Our structure is like this:
-    * [
-    * "Saturday" = [ "8:00" = {name: course name, teacher: teacher name, exam: exam data}, "10:00" = {name: "", teacher: "", exam: ""} ... ],
-    * "Sunday"   = [ "8:00" = {name: "", teacher: "", exam: ""} ...],
-    * ...
-    * ]
-*/
 CourseScheduleHandler::CourseScheduleHandler()
 {
-    /*
-        * so we just fill our structure (explained above) with empy data's
-        * i don't know if there is better way to do this and omit the empty objects.
-    */
-    QList<QVariant> temp;
-    weekly_schedule.reserve(week_days);
-    temp.reserve(week_days);
-    for (int i{0}; i < week_days; ++i) {
-        temp.append(QVariantMap {{QString(QStringLiteral("name")), ""}, {QString(QStringLiteral("exam")), ""}, {QString(QStringLiteral("teacher")), ""}});
-    }
-    for (int i{0}; i < week_days; ++i) {
-        weekly_schedule.append(temp);
-    }
 }
 
-void CourseScheduleHandler::start(int current)
+void CourseScheduleHandler::start()
 {
-    year = QString::number(current);
-    requestTokens();
+    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+    QFile file("res2.html");
+    if (file.open(QIODevice::ReadOnly)) {
+        QString rr {file.readAll()};
+        extractWeeklySchedule(rr);
+    } else {
+        qDebug() << file.errorString();
+    }
+    setSuccess(true);
+    setFinished(true);
+//    requestTokens();
+}
+
+QVariantList CourseScheduleHandler::getSchedule() const
+{
+    return weekly_schedule;
 }
 
 bool CourseScheduleHandler::requestTokens()
@@ -95,44 +88,76 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
 {
     QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
     QRegularExpressionMatch match {re.match(response)};
+    QVariantMap map;
     if (!match.hasMatch()) return false;
 
     QXmlStreamReader reader(match.captured());
-    QMap<QString, QVariant> course_data;
-    QString hour, new_exam_format;
-    QStringList exam, exam_time;
-    QLocale locale {QLocale::Persian, QLocale::Iran};
 
     if (!reader.readNextStartElement()) return false;
     if (reader.name() != QStringLiteral("Root")) return false;
 
+    QString temp_string, exam_string;
+    QStringList temp_stringlist;
+    QVariantList rows, columns, lengths;
     while(reader.readNextStartElement()) {
         if(reader.name() != QStringLiteral("row")) continue;
         // the struture is not empty
         setIsEmpty(false);
 
         QXmlStreamAttributes attribute {reader.attributes()};
-        course_data["name"] = attribute.value("C2").toString();
-        course_data["teacher"] = attribute.value("C4").toString();
-        // split exam data to sth like this: ["1399.10.10", "8:30-10:30"]
-        exam = attribute.value("C13").toString().split(" ");
-        exam_time = exam[1].split("-");
-        // I don't know if this is the best solution for converting that format to a localized format
-        new_exam_format = locale.toString(QDateTime::fromString(exam[0], QStringLiteral("yyyy.mm.dd")), QStringLiteral("yyyy/mm/dd"))
-                // i used exam_time[1] first to show time from left to right
-                % QStringLiteral(" ") % locale.toString(QTime::fromString(exam_time[1], QStringLiteral("hh:mm")), QStringLiteral("h:m"))
-                % QStringLiteral(" - ") % locale.toString(QTime::fromString(exam_time[0], QStringLiteral("hh:mm")), QStringLiteral("h:m"));
-        course_data["exam"] = new_exam_format;
+        map[QStringLiteral("teacher")] = attribute.value("C7").toString();
+        map[QStringLiteral("name")] = attribute.value("C2").toString();
 
-        for (int day_index{0}; day_index < week_days; ++day_index) {
-            hour = attribute.value(QStringLiteral("C") + QString::number(day_index + 5)).toString();
-            if (hour == "") continue;
-            weekly_schedule[day_index][hourIndex(hour)] = course_data;
+        temp_stringlist = attribute.value("C1").toString().split("_");
+        map[QStringLiteral("uid")] = ScheduleTable::getUid(temp_stringlist.at(0), temp_stringlist.at(1));
+
+        temp_stringlist = attribute.value("C8").toString().replace(QStringLiteral("ك"), QStringLiteral("ک")).simplified().split("،");
+        int counter {0}, exam_index {-1};
+        rows.clear();
+        columns.clear();
+        lengths.clear();
+        for (QString& daytime_str : temp_stringlist) {
+            daytime_str = daytime_str.simplified();
+            if (daytime_str.startsWith("امتحان")) {
+                exam_index = counter;
+                break;
+            }
+
+            int time_index {daytime_str.indexOf("-") - 5};
+            int day_index {daytime_str.indexOf(":") + 2};
+            // storing hour string: 12:34-56:78
+            temp_string = daytime_str.mid(time_index, 11);
+            float calculated_column {calculateScheduleColumn(temp_string)};
+
+            columns.append(calculated_column);
+            rows.append(calculateScheduleRow(daytime_str.mid(day_index, time_index - 1 - day_index)));
+            lengths.append(calculateScheduleLen(temp_string, calculated_column));
+
+            ++counter;
         }
+
+        exam_string.clear();
+        if (exam_index != -1) {
+            for (; exam_index < temp_stringlist.size(); ++exam_index) {
+                temp_string = temp_stringlist.at(exam_index);
+                exam_string += temp_string.midRef(7, 10) % QStringLiteral(" ") % temp_string.rightRef(11) % QStringLiteral(" || ");
+            }
+
+        } else {
+            exam_string = QStringLiteral("نامشخص || ");
+        }
+        // remove " || "  from end of the string
+        exam_string.chop(4);
+
+        map[QStringLiteral("row")] = rows;
+        map[QStringLiteral("column")] = columns;
+        map[QStringLiteral("length")] = lengths;
+        map[QStringLiteral("exam")] = exam_string;
+
+        weekly_schedule.append(map);
         reader.skipCurrentElement();
     }
-    // clear the structure to save the memory
-    if (is_empty) weekly_schedule.clear();
+
     return true;
 }
 
@@ -150,22 +175,38 @@ bool CourseScheduleHandler::extractCurrentYear(QString& response)
     return true;
 }
 
-QList<QVariant> CourseScheduleHandler::dailyScheduleModel(int day) const
+int CourseScheduleHandler::calculateScheduleRow(const QString& day) const
 {
-    if (is_empty) return QList<QVariant>();
-    return weekly_schedule[day];
-}
-
-int CourseScheduleHandler::hourIndex(QString& hour) const
-{
-    // hour is something like this: "08:00-10:00"
-    const QStringList hours{QStringLiteral("08"), QStringLiteral("10"), QStringLiteral("13"), QStringLiteral("15"), QStringLiteral("17")};
-    for (int i{0}; i < hour.size(); ++i) {
-        if (hour.startsWith(hours[i])) {
+    static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
+    static const int keyword_size {days_keyword.size()};
+    for (int i {0}; i < keyword_size; ++i) {
+        if (day.startsWith(days_keyword[i])) {
             return i;
         }
     }
     return -1;
 }
 
+float CourseScheduleHandler::calculateScheduleColumn(const QString& hour) const
+{
+    constexpr int first_hour {8};
+    constexpr int last_hour {20};
+    constexpr int columns_length {last_hour - first_hour};
+    QString current_hour;
+    for (int i {0}; i < columns_length; ++i) {
+        current_hour = QString::number(first_hour + i);
+        if (current_hour.size() == 1)
+            current_hour = QString(QStringLiteral("0")) + current_hour;
 
+        if (hour.startsWith(current_hour))
+            return i + (hour.midRef(3, 2).toFloat() / 60);
+    }
+    return -1;
+}
+
+float CourseScheduleHandler::calculateScheduleLen(const QString& hour, const float start_column) const
+{
+    // 5 is the length of the last 5 character of "12:34-56:78" which is "56:78"
+    float end_column {calculateScheduleColumn(hour.right(5))};
+    return end_column - start_column;
+}
