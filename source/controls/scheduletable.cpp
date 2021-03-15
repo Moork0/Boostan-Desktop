@@ -20,19 +20,29 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
     const QVariantList columns (element.value("column").toList());
     const QVariantList rows (element.value("row").toList());
     const QVariantList lengths (element.value("length").toList());
-    const QString exam {element.value("exam").toString()};
+    const QStringList exam {element.value("exam").toString().split(QStringLiteral("<br>"))};
     const int sessions_number {columns.size()};
 
     QHash<QString, QVariantMap>::const_iterator iterator = model_data.cbegin();
     QHash<QString, QVariantMap>::const_iterator end = model_data.cend();
     QVariantList iterator_columns, iterator_rows, iterator_lengths, exam_warnings;
     QVariantMap iterator_value;
+    QStringList iterator_exam;
     for (; iterator != end; ++iterator) {
 
         iterator_value = iterator.value();
+        iterator_exam = iterator_value.value("exam").toString().split(QStringLiteral("<br>"));
+        for (int itexam_index {0}; itexam_index < iterator_exam.size(); ++itexam_index) {
+            for (int exam_index {0}; exam_index < exam.size(); ++exam_index) {
 
-        if (iterator_value.value("exam").toString() == exam)
-            return QVariantList {ExamCollision, iterator_value.value("name").toString()};
+                if (iterator_exam.at(itexam_index) == exam.at(exam_index))
+                    return QVariantList {ExamCollision, iterator_value.value("name").toString()};
+
+                // exam format is smt like this: 12.01/08:00. so the first 5 char is the date.
+                if (iterator_exam.at(itexam_index).leftRef(5) == exam.at(exam_index).leftRef(5))
+                    exam_warnings.append(iterator.key());
+            }
+        }
 
         iterator_columns = iterator_value.value("column").toList();
         iterator_rows = iterator_value.value("row").toList();
@@ -56,9 +66,6 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
             } // end of third 'for'
 
         } // end of second 'for'
-
-        if (element.value("exam").toString().leftRef(10) == iterator_value.value("exam").toString().leftRef(10))
-            exam_warnings.append(iterator.key());
 
     } // end of first 'for'
 
