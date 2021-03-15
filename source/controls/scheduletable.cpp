@@ -38,7 +38,8 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
                 if (iterator_exam.at(itexam_index) == exam.at(exam_index))
                     return QVariantList {ExamCollision, iterator_value.value("name").toString()};
 
-                // exam format is smt like this: 12.01/08:00. so the first 5 char is the date.
+                // we assume exam format is smt like this: 12.01/08:00. so the first 5 char is the date.
+                /// TODO: should find better way because there is no unique format of exam. unless I normalize them
                 if (iterator_exam.at(itexam_index).leftRef(5) == exam.at(exam_index).leftRef(5))
                     exam_warnings.append(iterator.key());
             }
