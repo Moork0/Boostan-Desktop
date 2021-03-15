@@ -178,11 +178,9 @@ Item {
         return __back_end.deserialize(data)
     }
 
-    // initialize the component
-    Component.onCompleted: {
+    function __initialize ()
+    {
         var model_length = root.model.length
-        // set a random number as a start point for courseColorIndex
-        root.__courseColorIndex = parseInt(Math.random() * root.courseColors.length)
         for (var i = 0; i < model_length; ++i) {
             __back_end.addEelement(root.model[i].uid, root.model[i])
         }
@@ -190,6 +188,17 @@ Item {
         for (var j = 0; j < model_length; ++j) {
             addElement(root.model[j], true)
         }
+    }
+
+    // initialize the component
+    Component.onCompleted: {
+        // set a random number as a start point for courseColorIndex
+        root.__courseColorIndex = parseInt(Math.random() * root.courseColors.length)
+    }
+
+    onModelChanged: {
+        clear();
+        __initialize();
     }
 
     // back end of the ScheduleTable. this should be private Component
