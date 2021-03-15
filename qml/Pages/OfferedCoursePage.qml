@@ -173,6 +173,7 @@ PageBase {
 
     MyTableView {
         id: table_view
+        property bool ready: offered_course_handler.finished && offered_course_handler.success
         property int weightOfChoosed: 0
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: constructed_schedule_btn.bottom
@@ -205,6 +206,13 @@ PageBase {
         onUnchoosed: {
             schedule_table.removeElement(offered_course_model.toScheduleFormat(index))
             weightOfChoosed -= offered_course_model.getCourseWeight(index)
+        }
+
+        LoadingAnimationColor {
+            id: schedule_loading_animation
+            anchors.fill: parent
+            radius: 5
+            visible: !table_view.ready
         }
     }
 
