@@ -188,26 +188,32 @@ PageBase {
 
             ScheduleTable {
                 id: weekly_schedule
-                width: parent.width
+                anchors.right: parent.right
+                width: parent.width - save_icon_bg.width
                 height: parent.height
                 model: []
             }
 
-//            Icon {
-//                id: save_schedule
-//                anchors {
-//                    top: parent.top
-//                    left: parent.left
-//                    leftMargin: 10
-//                    topMargin: 10
-//                }
-//                text: "\u1f4b"
-//                color: "#FFFFFF"
-//                description: "ذخیره برنامه هفتگی"
-//                clickAble: true
-//                onClicked: screenshot.saveItem(table_schedule_bg, save_schedule)
-//            }
-
+            Rectangle {
+                id: save_icon_bg
+                anchors.right: weekly_schedule.left
+                anchors.top: weekly_schedule.top
+                anchors.topMargin: 5
+                anchors.bottom: weekly_schedule.bottom
+                anchors.bottomMargin: 5
+                width: 30
+                color: "#1D2025"
+                radius: 5
+                Icon {
+                    id: save_schedule
+                    anchors.centerIn: parent
+                    text: "\u1f4b"
+                    color: "#FFFFFF"
+                    description: "ذخیره برنامه هفتگی"
+                    clickAble: true
+                    onClicked: screenshot.saveItem(table_schedule_bg, save_icon_bg)
+                }
+            }
 
             LoadingAnimationColor {
                 id: schedule_loading_animation
