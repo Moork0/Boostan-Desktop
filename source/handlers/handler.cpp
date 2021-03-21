@@ -37,7 +37,7 @@ bool Handler::hasError(QNetworkReply::NetworkError ecode)
 {
     // since the ecode is one of the Qt default codes, we should add it to qt_offset
     // to prevent conflict with Golestan error codes.
-    setErrorCode(ecode + Constants::Errors::qt_offset);
+    setErrorCode(ecode + Errors::qt_offset);
     if (ecode == QNetworkReply::NoError) return false;
     return true;
 }
@@ -117,7 +117,7 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
 //    qDebug() << data;
 
     setErrorCode(extractDataError(data));
-    if (getErrorCode() != Constants::Errors::NoError) {
+    if (getErrorCode() != Errors::NoError) {
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
@@ -127,7 +127,7 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
     if (!updateTokens(data)) {
         // we don't know what will gonna prevent updateTokens() to not updating tokens.
         // so the error is unknown and no more progress can be done.
-        setErrorCode(Constants::Errors::UnknownError);
+        setErrorCode(Errors::UnknownError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
@@ -214,7 +214,7 @@ int Handler::extractDataErrorCode(const QString& response)
     // all error codes will come after the word 'code'(in persian)
     int code_position {response.indexOf("کد")};
     QString code;
-    if (code_position == -1) return Constants::Errors::NoCodeFound;
+    if (code_position == -1) return Errors::NoCodeFound;
 
     // 2 is the length of 'code' in persian. we should skip this to capture actual value.
     int i = code_position + 2;
@@ -231,16 +231,16 @@ int Handler::extractDataErrorCode(const QString& response)
 */
 int Handler::extractDataError(const QString& response)
 {
-    if (response.contains(QStringLiteral("ErrorArr = new Array()"))) return Constants::Errors::NoError;
+    if (response.contains(QStringLiteral("ErrorArr = new Array()"))) return Errors::NoError;
     int code {extractDataErrorCode(response)};
-    if (code != Constants::Errors::NoCodeFound) return code;
-    QHash<int, QString>::const_iterator it {Constants::Errors::error_keywords.cbegin()};
-    for (; it != Constants::Errors::error_keywords.cend(); ++it) {
+    if (code != Errors::NoCodeFound) return code;
+    QHash<int, QString>::const_iterator it {Errors::error_keywords.cbegin()};
+    for (; it != Errors::error_keywords.cend(); ++it) {
         if (response.contains(it.value())) {
             // key is a custom error code.
             return it.key();
         }
     }
     // code has error but no corresponding custom error found.
-    return Constants::Errors::UnknownError;
+    return Errors::UnknownError;
 }

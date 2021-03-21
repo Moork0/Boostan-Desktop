@@ -40,18 +40,18 @@ bool OfferedCourseHandler::CheckIsChoosed(const QString& key, const QHash<QStrin
 void OfferedCourseHandler::start()
 {
     requestCourses();
-    /*
-    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-    QFile file("res.html");
-    if (file.open(QIODevice::ReadOnly)) {
-        QString rr {file.readAll()};
-        extractOfferedCourses(rr);
-    } else {
-        qDebug() << file.errorString();
-    }
-    setSuccess(true);
-    setFinished(true);
-    */
+
+//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+//    QFile file("res.html");
+//    if (file.open(QIODevice::ReadOnly)) {
+//        QString rr {file.readAll()};
+//        extractOfferedCourses(rr);
+//    } else {
+//        qDebug() << file.errorString();
+//    }
+//    setSuccess(true);
+//    setFinished(true);
+
 }
 
 void OfferedCourseHandler::requestCourses()
@@ -70,7 +70,7 @@ void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
     if (!verifyResponse(reply, data)) return;
 
     if (!extractOfferedCourses(data)) {
-        setErrorCode(Constants::Errors::ExtractError);
+        setErrorCode(Errors::ExtractError);
         setSuccess(false);
         setFinished(true);
         reply.deleteLater();

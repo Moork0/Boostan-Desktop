@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     // check if settings are available
     if (!settings.checkSettings()) {
         universal_error = true;
-        universal_error_code = Constants::Errors::SettingsError;
+        universal_error_code = Errors::SettingsError;
     }
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

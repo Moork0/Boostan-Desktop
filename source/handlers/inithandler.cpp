@@ -43,7 +43,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
     }
 
     if (!cookiefound) {
-        setErrorCode(Constants::Errors::UnknownError);
+        setErrorCode(Errors::UnknownError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
@@ -52,7 +52,7 @@ bool InitHandler::parseInit(QNetworkReply& reply)
 
     request_validators = extractFormValidators(data);
     if (request_validators.empty()) {
-        setErrorCode(Constants::Errors::UnknownError);
+        setErrorCode(Errors::UnknownError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);

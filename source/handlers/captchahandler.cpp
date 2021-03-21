@@ -28,7 +28,7 @@ bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
     if (!file.open(QIODevice::WriteOnly)) {
         reply.deleteLater();
         setSuccess(false);
-        setErrorCode(Constants::Errors::CaptchaStoreError);
+        setErrorCode(Errors::CaptchaStoreError);
         setFinished(true);
         return false;
     }

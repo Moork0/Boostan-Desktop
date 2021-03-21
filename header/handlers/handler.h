@@ -23,7 +23,7 @@
 
 #include "../base/network.h"
 #include "../base/settings.h"
-#include "../helpers/constants.h"
+#include "../helpers/errors.h"
 
 class Handler : public QObject
 {
@@ -50,14 +50,14 @@ private:
 
     /*
         * Extract error code from response which returned by Golestan
-        * return Constants::Errors::NoCodeFound if no code can be found in response.
+        * return Errors::NoCodeFound if no code can be found in response.
      */
     int extractDataErrorCode(const QString& response);
 
     /*
         * Extract error from response.
-        * return Constants::Errors::NoError if there is no error
-        * return Constants::Errors::UnknownError if there is error
+        * return Errors::NoError if there is no error
+        * return Errors::UnknownError if there is error
         * but can't find error code in custom errors
      */
     int extractDataError(const QString& response);
@@ -67,7 +67,7 @@ protected:
 
     Q_PROPERTY(bool     finished        READ getFinished        NOTIFY finished)
     Q_PROPERTY(bool     success         READ getSuccess         NOTIFY successChanged)
-    // returns Golestan errors or Constants::Errors:error_code
+    // returns Golestan errors or Errors:error_code
     Q_PROPERTY(uint     errorCode       READ getErrorCode       NOTIFY errorCodeChanged)
     Q_PROPERTY(bool     working         READ getWorking         NOTIFY workingChanged)
 
@@ -130,7 +130,7 @@ protected:
         * This function Verify a response by
         * 1- check if there is any error in 'reply' and 'data'
         * 2- update tokens by parsing 'data'
-        * return ture if succeed and error_code will be Constants::Errors::NoError
+        * return ture if succeed and error_code will be Errors::NoError
         * otherwise return false and error_code will be a raw error code.
      */
     bool        verifyResponse(QNetworkReply& reply, QString& data);

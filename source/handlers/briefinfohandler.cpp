@@ -88,7 +88,7 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
     request_validators.insert(extractFormValidators(data));
     user_number = extractStuId(data);
     if (user_number == QString()) {
-        setErrorCode(Constants::Errors::ExtractError);
+        setErrorCode(Errors::ExtractError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
@@ -123,7 +123,7 @@ void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
     if (!verifyResponse(reply, data)) return;
 
     if (!extractStudentInfo(data) || !extractStudentAvgs(data)) {
-        setErrorCode(Constants::Errors::ExtractError);
+        setErrorCode(Errors::ExtractError);
         setSuccess(false);
         setFinished(true);
         return;

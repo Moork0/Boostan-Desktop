@@ -31,7 +31,7 @@ bool LoginHandler::parseLogin(QNetworkReply& reply)
     if (!verifyResponse(reply, data)) return false;
     // extract student name
     if (!extractName(data)) {
-        setErrorCode(Constants::Errors::ExtractError);
+        setErrorCode(Errors::ExtractError);
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);

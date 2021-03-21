@@ -73,7 +73,7 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
     if (!verifyResponse(reply, data)) return;
     request_validators.insert(extractFormValidators(data));
     if (!extractWeeklySchedule(data)) {
-        setErrorCode(Constants::Errors::ExtractError);
+        setErrorCode(Errors::ExtractError);
         setSuccess(false);
         setFinished(true);
         reply.deleteLater();
