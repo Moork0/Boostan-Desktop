@@ -9,6 +9,7 @@ FileDialog {
     id: file_dialog
     selectExisting: false
     selectMultiple: false
+    folder: shortcuts.pictures
     // callback should be a function to run after a successful image saving
     property var callback
     property var exclude_item
