@@ -7,12 +7,12 @@ Errors::Errors(QObject *parent) : QObject(parent), error_code{0}
 
 QString Errors::getErrorString() const
 {
-    return Constants::Errors::error_strings[error_code];
+    return error_strings[error_code];
 }
 
 QString Errors::getErrorSolution() const
 {
-    return Constants::Errors::error_solutions[error_code];
+    return error_solutions[error_code];
 }
 
 int Errors::getErrorCode() const
@@ -25,12 +25,12 @@ void Errors::setErrorCode(int ecode)
 {
     if (error_code == ecode) return;
     // check if ecode is one of QNetworkReply::Error's then mark them all as ServerConnectionError
-    if (ecode >= (QNetworkReply::ConnectionRefusedError + Constants::Errors::qt_offset) && ecode <= (QNetworkReply::UnknownServerError + Constants::Errors::qt_offset))
-        error_code = Constants::Errors::ServerConnenctionError;
+    if (ecode >= (QNetworkReply::ConnectionRefusedError + qt_offset) && ecode <= (QNetworkReply::UnknownServerError + qt_offset))
+        error_code = ServerConnenctionError;
 
     // is this error code discovered befor? if not, we can't do anything about it.
-    else if (!Constants::Errors::error_strings.contains(ecode))
-        error_code = Constants::Errors::UnknownError;
+    else if (!error_strings.contains(ecode))
+        error_code = UnknownError;
 
     else
         error_code = ecode;
@@ -41,10 +41,15 @@ void Errors::setErrorCode(int ecode)
 // returns the type of error
 uint Errors::getCriticalStatus() const
 {
-    return Constants::Errors::critical_status.value(error_code, Constants::Errors::Normal);
+    return critical_status.value(error_code, Normal);
+}
+
+void Errors::setCriticalStatus(const Errors::error_codes ecode, const Errors::error_type type)
+{
+    critical_status[ecode] = type;
 }
 
 void Errors::reset()
 {
-    setErrorCode(Constants::Errors::NoError);
+    setErrorCode(NoError);
 }
