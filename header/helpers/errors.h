@@ -119,7 +119,7 @@ public:
     int                 getErrorType() const;
 
     // Assign an error type to an error code(specifying the critical-ness of an error)
-    void                setCriticalStatus(const Errors::error_codes ecode, const Errors::error_type type);
+    void                setCriticalStatus(const int ecode, const Errors::error_type type);
     // reset error_code to NoError
     void                 reset();
 

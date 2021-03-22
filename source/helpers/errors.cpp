@@ -49,7 +49,7 @@ int Errors::getErrorType() const
     return critical_status.value(error_code, Normal);
 }
 
-void Errors::setCriticalStatus(const Errors::error_codes ecode, const Errors::error_type type)
+void Errors::setCriticalStatus(const int ecode, const Errors::error_type type)
 {
     critical_status[ecode] = type;
 }
