@@ -21,7 +21,7 @@ PageBase {
         }
         onFinished: {
             if (!success)
-                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+                error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
             schedule_handler.start();
         }
     }
@@ -29,8 +29,8 @@ PageBase {
     CourseScheduleHandler {
         id: schedule_handler
         onFinished: {
-//            if (!success)
-//                error_handler.raiseError(errorCode, function(){briefinfo_handler.start()}, notifier)
+            if (!success)
+                error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
 
             // enable the navigation between pages
             right_pane.enableNavigator()

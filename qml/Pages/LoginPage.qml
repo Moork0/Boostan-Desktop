@@ -19,12 +19,12 @@ PageBase {
     InitHandler {
         id: init_handler
         Component.onCompleted: start();
-        onFinished: init_handler.success ? captcha_handler.loadCaptcha(captcha_pic) : error_handler.raiseError(
-        errorCode,
-        function() {
-            init_handler.start()
+        onFinished: {
+            if (init_handler.success)
+                captcha_handler.loadCaptcha(captcha_pic)
+            else
+                error_handler.raiseError(this, function() {init_handler.start()})
         }
-        )
     }
 
     LoginHandler {
@@ -43,9 +43,7 @@ PageBase {
                 right_pane.toOption(0, false);
                 return;
             }
-            error_handler.raiseError(login_handler.errorCode,
-                                    function(){ init_handler.start() },
-                                    notifier)
+            error_handler.raiseError(this, function(){init_handler.start()}, notifier)
         }
     }
 
