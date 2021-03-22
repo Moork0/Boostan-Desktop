@@ -1,6 +1,6 @@
 #include "header/helpers/errors.h"
 
-Errors::Errors(QObject *parent) : QObject(parent), error_code{0}
+Errors::Errors(QObject *parent) : QObject(parent), error_code{NoError}
 {
 
 }
@@ -21,11 +21,15 @@ int Errors::getErrorCode() const
 }
 
 // set 'error_code' to proper code by parsing 'ecode'
-void Errors::setErrorCode(int ecode)
+bool Errors::setErrorCode(int ecode)
 {
-    if (error_code == ecode) return;
+    if (error_code == ecode) return false;
+
+    if (ecode == NoError || ecode == (QNetworkReply::NoError + qt_offset))
+        error_code = NoError;
+
     // check if ecode is one of QNetworkReply::Error's then mark them all as ServerConnectionError
-    if (ecode >= (QNetworkReply::ConnectionRefusedError + qt_offset) && ecode <= (QNetworkReply::UnknownServerError + qt_offset))
+    else if (ecode >= (QNetworkReply::ConnectionRefusedError + qt_offset) && ecode <= (QNetworkReply::UnknownServerError + qt_offset))
         error_code = ServerConnenctionError;
 
     // is this error code discovered befor? if not, we can't do anything about it.
@@ -35,11 +39,12 @@ void Errors::setErrorCode(int ecode)
     else
         error_code = ecode;
 
-    emit errorCodeChanged();
+    return true;
+//    emit errorCodeChanged();
 }
 
 // returns the type of error
-uint Errors::getCriticalStatus() const
+int Errors::getErrorType() const
 {
     return critical_status.value(error_code, Normal);
 }

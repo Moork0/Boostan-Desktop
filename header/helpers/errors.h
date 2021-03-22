@@ -30,7 +30,8 @@ public:
     };
 
     // error types that identify if a error code is critical or not
-    enum error_type{
+    enum error_type: uint
+    {
         Critical = 0,
         SemiCritical,
         Normal
@@ -38,9 +39,9 @@ public:
     Q_ENUM(error_type)
 
 private:
-    Q_PROPERTY(int      errorCode       READ getErrorCode       WRITE setErrorCode  NOTIFY errorCodeChanged)
-    // actually returns 'error_type'
-    Q_PROPERTY(uint     criticalStatus  READ getCriticalStatus  NOTIFY errorCodeChanged)
+//    Q_PROPERTY(int      errorCode       READ getErrorCode       WRITE setErrorCode  NOTIFY errorCodeChanged)
+//    // actually returns 'error_type'
+//    Q_PROPERTY(uint     criticalStatus  READ getCriticalStatus  NOTIFY errorCodeChanged)
     int     error_code;
 
     // type of each error code
@@ -111,24 +112,25 @@ public:
     explicit            Errors(QObject *parent = nullptr);
 
     // Set 'value' as error code
-    void                setErrorCode(int ecode);
+    bool                setErrorCode(int ecode);
     // return error code
     int                 getErrorCode()      const;
     // return type of a 'error_code' which is a 'error_type' member
-    uint                getCriticalStatus() const;
+    int                 getErrorType() const;
+
     // Assign an error type to an error code(specifying the critical-ness of an error)
     void                setCriticalStatus(const Errors::error_codes ecode, const Errors::error_type type);
-
-public slots:
     // reset error_code to NoError
     void                 reset();
+
+//public slots:
     // return a error title for 'error_code'
     QString              getErrorString()    const;
     // return a error description for 'error_code'
     QString              getErrorSolution()  const;
 
-signals:
-    void                        errorCodeChanged();
+//signals:
+//    void                        errorCodeChanged();
 };
 
 #endif // ERRORS_H
