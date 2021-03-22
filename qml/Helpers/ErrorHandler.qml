@@ -12,23 +12,23 @@ Error {
     // the SideBar component
     property var sideBar
 
-    function raiseError(error_code, callback_function = {}, notifier = undefined)
+    function raiseError(caller_object, callback_function = {}, notifier = undefined)
     {
-        errorCode = error_code;
+        var critical_status = caller_object.errorType
         // check if error is normaal then just notify to the user
-        if (criticalStatus === ErrorHandler.Normal && notifier !== undefined) {
-            notifier.text = getErrorString()
-            notifier.solution = getErrorSolution()
+        if (critical_status === ErrorHandler.Normal && notifier !== undefined) {
+            notifier.text = caller_object.getErrorString()
+            notifier.solution = caller_object.getErrorSolution()
             notifier.show()
-            callback_function()
+//            callback_function()
             return;
         }
 
         viewItem.push("../Pages/ErrorPage.qml",
         {
-         "error_msg"        :   getErrorString(),
-         "error_solution"   :   getErrorSolution(),
-         "criticalStatus"   :   criticalStatus,
+         "error_msg"        :   caller_object.getErrorString(),
+         "error_solution"   :   caller_object.getErrorSolution(),
+         "criticalStatus"   :   critical_status,
          "sideBarItem"      :   sideBar,
          "callback_function": function() {
              callback_function()
