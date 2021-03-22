@@ -2,7 +2,9 @@
 
 LoginHandler::LoginHandler()
 {
-
+    // In this occasion, Unavailability of data is not acceptable.
+    // So this error is Critical in this situation.
+    error_handler.setCriticalStatus(18, Errors::Critical);
 }
 
 /*
