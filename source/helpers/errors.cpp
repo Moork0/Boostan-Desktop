@@ -25,6 +25,7 @@ bool Errors::setErrorCode(int ecode)
 {
     if (error_code == ecode) return false;
 
+    // determine wether the ecode is about an actual error or just a success status
     if (ecode == NoError || ecode == (QNetworkReply::NoError + qt_offset))
         error_code = NoError;
 
