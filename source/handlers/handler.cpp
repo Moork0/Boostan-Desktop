@@ -1,10 +1,11 @@
 #include "header/handlers/handler.h"
 
 
-Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}, error_code{-1}
+Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}
 {
     root_url = Settings::getValue(QStringLiteral("root_url")).toString();
 }
+
 
 void Handler::setCookie(const QString& key, const QString& value)
 {
@@ -62,14 +63,28 @@ bool Handler::getWorking() const
 
 uint Handler::getErrorCode() const
 {
-    return error_code;
+    return error_handler.getErrorCode();
 }
 
 void Handler::setErrorCode(int ecode)
 {
-    if (error_code == ecode) return;
-    error_code = ecode;
-    emit errorCodeChanged();
+    if (error_handler.setErrorCode(ecode))
+        emit errorCodeChanged();
+}
+
+int Handler::getErrorType() const
+{
+    return error_handler.getErrorType();
+}
+
+QString Handler::getErrorString() const
+{
+    return error_handler.getErrorString();
+}
+
+QString Handler::getErrorSolution() const
+{
+    return error_handler.getErrorSolution();
 }
 
 void Handler::setSuccess(bool state)

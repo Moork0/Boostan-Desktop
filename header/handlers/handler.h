@@ -69,14 +69,15 @@ protected:
     Q_PROPERTY(bool     success         READ getSuccess         NOTIFY successChanged)
     // returns Golestan errors or Errors:error_code
     Q_PROPERTY(uint     errorCode       READ getErrorCode       NOTIFY errorCodeChanged)
+    Q_PROPERTY(int      errorType       READ getErrorType       NOTIFY errorCodeChanged)
     Q_PROPERTY(bool     working         READ getWorking         NOTIFY workingChanged)
 
     inline static QHashString      cookies, request_validators;
     inline static QString          root_url;
 
     Network                 request;
+    Errors                  error_handler;
     bool                    is_finished, success;
-    int                     error_code;
 
     /** Functions **/
 
@@ -105,6 +106,9 @@ protected:
      */
     uint        getErrorCode() const;
     void        setErrorCode(int ecode);
+
+    // Get error type(Critical-ness of a error) from Errors
+    int         getErrorType() const;
 
     /*
      * simple setter and getter for success
@@ -140,6 +144,12 @@ protected:
 
 public:
     explicit    Handler(QObject *parent = nullptr);
+
+public slots:
+    // return a error title for 'error_code' in error_handler
+    QString              getErrorString()    const;
+    // return a error description for 'error_code' in error_handler
+    QString              getErrorSolution()  const;
 
 signals:
     // determines that a jobs has finished
