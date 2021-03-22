@@ -5,8 +5,8 @@
     * Class: Errors
     * Files: errors.h, errors.cpp
     * This class act as an interface for showing errors.
-    * Convert raw error codes to showing-capable errors and retrieve error titles and description-
-    * are the tasks of this class.
+    * Convert raw error codes to showing-capable errors, retrieving error titles and description-
+    * and storing error states are the tasks of this class.
 */
 
 #include <QObject>
@@ -39,9 +39,6 @@ public:
     Q_ENUM(error_type)
 
 private:
-//    Q_PROPERTY(int      errorCode       READ getErrorCode       WRITE setErrorCode  NOTIFY errorCodeChanged)
-//    // actually returns 'error_type'
-//    Q_PROPERTY(uint     criticalStatus  READ getCriticalStatus  NOTIFY errorCodeChanged)
     int     error_code;
 
     // type of each error code
@@ -123,14 +120,11 @@ public:
     // reset error_code to NoError
     void                 reset();
 
-//public slots:
     // return a error title for 'error_code'
     QString              getErrorString()    const;
     // return a error description for 'error_code'
     QString              getErrorSolution()  const;
 
-//signals:
-//    void                        errorCodeChanged();
 };
 
 #endif // ERRORS_H
