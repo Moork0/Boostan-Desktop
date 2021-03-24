@@ -10,7 +10,9 @@ Rectangle {
     color: "#1D2025"
     z: 1
     Label {
-        anchors.centerIn: parent
+        width: parent.width
+        height: parent.height
+        wrapMode: Label.WordWrap
         font.family: regular_font.name
         text: qsTr("متاسفانه اطلاعات %1 موجود نیست! :(").arg(root.name)
         color: "white"
