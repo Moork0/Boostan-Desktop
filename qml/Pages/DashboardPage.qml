@@ -29,11 +29,13 @@ PageBase {
     CourseScheduleHandler {
         id: schedule_handler
         onFinished: {
-            if (!success)
-                error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
-
             // enable the navigation between pages
             right_pane.enableNavigator()
+            if (!success) {
+                error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
+                return;
+            }
+
             weekly_schedule.model = schedule_handler.getSchedule()
         }
     }
@@ -184,7 +186,7 @@ PageBase {
             height: layout.height / 2
 //            color: "#1D2025"
 //            radius: 10
-            property bool ready: schedule_handler.finished && schedule_handler.success
+            property bool ready: schedule_handler.finished
 
             ScheduleTable {
                 id: weekly_schedule
@@ -237,7 +239,6 @@ PageBase {
                     color: "white"
                 }
             }
-
         }
 
     }
