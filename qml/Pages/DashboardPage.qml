@@ -111,7 +111,7 @@ PageBase {
                 }
                 ErrorRectangle {
                     visible: !avgplot_loading_anim.visible && briefinfo_handler.is_empty
-                    name: "خلاصه اطلاعات"
+                    name: "نمودار معدل"
                     radius: 10
                 }
 
