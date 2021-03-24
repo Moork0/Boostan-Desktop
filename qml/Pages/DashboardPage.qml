@@ -109,7 +109,7 @@ PageBase {
                     visible: !averages_plot_bg.ready
                 }
                 ErrorRectangle {
-                    visible: !avgplot_loading_anim.visible && briefinfo_handler.is_empty
+                    visible: !avgplot_loading_anim.visible && !briefinfo_handler.success
                     name: "نمودار معدل"
                     radius: 10
                 }
