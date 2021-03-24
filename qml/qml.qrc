@@ -32,5 +32,6 @@
         <file>Controls/ViewManager.qml</file>
         <file>pics/icon-boy.svg</file>
         <file>pics/icon-girl.svg</file>
+        <file>Helpers/ErrorRectangle.qml</file>
     </qresource>
 </RCC>
