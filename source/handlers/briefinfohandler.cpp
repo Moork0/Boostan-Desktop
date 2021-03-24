@@ -40,6 +40,11 @@ QStringList BriefInfoHandler::getSemesterYears() const
     return list;
 }
 
+QList<int> BriefInfoHandler::getRawSemesters() const
+{
+    return passed_semesters;
+}
+
 bool BriefInfoHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);

@@ -81,8 +81,10 @@ public slots:
     void            start();
     // return passed_semesters_avg
     QStringList     getSemesterAvgs()  const;
-    // return passed_semsesters
+    // return passed_semesesters in readable format
     QStringList     getSemesterYears() const;
+    // return passed_semesters
+    QList<int>     getRawSemesters() const;
 
 signals:
     void            studentInfoChanged();
