@@ -224,20 +224,10 @@ PageBase {
                 visible: !table_schedule_bg.ready
             }
 
-            Rectangle {
-                id: empty_message
+            ErrorRectangle {
                 visible: !schedule_loading_animation.visible && schedule_handler.is_empty
-                anchors.fill: parent
-//                color: parent.color
-                color: "#1D2025"
-//                radius: parent.radius
-                z: 1
-                Label {
-                    anchors.centerIn: parent
-                    font.family: regular_font.name
-                    text: "متاسفانه اطلاعات برنامه هفتگی موجود نیست! :("
-                    color: "white"
-                }
+                name: "برنامه هفتگی"
+                radius: 10
             }
         }
 
