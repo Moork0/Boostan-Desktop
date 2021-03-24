@@ -173,7 +173,7 @@ PageBase {
 
     MyTableView {
         id: table_view
-        property bool ready: offered_course_handler.finished && offered_course_handler.success
+        property bool ready: offered_course_handler.finished
         property int weightOfChoosed: 0
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: constructed_schedule_btn.bottom
@@ -213,6 +213,11 @@ PageBase {
             anchors.fill: parent
             radius: 5
             visible: !table_view.ready
+        }
+        ErrorRectangle {
+            visible: !schedule_loading_animation.visible && offered_course_handler.is_empty
+            name: "دروس ارائه شده"
+            radius: 5
         }
     }
 
