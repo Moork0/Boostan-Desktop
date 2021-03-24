@@ -14,6 +14,8 @@ Rectangle {
         height: parent.height
         wrapMode: Label.WordWrap
         font.family: regular_font.name
+        horizontalAlignment: Label.AlignHCenter
+        verticalAlignment: Label.AlignVCenter
         text: qsTr("متاسفانه اطلاعات %1 موجود نیست! :(").arg(root.name)
         color: "white"
     }
