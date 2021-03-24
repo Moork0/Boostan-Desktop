@@ -6,7 +6,6 @@ import API.CourseScheduleHandler 1.0
 import "../Controls"
 import "../Helpers"
 
-// TODO: add a logo for empty boxes
 
 PageBase {
     id: dashboard_page
@@ -183,11 +182,13 @@ PageBase {
                     visible: !briefinfo_handler.finished
                 }
                 ErrorRectangle {
-                    visible: !personalinfo_loading_anim.visible && briefinfo_handler.is_empty
+                    visible: !personalinfo_loading_anim.visible && !briefinfo_handler.success
                     name: "خلاصه اطلاعات"
                     radius: 10
                 }
+
             }
+
         }
 
         Item {
