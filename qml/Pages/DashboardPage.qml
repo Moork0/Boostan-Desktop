@@ -21,7 +21,9 @@ PageBase {
         onFinished: {
             if (!success)
                 error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
-            schedule_handler.start();
+            universal_storage.semesters = briefinfo_handler.getRawSemesters();
+            universal_storage.currentSemester = briefinfo_handler.currentYear
+            schedule_handler.start(universal_storage.currentSemester);
         }
     }
 
@@ -34,7 +36,6 @@ PageBase {
                 error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
                 return;
             }
-
             weekly_schedule.model = schedule_handler.getSchedule()
         }
     }
