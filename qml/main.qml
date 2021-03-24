@@ -21,6 +21,13 @@ ApplicationWindow {
     FontLoader { source: "fonts/Mj_Afsoon.ttf" }
     FontLoader { id: regular_font; source: "fonts/Vazir-Regular.ttf"; }
 
+    QtObject {
+        id: universal_storage
+        property var semesters: []
+        property int currentSemester: 3992
+        property string name: ""
+    }
+
     // whole application is managed by stackview system
     ViewManager {
         width: parent.width - right_pane.width
@@ -34,6 +41,7 @@ ApplicationWindow {
             }
             stackview.rawPush("qrc:/Pages/LoginPage.qml", "qrc:/Pages/LoginPage.qml")
 //            stackview.push("Pages/OfferedCoursePage.qml")
+//            stackview.push("Pages/DashboardPage.qml")
         }
     }
 
