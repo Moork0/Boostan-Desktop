@@ -81,7 +81,7 @@ PageBase {
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
-                property bool ready: briefinfo_handler.finished && briefinfo_handler.success
+                property bool ready: briefinfo_handler.finished
 
                 Icon {
                     id: save_plot
@@ -104,9 +104,15 @@ PageBase {
                 }
 
                 LoadingAnimationColor {
+                    id: avgplot_loading_anim
                     anchors.fill: parent
                     radius: 10
                     visible: !averages_plot_bg.ready
+                }
+                ErrorRectangle {
+                    visible: !avgplot_loading_anim.visible && briefinfo_handler.is_empty
+                    name: "خلاصه اطلاعات"
+                    radius: 10
                 }
 
             }
@@ -171,9 +177,15 @@ PageBase {
 
                 }
                 LoadingAnimationColor {
+                    id: personalinfo_loading_anim
                     anchors.fill: parent
                     radius: 10
-                    visible: !briefinfo_handler.success
+                    visible: !briefinfo_handler.finished
+                }
+                ErrorRectangle {
+                    visible: !personalinfo_loading_anim.visible && briefinfo_handler.is_empty
+                    name: "خلاصه اطلاعات"
+                    radius: 10
                 }
             }
         }
