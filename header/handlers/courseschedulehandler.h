@@ -19,21 +19,24 @@ class CourseScheduleHandler : public AbstractXmlDataHandler
 private:
     /** Properties **/
 
-    const QString   schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.7010287827974179&fid=1;73&b=0&l=0&&lastm=20190829142532&tck=")};
+    const QString   schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.10057227848084405&fid=1;423&b=0&l=0&&lastm=20190829142532&tck=")};
     // container for storing the ScheduleTable material
     QVariantList    weekly_schedule;
-    QString year{"00"};
+    QString semester;
 
     /** Functions **/
 
+    // set semester to sem
+    void setSemester(const QString& sem);
+
     // extract weekly course schedule from 'response' and fill 'weekly_schedule'
     bool    extractWeeklySchedule   (QString& response);
-    // extract the current semester from 'response'
-    bool    extractCurrentYear      (QString& response);
+
     // request validators for being able to make further requests
     bool    requestTokens();
     // request the weekly schedule
     bool    requestSchedule();
+
     // calculate the corresponding row(in scheduleTable component) for the given day
     int     calculateScheduleRow(const QString& day) const;
     // calculate the corresponding column(in scheduleTable component) for the given hour
@@ -52,7 +55,7 @@ private slots:
 
 public slots:
     // start the process for recieving data from Golestan
-    void            start               ();
+    void            start               (const QString current_semester);
     // return the ScheduleTable materials
     QVariantList    getSchedule         () const;
 

@@ -4,19 +4,20 @@ CourseScheduleHandler::CourseScheduleHandler()
 {
 }
 
-void CourseScheduleHandler::start()
+void CourseScheduleHandler::start(const QString current_semester)
 {
-    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-    QFile file("res2.html");
-    if (file.open(QIODevice::ReadOnly)) {
-        QString rr {file.readAll()};
-        extractWeeklySchedule(rr);
-    } else {
-        qDebug() << file.errorString();
-    }
-    setSuccess(true);
-    setFinished(true);
-//    requestTokens();
+    setSemester(current_semester);
+//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+//    QFile file("res2.html");
+//    if (file.open(QIODevice::ReadOnly)) {
+//        QString rr {file.readAll()};
+//        extractWeeklySchedule(rr);
+//    } else {
+//        qDebug() << file.errorString();
+//    }
+//    setSuccess(true);
+//    setFinished(true);
+    requestTokens();
 }
 
 QVariantList CourseScheduleHandler::getSchedule() const
@@ -27,7 +28,8 @@ QVariantList CourseScheduleHandler::getSchedule() const
 bool CourseScheduleHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
-    request.setUrl(root_url + schedule_url + request_validators["tck"]);
+    QString tck_token {cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck")};
+    request.setUrl(root_url + schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
 }
@@ -45,18 +47,18 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 bool CourseScheduleHandler::requestSchedule()
 {
     connect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
-    request.setUrl(root_url + schedule_url + request_validators["tck"]);
+    QString tck_token { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
+    request.setUrl(root_url + schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     // determine the ticketbox value
-    QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
     QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
                 % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                % QStringLiteral("&TicketTextBox=")         % ticket_tbox
+                % QStringLiteral("&TicketTextBox=")         % tck_token
 
-                // below is like this: <Root><N+UQID="15"+id="4"+F="%1"+T="%1"/></Root> in url encoded format
-                % QStringLiteral("&XmlPriPrm=")             % QString(QStringLiteral("%3CRoot%3E%3CN+UQID%3D%2215%22+id%3D%224%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E")).arg(year)
+                // below is like this: <Root><N+UQID="10"+id="1"+F="%1"+T="%1"/></Root> in url encoded format
+                % QStringLiteral("&XmlPriPrm=")             % QString(QStringLiteral("%3CRoot%3E%3CN+UQID%3D%2210%22+id%3D%221%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E")).arg(semester)
                 % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&F_ID=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex=")};
     return request.post(data.toUtf8());
 }
@@ -82,6 +84,11 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
     setSuccess(true);
     setFinished(true);
     reply.deleteLater();
+}
+
+void CourseScheduleHandler::setSemester(const QString &sem)
+{
+    semester = sem;
 }
 
 bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
@@ -158,20 +165,6 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         reader.skipCurrentElement();
     }
 
-    return true;
-}
-
-bool CourseScheduleHandler::extractCurrentYear(QString& response)
-{
-    int position {response.indexOf(QStringLiteral("f=\"3"))};
-    if (position == -1) return false;
-    year.clear();
-    // we should skip 3 characters
-    position += 3;
-    while (response[position] != '"') {
-        year.append(response[position]);
-        ++position;
-    }
     return true;
 }
 
