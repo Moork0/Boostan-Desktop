@@ -25,7 +25,7 @@ ApplicationWindow {
         id: universal_storage
         property var semesters: []
         property int currentSemester: 3992
-        property string name: ""
+        property string studentName: ""
     }
 
     // whole application is managed by stackview system
