@@ -179,6 +179,11 @@ QHashString Handler::extractFormValidators(const QString& response)
     return result;
 }
 
+QString Handler::getTckToken() const
+{
+    return cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck");
+}
+
 QHashString Handler::extractTokens(const QString& response)
 {
     // tokens that Golestan will return at every request and we need these to be able to make

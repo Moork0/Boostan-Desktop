@@ -141,6 +141,8 @@ protected:
 
     // extract form validators from a 'response' and return an empty QHashString if nothing found
     QHashString extractFormValidators(const QString& response);
+    // return the tck or ctck token for authentication in Golestan
+    QString     getTckToken() const;
 
 public:
     explicit    Handler(QObject *parent = nullptr);
