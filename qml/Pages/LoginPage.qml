@@ -37,7 +37,7 @@ PageBase {
                     Settings.setValue("username", username_input.text)
                     Settings.setValue("password", password_input.text)
                 }
-                right_pane.studentName = getName()
+                universal_storage.studentName = getName()
                 right_pane.enabled = true;
                 // redirect to dashboard page and don't cache current page
                 right_pane.toOption(0, false);

@@ -15,7 +15,7 @@ Rectangle {
     width: enabled ? 270 : 0
     height: mainwindow.height
 
-    property alias studentName: student_name.text
+    property string studentName: universal_storage.studentName
     default property list<SideBarItem> options
     property real itemSize: width * 0.06
     property int currentOption: -1
@@ -74,6 +74,7 @@ Rectangle {
             font.family: regular_font.name
             font.pixelSize: 12
             color: "#F8F7F2"
+            text: side_bar.studentName
         }
 
         Label {
