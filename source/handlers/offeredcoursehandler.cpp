@@ -57,7 +57,7 @@ void OfferedCourseHandler::start()
 void OfferedCourseHandler::requestCourses()
 {
     connect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
-    QString tck_token {cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck")};
+    QString tck_token {getTckToken()};
     request.setUrl(root_url + offered_course_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.get();

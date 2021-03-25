@@ -28,7 +28,7 @@ QVariantList CourseScheduleHandler::getSchedule() const
 bool CourseScheduleHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
-    QString tck_token {cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck")};
+    QString tck_token {getTckToken()};
     request.setUrl(root_url + schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
@@ -47,7 +47,7 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 bool CourseScheduleHandler::requestSchedule()
 {
     connect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
-    QString tck_token { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
+    QString tck_token {getTckToken()};
     request.setUrl(root_url + schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");

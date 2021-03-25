@@ -48,7 +48,7 @@ QList<int> BriefInfoHandler::getRawSemesters() const
 bool BriefInfoHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
-    QString tck_token {cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck")};
+    QString tck_token {getTckToken()};
     request.setUrl(root_url + user_info_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
