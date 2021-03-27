@@ -123,19 +123,13 @@ bool Handler::updateTokens(const QString& data)
 bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
 {
     if (hasError(reply.error())) {
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
         return false;
     }
-    if (data == QString()) data = reply.readAll();
+    if (data.isEmpty()) data = reply.readAll();
 //    qDebug() << data;
 
     setErrorCode(extractDataError(data));
     if (getErrorCode() != Errors::NoError) {
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
         return false;
     }
 
@@ -143,9 +137,6 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
         // we don't know what will gonna prevent updateTokens() to not updating tokens.
         // so the error is unknown and no more progress can be done.
         setErrorCode(Errors::UnknownError);
-        reply.deleteLater();
-        setSuccess(false);
-        setFinished(true);
         return false;
     }
 
