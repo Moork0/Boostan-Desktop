@@ -1,7 +1,8 @@
 #include "header/handlers/offeredcoursehandler.h"
 
 OfferedCourseHandler::OfferedCourseHandler()
-    :     schedule (ScheduleTable::deserialize(Settings::getValue(QStringLiteral("offeredSchedule")).toString()))
+    :   schedule (ScheduleTable::deserialize(Settings::getValue(QStringLiteral("offeredSchedule")).toString())),
+        request_number{0}
 {
 
 }
@@ -57,23 +58,35 @@ void OfferedCourseHandler::start()
 void OfferedCourseHandler::requestCourses()
 {
     connect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
-    QString tck_token {getTckToken()};
-    request.setUrl(root_url + offered_course_url + tck_token);
+    const QString tck_token {getTckToken()};
+    const QString url {offered_course_url.arg(url_fids.at(request_number))};
+    request.setUrl(root_url + url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.get();
 }
 
 void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
 {
-    disconnect(&request, &Network::complete, this, &OfferedCourseHandler::requestCourses);
+    disconnect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
     QString data;
-    if (!verifyResponse(reply, data)) return;
+    bool parse_success {true};
+    if (!verifyResponse(reply, data))
+        parse_success = false;
 
-    if (!extractOfferedCourses(data)) {
+    if (parse_success && !extractOfferedCourses(data)) {
         setErrorCode(Errors::ExtractError);
+        parse_success = false;
+    }
+
+    if (!parse_success) {
+        ++request_number;
+        reply.deleteLater();
+        if (request_number < (url_fids.size())) {
+            requestCourses();
+            return;
+        }
         setSuccess(false);
         setFinished(true);
-        reply.deleteLater();
         return;
     }
     setSuccess(true);
@@ -115,8 +128,20 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          * otherwise the information would be incorrect
          */
         column_data = reader.attributes().value("C1").toString();
-        splited_data = column_data.split("-");
-        course_uid = ScheduleTable::getUid(splited_data[0], splited_data[1]);
+
+        switch (request_number) {
+        case 0:
+            splited_data = column_data.split("_");
+            break;
+        case 1:
+            splited_data = column_data.split("-");
+            break;
+
+        default:
+            return false;
+        }
+
+        course_uid = ScheduleTable::getUid(splited_data.at(0), splited_data.at(1));
         // course number
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::courseNumberRole), splited_data[0]);
         // group

@@ -11,10 +11,12 @@ class OfferedCourseHandler : public AbstractXmlDataHandler
     Q_OBJECT
 
 private:
-    const QString offered_course_url {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.6914703770312649&fid=1;211&b=0&l=0&isb=4&lastm=20190829142532&tck=")};
+    const QString offered_course_url {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.6914703770312649&fid=1;%1&b=0&l=0&isb=4&lastm=20190829142532&tck=")};
+    const QStringList url_fids {QStringLiteral("212"), QStringLiteral("211")};
 
     QList <QVariantList*> container;
     const QHash<QString, QVariantMap> schedule;
+    int     request_number;
 
     bool    getIsEmpty() const override;
     void    cleanUp();
