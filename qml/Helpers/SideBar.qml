@@ -70,7 +70,7 @@ Rectangle {
         Label {
             id: student_name
             Layout.alignment: Qt.AlignHCenter
-            text: "متن تستی شماره یک و دو و سه"
+//            text: "متن تستی شماره یک و دو و سه"
             font.family: regular_font.name
             font.pixelSize: 12
             color: "#F8F7F2"
