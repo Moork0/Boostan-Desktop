@@ -30,10 +30,18 @@ bool LoginHandler::parseLogin(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &LoginHandler::parseLogin);
     QString data;
-    if (!verifyResponse(reply, data)) return false;
+    bool parse_success {true};
+    if (!verifyResponse(reply, data))
+        parse_success = false;
+
+
     // extract student name
-    if (!extractName(data)) {
+    if (parse_success && !extractName(data)) {
         setErrorCode(Errors::ExtractError);
+        parse_success = false;
+    }
+
+    if (!parse_success) {
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);

@@ -38,7 +38,12 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
     QString data;
-    if (!verifyResponse(reply, data)) return;
+    if (!verifyResponse(reply, data)) {
+        reply.deleteLater();
+        setSuccess(false);
+        setFinished(true);
+        return;
+    }
 
     request_validators.insert(extractFormValidators(data));
     requestSchedule();
@@ -72,13 +77,21 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
     QString data;
-    if (!verifyResponse(reply, data)) return;
+    bool parse_success {true};
+
+    if (!verifyResponse(reply, data))
+        parse_success = false;
+
     request_validators.insert(extractFormValidators(data));
-    if (!extractWeeklySchedule(data)) {
+    if (parse_success && !extractWeeklySchedule(data)) {
         setErrorCode(Errors::ExtractError);
+        parse_success = false;
+    }
+
+    if (!parse_success) {
+        reply.deleteLater();
         setSuccess(false);
         setFinished(true);
-        reply.deleteLater();
         return;
     }
     setSuccess(true);
