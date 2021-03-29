@@ -26,6 +26,7 @@ ApplicationWindow {
         property var semesters: []
         property int currentSemester: 3992
         property string studentName: ""
+        property string studentUid: ""
     }
 
     // whole application is managed by stackview system
