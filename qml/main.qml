@@ -4,6 +4,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import API.Settings 1.0
 import "Helpers"
 import "Controls"
 
@@ -27,6 +28,7 @@ ApplicationWindow {
         property int currentSemester: 3992
         property string studentName: ""
         property string studentUid: ""
+        onStudentUidChanged: Settings.setPrefixUid(studentUid)
     }
 
     // whole application is managed by stackview system
