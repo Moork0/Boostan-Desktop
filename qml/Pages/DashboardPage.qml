@@ -66,14 +66,14 @@ PageBase {
 
     ColumnLayout {
         id: layout
-        width: parent.width - 20
-        height: parent.height - 20
+        width: parent.width - 40
+        height: parent.height - 40
         anchors.centerIn: parent
-        spacing: 10
+        spacing: 15
         RowLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: parent.width / 2
-            spacing: 10
+            spacing: 15
 
             Rectangle {
                 id: averages_plot_bg
