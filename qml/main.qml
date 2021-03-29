@@ -28,6 +28,7 @@ ApplicationWindow {
         property int currentSemester: 3992
         property string studentName: ""
         property string studentUid: ""
+        // update prefix uid
         onStudentUidChanged: Settings.setPrefixUid(studentUid)
     }
 
@@ -44,7 +45,6 @@ ApplicationWindow {
             }
             stackview.rawPush("qrc:/Pages/LoginPage.qml", "qrc:/Pages/LoginPage.qml")
 //            stackview.push("Pages/OfferedCoursePage.qml")
-//            stackview.push("Pages/DashboardPage.qml")
         }
     }
 
