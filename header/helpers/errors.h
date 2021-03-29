@@ -108,17 +108,24 @@ public:
 
     explicit            Errors(QObject *parent = nullptr);
 
-    // Set 'value' as error code
-    bool                setErrorCode(int ecode);
     // return error code
     int                 getErrorCode()      const;
-    // return type of a 'error_code' which is a 'error_type' member
-    int                 getErrorType() const;
 
     // Assign an error type to an error code(specifying the critical-ness of an error)
     void                setCriticalStatus(const int ecode, const Errors::error_type type);
     // reset error_code to NoError
     void                 reset();
+
+public slots:
+    /*
+     * We need these functions to accessed directly via QML
+     */
+
+    // Set 'ecode' as error code
+    bool                setErrorCode(int ecode);
+
+    // return type of a 'error_code' which is a 'error_type' member
+    int                 getErrorType() const;
 
     // return a error title for 'error_code'
     QString              getErrorString()    const;
