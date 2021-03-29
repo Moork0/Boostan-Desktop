@@ -7,14 +7,14 @@ Settings::Settings()
 
 void Settings::setValue(const QString key, const QString value)
 {
-    settings.setValue(prefix_url % QStringLiteral("/") % prefix_uid % QStringLiteral("/") % key, value);
+    settings.setValue(prefix_url % QStringLiteral("//") % prefix_uid % QStringLiteral("//") % key, value);
 }
 
 QVariant Settings::getValue(const QString key, const bool raw_key)
 {
     if (raw_key)
         return settings.value(key);
-    return settings.value(prefix_url % QStringLiteral("/") % prefix_uid % QStringLiteral("/") % key);
+    return settings.value(prefix_url % QStringLiteral("//") % prefix_uid % QStringLiteral("//") % key);
 }
 
 void Settings::setPrefixUid(const QString uid)
@@ -25,6 +25,8 @@ void Settings::setPrefixUid(const QString uid)
 void Settings::setPrefixUrl(const QString url)
 {
     prefix_url = url;
+    // remove the protocol due to disambiguation in .ini format
+    prefix_url.remove(QStringLiteral("https://"));
 }
 
 // check if settings is writable and has some required default value
