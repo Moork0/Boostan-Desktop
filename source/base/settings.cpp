@@ -37,6 +37,7 @@ bool Settings::checkSettings()
     if (!settings.contains("root_url"))
         settings.setValue("root_url", Constants::root_url);
 
+    // set the initial value of prefix_url
     setPrefixUrl(settings.value(QStringLiteral("root_url")).toString());
     return true;
 }
