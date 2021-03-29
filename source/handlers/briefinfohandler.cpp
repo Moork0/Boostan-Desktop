@@ -11,6 +11,9 @@ int BriefInfoHandler::getCurrentYear() const
     return current_year;
 }
 
+/*
+ * Create and return a locale-aware QVariantMap from student_info
+*/
 QVariantMap BriefInfoHandler::getStudentInfo() const
 {
     QVariantMap data {student_info};
@@ -30,6 +33,9 @@ QStringList BriefInfoHandler::getSemesterAvgs() const
     return passed_semesters_avg;
 }
 
+/*
+ * Create and return a list of human readable(by removing the '3' at front and using locale) passed semesters
+*/
 QStringList BriefInfoHandler::getSemesterYears() const
 {
     QStringList list;
@@ -77,11 +83,10 @@ bool BriefInfoHandler::requestStuId()
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
-    QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
+    QString ticket_tbox {getTckToken()};
     QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
                 % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
-                // TicketTextBox should be equal to "ctck" when both "ctck" and "tck" are available
                 % QStringLiteral("&TicketTextBox=")         % ticket_tbox
                 % QStringLiteral("&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex=")};
 
@@ -93,13 +98,13 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
     disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
     bool parse_success {true};
 
-    QString data, user_number;
+    QString data, student_id;
     if (!verifyResponse(reply, data))
         parse_success = false;
 
     request_validators.insert(extractFormValidators(data));
-    user_number = extractStuId(data);
-    if (user_number == QString()) {
+    student_id = extractStuId(data);
+    if (student_id == QString()) {
         setErrorCode(Errors::ExtractError);
         parse_success = false;
     }
@@ -111,7 +116,7 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
         return;
     }
 
-    student_info["id"] = user_number;
+    student_info["id"] = student_id;
     requestBriefInfo();
 }
 
