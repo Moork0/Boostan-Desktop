@@ -36,7 +36,7 @@ ApplicationWindow {
         Component.onCompleted: {
             // check if there is any error occured in application initializing
             if (UniversalError) {
-                error_handler.raiseError(UniversalErrorCode)
+                error_handler.raiseUniversalError(UniversalErrorCode)
                 return;
             }
             stackview.rawPush("qrc:/Pages/LoginPage.qml", "qrc:/Pages/LoginPage.qml")
