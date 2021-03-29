@@ -7,6 +7,7 @@ Settings::Settings()
 
 void Settings::setValue(const QString key, const QString value)
 {
+    // The '//' is used in .ini format files to categorize the information
     settings.setValue(prefix_url % QStringLiteral("//") % prefix_uid % QStringLiteral("//") % key, value);
 }
 
