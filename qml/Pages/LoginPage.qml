@@ -54,9 +54,7 @@ PageBase {
                 captcha_pic.source = "file:/" + ApplicationPath + "captcha.png"
                 return
             }
-            error_handler.raiseError(captcha_handler.errorCode,
-                                    function(){ captcha_handler.loadCaptcha(captcha_pic) },
-                                    notifier)
+            error_handler.raiseError(this, function(){captcha_handler.loadCaptcha(captcha_pic)}, notifier)
         }
 
 
@@ -100,10 +98,9 @@ PageBase {
             width: 320
             height: 320
             radius: 20
-//            color: Qt.rgba(255, 255, 255, 0.5)
             color: "#424242"
-//            opacity: 0.6
         }
+
         ColumnLayout {
             id: form_layout
             anchors.fill: form_container
@@ -115,7 +112,6 @@ PageBase {
             MyTextInput {
                 id: username_input
                 Layout.alignment: Qt.AlignHCenter
-    //            Layout.topMargin: -15
                 width: 240
                 height: 40
                 direction: Qt.RightToLeft
@@ -126,7 +122,6 @@ PageBase {
 
             MyTextInput {
                 id: password_input
-    //            Layout.topMargin: -40
                 Layout.alignment: Qt.AlignHCenter
                 width: 240
                 height: 40
