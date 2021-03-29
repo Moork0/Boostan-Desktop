@@ -10,8 +10,10 @@ void Settings::setValue(const QString key, const QString value)
     settings.setValue(prefix_url % QStringLiteral("/") % prefix_uid % QStringLiteral("/") % key, value);
 }
 
-QVariant Settings::getValue(const QString key)
+QVariant Settings::getValue(const QString key, const bool raw_key)
 {
+    if (raw_key)
+        return settings.value(key);
     return settings.value(prefix_url % QStringLiteral("/") % prefix_uid % QStringLiteral("/") % key);
 }
 

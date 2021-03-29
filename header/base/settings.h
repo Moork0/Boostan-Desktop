@@ -30,7 +30,7 @@ public slots:
     // set value 'value' to key 'key'
     static void     setValue(const QString key, const QString value);
     // get value of key 'key'
-    static QVariant getValue(const QString key);
+    static QVariant getValue(const QString key, const bool raw_key = false);
     // set uid to prefix_uid
     static void     setPrefixUid(const QString uid);
     // set url to prefix_url
