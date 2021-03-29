@@ -10,22 +10,31 @@
 
 #include <QObject>
 #include <QSettings>
+#include <QStringBuilder>
 #include "../helpers/constants.h"
 
 class Settings : public QObject
 {
     Q_OBJECT
 private:
-    inline static QSettings        settings{Constants::settings_path, QSettings::IniFormat};
+    inline static QSettings         settings{Constants::settings_path, QSettings::IniFormat};
+    inline static QString           prefix_uid;
+    inline static QString           prefix_url;
 
 public:
     Settings();
-    // set value 'value' to key 'key'
-    Q_INVOKABLE static void     setValue(QString key, QString value);
-    // get value of key 'key'
-    Q_INVOKABLE static QVariant getValue(QString key);
     // check if settings are available
     static bool                 checkSettings();
+
+public slots:
+    // set value 'value' to key 'key'
+    static void     setValue(const QString key, const QString value);
+    // get value of key 'key'
+    static QVariant getValue(const QString key);
+    // set uid to prefix_uid
+    static void     setPrefixUid(const QString uid);
+    // set url to prefix_url
+    static void     setPrefixUrl(const QString url);
 };
 
 #endif // SETTINGS_H
