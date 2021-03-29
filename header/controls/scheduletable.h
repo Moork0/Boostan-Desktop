@@ -34,7 +34,7 @@ public:
         ExamWarning
     };
 
-    explicit ScheduleTable(QObject *parent = nullptr);
+    explicit        ScheduleTable(QObject *parent = nullptr);
 
 public slots:
     // add element to model_data
@@ -48,19 +48,20 @@ public slots:
     void            clearAll();
     // serialize the model_data into a string(Base64 format)
     QString         serialize() const;
+
     // parse 'data'(Base64 format) and return a container in type of model_data
     static QHash<QString, QVariantMap> deserialize(const QString& data);
 
     /** specialized function member for storing courses **/
 
     // Generate a Unique id for a course
-    static QString getUid(const int course_number, const int course_group);
-    static QString getUid(const QString& course_number, const QString& course_group);
+    static QString  getUid(const int course_number, const int course_group);
+    static QString  getUid(const QString& course_number, const QString& course_group);
 
     // return a string which in have list of course names separated with '<br>'
-    QString getCourseNames(const QVariantList uids) const;
+    QString         getCourseNames(const QVariantList uids) const;
     // set 'warning_list' as a list of warnings for course with uid of 'uid'
-    void setCourseWarnings(const QString uid, const QVariantList warning_list);
+    void            setCourseWarnings(const QString uid, const QVariantList warning_list);
 };
 
 #endif // SCHEDULETABLE_H
