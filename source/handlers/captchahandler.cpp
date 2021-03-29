@@ -26,15 +26,16 @@ bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
 
     QFile file(image_path);
     if (!file.open(QIODevice::WriteOnly)) {
+        setErrorCode(Errors::CaptchaStoreError);
         reply.deleteLater();
         setSuccess(false);
-        setErrorCode(Errors::CaptchaStoreError);
         setFinished(true);
         return false;
     }
 
     file.write(reply.readAll());
     file.close();
+
     reply.deleteLater();
     setSuccess(true);
     setFinished(true);
