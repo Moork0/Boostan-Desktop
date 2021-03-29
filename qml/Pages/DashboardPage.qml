@@ -13,6 +13,8 @@ PageBase {
 
     BriefInfoHandler {
         id: briefinfo_handler
+        property var briefInfoData: briefInfo
+
         Component.onCompleted: {
             // disable navigation between pages while network-job is working
             right_pane.disableNavigator()
@@ -21,6 +23,8 @@ PageBase {
         onFinished: {
             if (!success)
                 error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
+
+            universal_storage.studentUid = Number.fromLocaleString(Qt.locale("fa_IR"), briefInfo.id);
             universal_storage.semesters = briefinfo_handler.getRawSemesters();
             universal_storage.currentSemester = briefinfo_handler.currentYear
             schedule_handler.start(universal_storage.currentSemester);
@@ -140,29 +144,21 @@ PageBase {
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "دوره آموزشی:‌ " + briefinfo_handler.briefInfo.studyType
+                        text: "دوره آموزشی:‌ " + briefinfo_handler.briefInfoData.studyType
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "رشته تحصیلی: " + briefinfo_handler.briefInfo.field
+                        text: "رشته تحصیلی: " + briefinfo_handler.briefInfoData.field
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "شماره دانشجویی: " + briefinfo_handler.briefInfo.id
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.fillHeight: true
-                        text: "واحد گذرانیده: " + briefinfo_handler.briefInfo.passedUnits
+                        text: "شماره دانشجویی: " + briefinfo_handler.briefInfoData.id
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
@@ -170,7 +166,15 @@ PageBase {
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "معدل کل: " + briefinfo_handler.briefInfo.average
+                        text: "واحد گذرانیده: " + briefinfo_handler.briefInfoData.passedUnits
+                        font.family: regular_font.name
+                        color: "#FFFFFF"
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        Layout.fillHeight: true
+                        text: "معدل کل: " + briefinfo_handler.briefInfoData.average
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
