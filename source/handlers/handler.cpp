@@ -3,7 +3,7 @@
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}
 {
-    root_url = Settings::getValue(QStringLiteral("root_url")).toString();
+    root_url = Settings::getValue(QStringLiteral("root_url"), true).toString();
 }
 
 
