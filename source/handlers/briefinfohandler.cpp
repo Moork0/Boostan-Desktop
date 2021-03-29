@@ -58,8 +58,13 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
     QString data;
-    if (!verifyResponse(reply, data)) return;
+    if (!verifyResponse(reply, data)) {
+        reply.deleteLater();
+        setSuccess(false);
+        setFinished(true);
+    }
 
+    reply.deleteLater();
     request_validators.insert(extractFormValidators(data));
 
     requestStuId();
@@ -86,19 +91,26 @@ bool BriefInfoHandler::requestStuId()
 void BriefInfoHandler::parseStuId(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
+    bool parse_success {true};
 
     QString data, user_number;
-    if (!verifyResponse(reply, data)) return;
+    if (!verifyResponse(reply, data))
+        parse_success = false;
 
     request_validators.insert(extractFormValidators(data));
     user_number = extractStuId(data);
     if (user_number == QString()) {
         setErrorCode(Errors::ExtractError);
-        reply.deleteLater();
+        parse_success = false;
+    }
+
+    reply.deleteLater();
+    if (!parse_success) {
         setSuccess(false);
         setFinished(true);
         return;
     }
+
     student_info["id"] = user_number;
     requestBriefInfo();
 }
@@ -124,11 +136,19 @@ bool BriefInfoHandler::requestBriefInfo()
 void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
 {
     disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
+    bool parse_success {true};
+
     QString data;
-    if (!verifyResponse(reply, data)) return;
+    if (!verifyResponse(reply, data))
+        parse_success = false;
 
     if (!extractStudentInfo(data) || !extractStudentAvgs(data)) {
         setErrorCode(Errors::ExtractError);
+        parse_success = false;
+    }
+
+    reply.deleteLater();
+    if (!parse_success) {
         setSuccess(false);
         setFinished(true);
         return;
