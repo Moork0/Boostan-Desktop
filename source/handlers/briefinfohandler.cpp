@@ -110,7 +110,7 @@ bool BriefInfoHandler::requestBriefInfo()
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
-    QString ticket_tbox { cookies.contains("ctck") ? cookies["ctck"] : request_validators["tck"]};
+    QString ticket_tbox {getTckToken()};
     QString data{QStringLiteral("__VIEWSTATE=")                  % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 % QStringLiteral("&__VIEWSTATEGENERATOR=")       % request_validators["__VIEWSTATEGENERATOR"]
                 % QStringLiteral("&__EVENTVALIDATION=")          % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
@@ -133,8 +133,7 @@ void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
         setFinished(true);
         return;
     }
-//    qDebug() << student_info;
-//    qDebug() << student_avgs;
+
     emit studentInfoChanged();
     setSuccess(true);
     setFinished(true);
