@@ -41,7 +41,6 @@ bool Errors::setErrorCode(int ecode)
         error_code = ecode;
 
     return true;
-//    emit errorCodeChanged();
 }
 
 // returns the type of error
