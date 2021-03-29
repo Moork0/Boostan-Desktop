@@ -1,5 +1,19 @@
 #include "header/controls/scheduletable.h"
+/*
+    Our data structure is (at least)something like this:
+    {
+        element_UniqueId: {"name": "Course1", "row": [1, 2], "column": [2, 2], "length": [2, 3]}
+    }
 
+    It could have many other members but the members above are necessary for functionality.
+    So, imagine a schedule with week days(starting at Saturday) as rows(starting at 0)
+    and day hours(starting at 08:00) as columns(starting at 0).
+
+    Thus the structure above would translated to something like this:
+    "Course1" will held in sunday and monday both at 10:00
+    and the sunday class would take long 2 blocks of time(each block represent an hour in here).
+    So, "Course1" would be held in Sunday, at 10:00 and would take long 2 hours.
+*/
 ScheduleTable::ScheduleTable(QObject *parent) : QObject(parent)
 {
 
@@ -17,29 +31,36 @@ void ScheduleTable::removeEelement(const QString &uid)
 
 QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
 {
+    // initialize the necessary variables from 'element'
     const QVariantList columns (element.value("column").toList());
     const QVariantList rows (element.value("row").toList());
     const QVariantList lengths (element.value("length").toList());
     const QStringList exam {element.value("exam").toString().split(QStringLiteral("<br>"))};
+    // number of course sessions in a week
     const int sessions_number {columns.size()};
 
+    // Initialize the necessary variables for being used in loop
     QHash<QString, QVariantMap>::const_iterator iterator = model_data.cbegin();
     QHash<QString, QVariantMap>::const_iterator end = model_data.cend();
     QVariantList iterator_columns, iterator_rows, iterator_lengths, exam_warnings;
     QVariantMap iterator_value;
     QStringList iterator_exam;
+
+    // iterate over model_data elements
     for (; iterator != end; ++iterator) {
 
         iterator_value = iterator.value();
         iterator_exam = iterator_value.value("exam").toString().split(QStringLiteral("<br>"));
+        // check for any collision for exam times
         for (int itexam_index {0}; itexam_index < iterator_exam.size(); ++itexam_index) {
             for (int exam_index {0}; exam_index < exam.size(); ++exam_index) {
 
                 if (iterator_exam.at(itexam_index) == exam.at(exam_index))
                     return QVariantList {ExamCollision, iterator_value.value("name").toString()};
 
-                // we assume exam format is smt like this: 12.01/08:00. so the first 5 char is the date.
                 /// TODO: should find better way because there is no unique format of exam. unless I normalize them
+                // we assume exam format is smt like this: 12.01/08:00. so the first 5 chars are representing the date.
+                // Exams have no collision but they are in a same day. Add to warnings
                 if (iterator_exam.at(itexam_index).leftRef(5) == exam.at(exam_index).leftRef(5))
                     exam_warnings.append(iterator.key());
             }
@@ -49,11 +70,13 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
         iterator_rows = iterator_value.value("row").toList();
         iterator_lengths = iterator_value.value("length").toList();
 
+        // Check for collision in course times
         int size {iterator_columns.size()};
         for (int iter_index {0}; iter_index < size; ++iter_index) {
             float iter_column {iterator_columns[iter_index].toFloat()};
             float iter_len {iterator_lengths[iter_index].toFloat()};
 
+            // iterate over 'element' rows and columns
             for (int orig_index {0}; orig_index < sessions_number; ++orig_index) {
                 if (iterator_rows[iter_index] != rows[orig_index]) continue;
                 float orig_column {columns[orig_index].toFloat()};
@@ -94,6 +117,7 @@ QHash<QString, QVariantMap> ScheduleTable::deserialize(const QString& data)
 {
     QHash<QString, QVariantMap> container;
     QByteArray raw_data {data.toUtf8()};
+    // convert to binary
     raw_data = QByteArray::fromBase64(raw_data);
     QDataStream stream(raw_data);
     stream >> container;
