@@ -5,8 +5,8 @@
     * Class: BriefInfoHandler
     * Files: briefinfohandler.h, briefinfohandler.cpp
     * The task of this class is to request to the "general information" section of Golestan,
-    * parse that information inclues semesters averages and identity informations
-    * then create a neat structure for exposing those informations to QML(probably DashboardPage.qml)
+    * parse that information which includes semesters averages and identity informations
+    * then create a neat structure for exposing those informations to QML
 */
 
 #include "handler.h"
@@ -21,9 +21,14 @@ private:
     Q_PROPERTY(QVariantMap  briefInfo   READ getStudentInfo     NOTIFY studentInfoChanged)
     Q_PROPERTY(int          currentYear READ getCurrentYear     NOTIFY currentYearChanged)
 
+    // url of section we gonna send our requests.
     inline static QString       user_info_url {QStringLiteral("/Forms/F1802_PROCESS_MNG_STDJAMEHMON/F1802_01_PROCESS_MNG_STDJAMEHMON_Dat.aspx?r=0.9638806400489983&fid=0;12310&b=0&l=0&&lastm=20180201081222&tck=")};
+
     // this is the keys of a QVariantMap that we wanna expose to qml
+    /// WHY I CHOOSED STD::VECTOR ??? :/
     const std::vector<QString>  info_title {QStringLiteral("id"), QStringLiteral("field"), QStringLiteral("studyType"), QStringLiteral("average"), QStringLiteral("passedUnits")};
+
+    // Container which our information would stored in.
     QVariantMap                 student_info;
     QList<int>                  passed_semesters;       // passed semesters
     QStringList                 passed_semesters_avg;   // semesters averages
@@ -84,7 +89,7 @@ public slots:
     // return passed_semesesters in readable format
     QStringList     getSemesterYears() const;
     // return passed_semesters
-    QList<int>     getRawSemesters() const;
+    QList<int>      getRawSemesters() const;
 
 signals:
     void            studentInfoChanged();
