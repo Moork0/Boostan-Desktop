@@ -4,6 +4,7 @@ LoginHandler::LoginHandler()
 {
     // In this occasion, Unavailability of data is not acceptable.
     // So this error is Critical in this situation.
+    // 18 is the number of error code which indicate the Limited access to the content.
     error_handler.setCriticalStatus(18, Errors::Critical);
 }
 
@@ -13,16 +14,19 @@ LoginHandler::LoginHandler()
 bool LoginHandler::tryLogin(const QString username, const QString password, const QString captcha)
 {
     connect(&request, &Network::complete, this, &LoginHandler::parseLogin);
+    request.setUrl(root_url + login_url);
+    request.addHeader("Cookie", getCookies().toUtf8());
+    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
     // credentials would bind here
     QString logincreds = QString(QStringLiteral("<r F51851=\"\" F80351=\"%1\" F80401=\"%2\" F51701=\"%3\" F83181=\"\"/>")).arg(username, password, captcha);
+
     // data values should be in url-encoded format
     QString data{QStringLiteral("__VIEWSTATE=") % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 % QStringLiteral("&__VIEWSTATEGENERATOR=") % request_validators["__VIEWSTATEGENERATOR"]
                 % QStringLiteral("&__EVENTVALIDATION=") % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
                 % QStringLiteral("&TxtMiddle=") % QUrl::toPercentEncoding(logincreds) % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&TicketTextBox=")};
-    request.setUrl(root_url + login_url);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
     return request.post(data.toUtf8());
 }
 
@@ -41,13 +45,13 @@ bool LoginHandler::parseLogin(QNetworkReply& reply)
         parse_success = false;
     }
 
+    reply.deleteLater();
+
     if (!parse_success) {
-        reply.deleteLater();
         setSuccess(false);
         setFinished(true);
         return false;
     }
-    reply.deleteLater();
     setSuccess(true);
     setFinished(true);
     return true;
