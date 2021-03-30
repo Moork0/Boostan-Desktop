@@ -115,6 +115,12 @@ int OfferedCourseModel::getCourseWeight(const int index) const
     return data_container.at(index)->at(roleToIndex(weightRole)).toInt();
 }
 
+/*
+ * These 3 functions below are same to the functions with exactly these names in OfferedCourseHandler
+ * So no need to extra explanation.
+*/
+/// TODO: unify these functions with OfferedCourseHandler version of them. probably need to move them to
+/// ScheduleTable class
 int OfferedCourseModel::calculateScheduleRow(const QString& day) const
 {
     static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };

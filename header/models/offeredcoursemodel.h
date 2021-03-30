@@ -1,6 +1,13 @@
 #ifndef OFFEREDCOURSEMODEL_H
 #define OFFEREDCOURSEMODEL_H
 
+/*
+    * Class: OfferedCourseModel
+    * Files: offeredcoursemodel.h, offeredcoursemodel.cpp
+    * This class have to prepare data model to be used in a table in OfferedCourse page
+    * Also this class convert a data to ScheduleTable-compatible format to get used there.
+*/
+
 #include <QAbstractListModel>
 #include <QHash>
 #include <QDebug>
@@ -15,14 +22,16 @@ private:
     // the container which stores the data
     QList<QVariantList*>    data_container;
 
-    int         calculateScheduleRow(const QString& day) const;
-    float       calculateScheduleColumn(const QString& hour) const;
-    float       calculateScheduleLen(const QString& hour, const float start_column) const;
+    /* Helper functions for converting an element from 'data_container' to ScheduleTable-compatible format */
+    int         calculateScheduleRow        (const QString& day) const;
+    float       calculateScheduleColumn     (const QString& hour) const;
+    float       calculateScheduleLen        (const QString& hour, const float start_column) const;
 
 public:
-    explicit OfferedCourseModel(QObject *parent = nullptr);
-    virtual ~OfferedCourseModel();
+    explicit    OfferedCourseModel          (QObject *parent = nullptr);
+    virtual     ~OfferedCourseModel         ();
 
+    // role names used in model
     inline static const QStringList columns
     {
         QStringLiteral("group"), QStringLiteral("courseNumber"), QStringLiteral("courseName"),
@@ -31,6 +40,7 @@ public:
         QStringLiteral("exam"), QStringLiteral("isChoosed")
     };
 
+    // roles used in model
     enum roles
     {
         ROLE_START = Qt::UserRole + 1,
@@ -57,21 +67,28 @@ public:
 
     Q_ENUMS(gender)
 
-    // Basic functionality:
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QHash<int, QByteArray> roleNames() const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    /** Basic functionality: **/
 
-    // custom functions
-    static int roleToIndex(roles role);
-    void cleanUp();
-    void setDataContainer (QList<QVariantList*>& container);
+    int             rowCount            (const QModelIndex &parent = QModelIndex()) const override;
+    QVariant        data                (const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    bool            setData             (const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    Qt::ItemFlags   flags               (const QModelIndex& index) const override;
+    QHash<int, QByteArray> roleNames    () const override;
+
+    /** Custom functions: **/
+
+    // convert 'role' to integer index
+    static int      roleToIndex         (roles role);
+    // free up memory
+    void            cleanUp             ();
+    // move 'container' data's to 'data_container'
+    void            setDataContainer    (QList<QVariantList*>& container);
 
 public slots:
-    QVariantMap toScheduleFormat(const int index) const;
-    int getCourseWeight (const int index) const;
+    // convert and return a 'data_container' element to ScheduleTable compatible format
+    QVariantMap     toScheduleFormat    (const int index) const;
+    // return a weight of a course at index 'index' in 'data_container'
+    int             getCourseWeight     (const int index) const;
 };
 
 #endif // OFFEREDCOURSEMODEL_H
