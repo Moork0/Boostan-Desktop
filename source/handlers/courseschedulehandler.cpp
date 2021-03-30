@@ -45,6 +45,8 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
         return;
     }
 
+    reply.deleteLater();
+
     request_validators.insert(extractFormValidators(data));
     requestSchedule();
 }
@@ -88,15 +90,14 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
         parse_success = false;
     }
 
+    reply.deleteLater();
     if (!parse_success) {
-        reply.deleteLater();
         setSuccess(false);
         setFinished(true);
         return;
     }
     setSuccess(true);
     setFinished(true);
-    reply.deleteLater();
 }
 
 void CourseScheduleHandler::setSemester(const QString &sem)
