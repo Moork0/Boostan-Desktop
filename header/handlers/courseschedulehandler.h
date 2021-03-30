@@ -56,7 +56,7 @@ private slots:
     void    parseSchedule               (QNetworkReply& reply);
 
 public slots:
-    // start the process for recieving data from Golestan
+    // start the process for recieving data from Golestan for semester 'current_semester'
     void            start               (const QString current_semester);
     // return the ScheduleTable materials
     QVariantList    getSchedule         () const;

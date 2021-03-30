@@ -119,15 +119,20 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         map[QStringLiteral("name")] = attribute.value("C2").toString();
 
         temp_stringlist = attribute.value("C1").toString().split("_");
+        // Generate unique id using ScheduleTable::getUid
         map[QStringLiteral("uid")] = ScheduleTable::getUid(temp_stringlist.at(0), temp_stringlist.at(1));
 
         temp_stringlist = attribute.value("C8").toString().replace(QStringLiteral("ك"), QStringLiteral("ک")).simplified().split("،");
         int counter {0}, exam_index {-1};
+        // clear data's for storing new informations
         rows.clear();
         columns.clear();
         lengths.clear();
+
         for (QString& daytime_str : temp_stringlist) {
             daytime_str = daytime_str.simplified();
+
+            // find the index of exam time in temp_stringlist
             if (daytime_str.startsWith("امتحان")) {
                 exam_index = counter;
                 break;
@@ -147,6 +152,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         }
 
         exam_string.clear();
+        // if we have exam time specified, Iterate over them.
         if (exam_index != -1) {
             for (; exam_index < temp_stringlist.size(); ++exam_index) {
                 temp_string = temp_stringlist.at(exam_index);
@@ -177,8 +183,10 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
 
 int CourseScheduleHandler::calculateScheduleRow(const QString& day) const
 {
+    // list of days
     static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
     static const int keyword_size {days_keyword.size()};
+
     for (int i {0}; i < keyword_size; ++i) {
         if (day.startsWith(days_keyword[i])) {
             return i;
@@ -189,15 +197,22 @@ int CourseScheduleHandler::calculateScheduleRow(const QString& day) const
 
 float CourseScheduleHandler::calculateScheduleColumn(const QString& hour) const
 {
-    constexpr int first_hour {8};
-    constexpr int last_hour {20};
-    constexpr int columns_length {last_hour - first_hour};
+    // 8:00 is hour that classes could start(We have no class befor 08:00)
+    static constexpr int first_hour {8};
+    // 20:00 is hour that classes could end(We have no class after 20:00)
+    static constexpr int last_hour {20};
+    static constexpr int columns_length {last_hour - first_hour};
+
     QString current_hour;
+    // iterate over hours between first_hour and last_hour
+    // and find the correct hour and corresponding column number (i)
+    /// TODO: There must be more efficient way instead of iteration. Find that!
     for (int i {0}; i < columns_length; ++i) {
         current_hour = QString::number(first_hour + i);
         if (current_hour.size() == 1)
             current_hour = QString(QStringLiteral("0")) + current_hour;
 
+        // Divide minutes by 60 to have result as hour. for examle: 10:30 => column number 2.5
         if (hour.startsWith(current_hour))
             return i + (hour.midRef(3, 2).toFloat() / 60);
     }
