@@ -102,9 +102,8 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
     if (!verifyResponse(reply, data))
         parse_success = false;
 
-    request_validators.insert(extractFormValidators(data));
     student_id = extractStuId(data);
-    if (student_id == QString()) {
+    if (student_id.isEmpty()) {
         setErrorCode(Errors::ExtractError);
         parse_success = false;
     }
@@ -116,6 +115,7 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
         return;
     }
 
+    request_validators.insert(extractFormValidators(data));
     student_info["id"] = student_id;
     requestBriefInfo();
 }
@@ -147,7 +147,7 @@ void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
     if (!verifyResponse(reply, data))
         parse_success = false;
 
-    if (!extractStudentInfo(data) || !extractStudentAvgs(data)) {
+    if (parse_success && (!extractStudentInfo(data) || !extractStudentAvgs(data))) {
         setErrorCode(Errors::ExtractError);
         parse_success = false;
     }
