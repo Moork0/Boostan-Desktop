@@ -6,6 +6,8 @@
     * Files: courseschedulehandler.h, courseschedulehandler.cpp
     * The task of this class is to get the courses weekly schedule (and related informations)
     * from Golestan and send them to QML in proper structure.
+
+    * The data structure we are using is based on ScheduleTable (refer to the scheduletable.cpp comments)
 */
 
 #include "abstractxmldatahandler.h"
