@@ -130,8 +130,8 @@ protected:
         * functions that parse Golestan response.
         * 'data' can have response or be empty. if data == QString(), the function
         * will fill it in proper moment.
-        *
-        * This function Verify a response by
+
+        * This function Verify a response by:
         * 1- check if there is any error in 'reply' and 'data'
         * 2- update tokens by parsing 'data'
         * return ture if succeed and error_code will be Errors::NoError
@@ -149,9 +149,9 @@ public:
 
 public slots:
     // return a error title for 'error_code' in error_handler
-    QString              getErrorString()    const;
+    QString     getErrorString()    const;
     // return a error description for 'error_code' in error_handler
-    QString              getErrorSolution()  const;
+    QString     getErrorSolution()  const;
 
 signals:
     // determines that a jobs has finished
