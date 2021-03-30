@@ -1,5 +1,6 @@
 #include "header/handlers/offeredcoursehandler.h"
 
+// Retrieve and deserialize the possible information of Schedule table
 OfferedCourseHandler::OfferedCourseHandler()
     :   schedule (ScheduleTable::deserialize(Settings::getValue(QStringLiteral("offeredSchedule")).toString())),
         request_number{0}
@@ -41,18 +42,6 @@ bool OfferedCourseHandler::CheckIsChoosed(const QString& key, const QHash<QStrin
 void OfferedCourseHandler::start()
 {
     requestCourses();
-
-//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("res.html");
-//    if (file.open(QIODevice::ReadOnly)) {
-//        QString rr {file.readAll()};
-//        extractOfferedCourses(rr);
-//    } else {
-//        qDebug() << file.errorString();
-//    }
-//    setSuccess(true);
-//    setFinished(true);
-
 }
 
 void OfferedCourseHandler::requestCourses()
@@ -78,9 +67,10 @@ void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
         parse_success = false;
     }
 
+    reply.deleteLater();
+
     if (!parse_success) {
         ++request_number;
-        reply.deleteLater();
         if (request_number < (url_fids.size())) {
             requestCourses();
             return;
@@ -91,7 +81,6 @@ void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
     }
     setSuccess(true);
     setFinished(true);
-    reply.deleteLater();
 }
 
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
@@ -106,9 +95,9 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
     QRegularExpression re_exam_time {QStringLiteral("(\\d{2}:\\d{2})-\\d{2}:\\d{2}"), QRegularExpression::UseUnicodePropertiesOption};
 
     QVariantList* row_datas;
-    /// TODO: change column_data* to temp_data
-    QStringRef column_data_ref;
-    QString column_data;
+
+    QStringRef temp_data_ref;
+    QString temp_data;
     QString course_uid;
     QStringList splited_data;
     int column_count = OfferedCourseModel::columns.count();
@@ -127,14 +116,14 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          * because the order should be equal to the order of roleNames in the OfferedCourseModel
          * otherwise the information would be incorrect
          */
-        column_data = reader.attributes().value("C1").toString();
+        temp_data = reader.attributes().value("C1").toString();
 
         switch (request_number) {
         case 0:
-            splited_data = column_data.split("_");
+            splited_data = temp_data.split("_");
             break;
         case 1:
-            splited_data = column_data.split("-");
+            splited_data = temp_data.split("-");
             break;
 
         default:
@@ -156,13 +145,13 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::capacityRole),
                            reader.attributes().value("C5").toInt());
 
-        column_data_ref = reader.attributes().value("C6");
+        temp_data_ref = reader.attributes().value("C6");
 
         // sex
-        if (column_data_ref == QStringLiteral("زن"))
+        if (temp_data_ref == QStringLiteral("زن"))
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::Female);
 
-        else if (column_data_ref == QStringLiteral("مرد"))
+        else if (temp_data_ref == QStringLiteral("مرد"))
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::Male);
 
         else
@@ -173,9 +162,9 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
                            reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
 
         // time and exam
-        column_data = reader.attributes().value("C8").toString();
-        column_data.remove(QStringLiteral("درس(ت): "));
-        column_data.remove(QStringLiteral("درس(ع): "));
+        temp_data = reader.attributes().value("C8").toString();
+        temp_data.remove(QStringLiteral("درس(ت): "));
+        temp_data.remove(QStringLiteral("درس(ع): "));
         /// TODO: determine theory and practical courses
 
         /*
@@ -185,8 +174,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          * [course time1, course time 2,..., Exam data1(could be one or more exam), Exam data2((could be one or more exam))]
          * Exam data's could be not available.
          */
-        splited_data = column_data.split(QStringLiteral("<BR>"));
-        column_data.clear();
+        splited_data = temp_data.split(QStringLiteral("<BR>"));
+        temp_data.clear();
         splited_data.pop_back();
         // First index of the exam information occurance
         int exam_index {-1};
@@ -202,17 +191,17 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         }
 
         for (int i {0}; i < class_time_number; ++i) {
-            column_data += splited_data[i] + QStringLiteral("<br>");
+            temp_data += splited_data[i] + QStringLiteral("<br>");
         }
         // remove the '<br>' from end of the string
-        column_data.chop(4);
-        normalizeTime(column_data);
+        temp_data.chop(4);
+        normalizeTime(temp_data);
         // time
-        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::timeRole), column_data);
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::timeRole), temp_data);
 
-        column_data = QStringLiteral("نامشخص");
+        temp_data = QStringLiteral("نامشخص");
         if (exam_index != -1) {
-            column_data.clear();
+            temp_data.clear();
             // iterate over exam informations and extract the data's by using REGEX
             for (; exam_index < splited_data.size(); ++exam_index) {
                QRegularExpressionMatchIterator date_match = re_exam_date.globalMatch(splited_data[exam_index]);
@@ -222,26 +211,26 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
                    }
                    // template: month.day/hour:minute
                    /// TODO: change template to a more-readable form
-                   column_data += date_match.next().captured(1) % QStringLiteral("/") % time_match.next().captured(1) % QStringLiteral("<br>");
+                   temp_data += date_match.next().captured(1) % QStringLiteral("/") % time_match.next().captured(1) % QStringLiteral("<br>");
                }
             }
             // remove the '<br>' from end of the string
-            column_data.chop(4);
+            temp_data.chop(4);
         }
         // exam
-        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole), column_data);
+        row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole), temp_data);
 
         // place
-        column_data_ref = reader.attributes().value("C9");
-        int underline_pos {column_data_ref.lastIndexOf('_')};
-        int endpos {column_data_ref.lastIndexOf("<BR>")};
+        temp_data_ref = reader.attributes().value("C9");
+        int underline_pos {temp_data_ref.lastIndexOf('_')};
+        int endpos {temp_data_ref.lastIndexOf("<BR>")};
         if (underline_pos != -1 && endpos != -1)
             // we skip 2 character which is '_ '
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::placeRole),
-                               column_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
+                               temp_data_ref.mid(underline_pos + 2, endpos - underline_pos - 2).toString());
         else
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::placeRole),
-                               column_data_ref.toString());
+                               temp_data_ref.toString());
 
         // isChoosed
         if (CheckIsChoosed(course_uid, schedule)) {
@@ -263,6 +252,7 @@ void OfferedCourseHandler::sendDataTo(QObject* model)
     view_model->setDataContainer(container);
 }
 
+// convert 'schedule' to a container format which the ScheduleTable could parse
 QVariantList OfferedCourseHandler::restoreSchedule() const
 {
     if (schedule.isEmpty()) return QVariantList();
