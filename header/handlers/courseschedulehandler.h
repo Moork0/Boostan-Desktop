@@ -27,10 +27,10 @@ private:
     /** Functions **/
 
     // set semester to sem
-    void setSemester(const QString& sem);
+    void    setSemester                 (const QString& sem);
 
     // extract weekly course schedule from 'response' and fill 'weekly_schedule'
-    bool    extractWeeklySchedule   (QString& response);
+    bool    extractWeeklySchedule       (QString& response);
 
     // request validators for being able to make further requests
     bool    requestTokens();
@@ -38,20 +38,20 @@ private:
     bool    requestSchedule();
 
     // calculate the corresponding row(in scheduleTable component) for the given day
-    int     calculateScheduleRow(const QString& day) const;
+    int     calculateScheduleRow        (const QString& day) const;
     // calculate the corresponding column(in scheduleTable component) for the given hour
-    float   calculateScheduleColumn(const QString& hour) const;
+    float   calculateScheduleColumn     (const QString& hour) const;
     // calculate the the duration of a course in hour.
-    float   calculateScheduleLen(const QString& hour, const float start_column) const;
+    float   calculateScheduleLen        (const QString& hour, const float start_column) const;
 
     // forced getter implementation (because of abstract parent class) for is_empty
     bool    getIsEmpty() const override;
 
 private slots:
     // parse the validators from request requestTokens()
-    void    parseTokens             (QNetworkReply& reply);
+    void    parseTokens                 (QNetworkReply& reply);
     // parse the weekly schedule
-    void    parseSchedule           (QNetworkReply& reply);
+    void    parseSchedule               (QNetworkReply& reply);
 
 public slots:
     // start the process for recieving data from Golestan
