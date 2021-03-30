@@ -7,16 +7,7 @@ CourseScheduleHandler::CourseScheduleHandler()
 void CourseScheduleHandler::start(const QString current_semester)
 {
     setSemester(current_semester);
-//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("res2.html");
-//    if (file.open(QIODevice::ReadOnly)) {
-//        QString rr {file.readAll()};
-//        extractWeeklySchedule(rr);
-//    } else {
-//        qDebug() << file.errorString();
-//    }
-//    setSuccess(true);
-//    setFinished(true);
+
     requestTokens();
 }
 
@@ -58,7 +49,7 @@ bool CourseScheduleHandler::requestSchedule()
     request.setUrl(root_url + schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    // determine the ticketbox value
+
     QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
                 % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
                 % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
@@ -122,8 +113,6 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
     QVariantList rows, columns, lengths;
     while(reader.readNextStartElement()) {
         if(reader.name() != QStringLiteral("row")) continue;
-        // the struture is not empty
-        setIsEmpty(false);
 
         QXmlStreamAttributes attribute {reader.attributes()};
         map[QStringLiteral("teacher")] = attribute.value("C7").toString();
@@ -178,6 +167,10 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         weekly_schedule.append(map);
         reader.skipCurrentElement();
     }
+
+    // check if the response data was empty or not
+    if (!map.isEmpty())
+        setIsEmpty(false);
 
     return true;
 }
