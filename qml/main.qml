@@ -1,7 +1,3 @@
-/*
-    * This is the main page for Boostan qml.
-*/
-
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import API.Settings 1.0
@@ -22,6 +18,7 @@ ApplicationWindow {
     FontLoader { source: "fonts/Mj_Afsoon.ttf" }
     FontLoader { id: regular_font; source: "fonts/Vazir-Regular.ttf"; }
 
+    // An object to store the universal necessary data's
     QtObject {
         id: universal_storage
         property var semesters: []
@@ -32,7 +29,6 @@ ApplicationWindow {
         onStudentUidChanged: Settings.setPrefixUid(studentUid)
     }
 
-    // whole application is managed by stackview system
     ViewManager {
         width: parent.width - right_pane.width
         height: parent.height
@@ -44,7 +40,6 @@ ApplicationWindow {
                 return;
             }
             stackview.rawPush("qrc:/Pages/LoginPage.qml", "qrc:/Pages/LoginPage.qml")
-//            stackview.push("Pages/OfferedCoursePage.qml")
         }
     }
 
