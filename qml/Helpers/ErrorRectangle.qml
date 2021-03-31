@@ -1,3 +1,7 @@
+/*
+    * Just a rectangle to show message about the unavailablity of data.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
