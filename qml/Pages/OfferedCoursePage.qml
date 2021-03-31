@@ -57,6 +57,7 @@ PageBase {
         }
     }
 
+    // pop-up that shows up by clicking on 'constructed_schedule_btn'
     Popup {
         id: schedule_popup
         modal: true
@@ -159,7 +160,6 @@ PageBase {
     MyButton {
         id: constructed_schedule_btn
         anchors.right: table_view.right
-//        anchors.rightMargin: 10
         y: 20
         width: 170
         height: 50
@@ -173,8 +173,11 @@ PageBase {
 
     MyTableView {
         id: table_view
+
         property bool ready: offered_course_handler.finished
+        // Summation of weight of choosed courses.
         property int weightOfChoosed: 0
+
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: constructed_schedule_btn.bottom
         anchors.topMargin: 10
@@ -186,6 +189,7 @@ PageBase {
         onInitialChoose: weightOfChoosed += offered_course_model.getCourseWeight(index)
         onChoosedCleared: weightOfChoosed = 0
 
+        // Check for collision in ScheduleTable and if there were collision, undo the choosed state.
         onChoosed: {
             var obj = offered_course_model.toScheduleFormat(index);
             var collision_result = schedule_table.checkCollision(obj);
@@ -221,6 +225,7 @@ PageBase {
         }
     }
 
+    // Custom component for being used in tableview
     Component {
         id: tableview_column
         MyTableView.BaseColumnItem {
