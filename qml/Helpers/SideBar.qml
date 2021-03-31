@@ -1,6 +1,6 @@
 /*
     * Side bar component
-    * this is not a reusable component and just moved to a separated file to make original code shorter
+    * Show list of options (objects in 'options') and show them by click.
 */
 
 import QtQuick 2.15
@@ -15,15 +15,17 @@ Rectangle {
     width: enabled ? 270 : 0
     height: mainwindow.height
 
-    property string studentName: universal_storage.studentName
+    // List of options which are going to be shown.
     default property list<SideBarItem> options
+
+    property string studentName: universal_storage.studentName
     property real itemSize: width * 0.06
+    // Index of current option in 'options'
     property int currentOption: -1
     property bool disableNav: false
 
-    /*
-     * this function needs refactor
-     */
+    /** Functions **/
+
     function toOption(option, cache_current = true) {
         if (currentOption < 0) {
             currentOption = option
@@ -48,7 +50,6 @@ Rectangle {
 
     ColumnLayout {
         anchors.left: parent.left
-//        anchors.leftMargin: 10
         anchors.top: parent.top
         anchors.topMargin: 20
         width: parent.width - side_bar_right.width + 5
@@ -70,7 +71,6 @@ Rectangle {
         Label {
             id: student_name
             Layout.alignment: Qt.AlignHCenter
-//            text: "متن تستی شماره یک و دو و سه"
             font.family: regular_font.name
             font.pixelSize: 12
             color: "#F8F7F2"
@@ -91,6 +91,7 @@ Rectangle {
             height: 20
         }
 
+        // Options shown here
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -117,6 +118,7 @@ Rectangle {
                     }
                 }
             }
+
             MouseArea {
                 id: navigator_disabler
                 enabled: side_bar.disableNav
