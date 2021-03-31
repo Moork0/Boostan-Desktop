@@ -1,3 +1,8 @@
+/*
+    * A SideBar options Item.
+    * store necessary information about an option in SideBar.
+*/
+
 import QtQuick 2.15
 
 QtObject {
