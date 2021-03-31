@@ -17,12 +17,11 @@ Error {
     function raiseError(caller_object, callback_function = {}, notifier = undefined)
     {
         var critical_status = caller_object.errorType
-        // check if error is normaal then just notify to the user
+        // check if error is normal then just notify to the user
         if (critical_status === ErrorHandler.Normal && notifier !== undefined) {
             notifier.text = caller_object.getErrorString()
             notifier.solution = caller_object.getErrorSolution()
             notifier.show()
-//            callback_function()
             return;
         }
 
