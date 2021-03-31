@@ -1,3 +1,12 @@
+/*
+    * This is my implementation of TableView.
+    * This Component will get model data like normal ListView
+    * and provide each column data by each of 'columnKey' 's.
+    * Also, This class can use custom component(via 'columnItem' property)
+    * for showing information inside each cell.
+    * NOTE: custom component should be type of BaseColumnItem
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -8,18 +17,31 @@ Item {
     /**  Properties  **/
 
     property alias model: listview.model
+    // Roles used for accessing information in model.
     property var columnKey: ["group", "courseNumber", "courseName", "weight", "capacity", "teacher", "time", "place", "exam"]
+    // List of titles for each column.
     property alias columnTitle: table_header_repeater.model
+
+    // List of width(width coefficient actually) of each column corresponding to columnTitle element.
+    // Sizes MUST be a number between 0 and 1.
+    // 0 means width = 0 and 1 means the width of column would equivalent to the whole Table.
     property alias columnSizes: table_header_repeater.sizes
+    // A component for showing each cells.
     property var columnItem: column_repeater_delegate
+    // List of choosed rows indexes.
     property var choosedList: []
 
     /**  Signals  **/
+
+    // A row at index 'index' choosed.
     signal choosed(int index)
+    // A row at index 'index' have unchoosed.
     signal unchoosed(int index)
+    // Row initialized already chosen.
     signal initialChoose(int index)
     signal choosedCleared()
 
+    // Undo a choosed state of row at index 'index'
     function undoChoose(index)
     {
         listview.itemAtIndex(index).rowData["isChoosed"] = false
@@ -68,7 +90,8 @@ Item {
                     Rectangle {
                         visible: index !== 0
                         anchors.right: parent.right
-                        height: 60 // summation of container_level2 and listview_bg margins from the container_level1
+                        // height is summation of container_level2 and listview_bg margins from the container_level1
+                        height: 60
                         width: 2
                         color: "#262A2F"
                     }
@@ -100,6 +123,8 @@ Item {
         color: "#262A2F"
         opacity: 0.5
     }
+
+    // List view that generates the rows
     ListView {
         id: listview
         anchors.fill: listview_bg
@@ -109,6 +134,7 @@ Item {
         delegate: delegate
     }
 
+    // TODO: Check for destructing the columns to prevent errors
     Component {
         id: delegate
         Item {
@@ -117,6 +143,7 @@ Item {
             width: listview.width
             property var rowData: model
             Component.onCompleted: {
+                // Identify the chosen state of the row. If there is no member names 'isChoosed', create one.
                 rowData["isChoosed"] = rowData.isChoosed ?? false;
                 if (rowData["isChoosed"]) {
                     choosedList.push(index)
@@ -124,6 +151,7 @@ Item {
                 }
             }
 
+            // Columns of each row place in here
             RowLayout {
                 width: parent.width - 10
                 height: parent.height - 10
@@ -131,26 +159,32 @@ Item {
                 layoutDirection: Qt.RightToLeft
                 spacing: 0
 
+                // Generate the columns
                 Repeater {
                     id: column_repeater
                     model: root.columnKey
                     property var rowIndex: index
+
                     Item {
                         id: column_repeater_root_delegate
                         Layout.preferredWidth: parent.width * table_header_repeater.sizes[index]
                         Layout.preferredHeight: parent.height
                         Layout.alignment: Qt.AlignVCenter
+                        // Create a object with 'columnItem' as a cell.
                         Component.onCompleted: {
                             root.columnItem.incubateObject(column_repeater_root_delegate, {
                                                              "model": delegate_root.rowData, "role": modelData,
                                                              "index": index
                                                          })
                         }
+
+                        // Column separator
                         Rectangle {
                             visible: index !== 0
             //                visible: false
                             anchors.right: parent.right
-                            height: 70 // summation of container_level2 and listview_bg margins from the container_level1
+                            // height is summation of container_level2 and listview_bg margins from the container_level1 + 10
+                            height: 70
                             width: 2
                             color: "#262A2F"
                         }
@@ -158,10 +192,12 @@ Item {
                 }
             }
 
+            // MouseArea on row space that manage the choosing functionalities.
             MouseArea {
                 id: mouse_area
                 anchors.fill: parent
                 onPressAndHold: {
+                    // if already choosed, unchoose them.
                     if (delegate_root.rowData.isChoosed) {
                         var ind = root.choosedList.indexOf(index)
                         root.choosedList.splice(ind, 1)
@@ -175,6 +211,7 @@ Item {
                 }
             }
 
+            // Row separator
             Rectangle {
                 visible: index !== listview.count - 1
                 anchors.bottom: parent.bottom
@@ -187,6 +224,7 @@ Item {
 
     }
 
+    // A component that wrap the necessary data's for being used in cells.
     component BaseColumnItem: Item {
         anchors.centerIn: parent
         width: parent.width
@@ -196,6 +234,7 @@ Item {
         required property int index
     }
 
+    // Default Cell component
     Component {
         id: column_repeater_delegate
         BaseColumnItem {
