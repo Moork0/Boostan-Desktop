@@ -1,3 +1,11 @@
+/*
+    * A component that is responsible to manage the view system(StackView in here).
+    * This component is able to remove a object(PageBase) from the StackView but keep
+    * the page instead of destroying it. This enables us to restore the already-created page.
+    * So no need to re-create the object.
+    * Also, the objects would destroy only if they time gets up.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
@@ -26,12 +34,14 @@ StackView {
         var current_obj = root.currentItem
         root.replace(obj, StackView.PushTransition)
 
+        // if the page noted that it should not be cached, remove it.
         if (enable_cache)
             current_obj.__isActive = false
         else
             removePage(current_obj.__viewManUid)
     }
 
+    // just push the component
     function rawPush(comp, comp_name, is_url = true)
     {
         if (is_url === true)
