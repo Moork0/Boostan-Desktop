@@ -1,5 +1,5 @@
 /*
-    * A side bar item implementation
+    * A SideBar options delegation implementation
 */
 
 import QtQuick 2.15
