@@ -9,7 +9,7 @@ import "../Helpers"
 
 PageBase {
     id: dashboard_page
-//    noDestruct: true;
+    noDestruct: true;
 
     BriefInfoHandler {
         id: briefinfo_handler
@@ -121,6 +121,7 @@ PageBase {
 
             }
 
+            // TODO: use Repeater instead of raw duplicated code.
             Rectangle {
                 id: personal_info_bg
                 Layout.fillWidth: true
@@ -202,8 +203,6 @@ PageBase {
             Layout.preferredHeight: parent.height / 2
             width: layout.width
             height: layout.height / 2
-//            color: "#1D2025"
-//            radius: 10
             property bool ready: schedule_handler.finished
 
             ScheduleTable {
