@@ -1,18 +1,19 @@
 ﻿/*
     * Schedule Table Component. Written specially for showing weekly schedule(for courses)
     * I tried to make this component reusable.(as it is, generally)
-    * the model for this component must have these 3 properties: row, column, length
-    * each of the properties listed above must be a list. so at least the model could be like this:
-    * { row: [0], column: [0], length: [0] }
+    * The back-end for this component is ScheduleTable class in c++ side: scheduletable.cpp, scheduletable.h
+    * the model for this component must have these 3 properties: name, row, column, length
+    * each of the last 3 properties listed above must be a list. so at least the model could be like this:
+    * { name: "some name", row: [0], column: [0], length: [0] }
+    * More specific information available in back-end code comments.
 */
 
-//! TODO: separate delegate as a component so we can set the delegate. the component would be flexible
+//! TODO: separate delegate as a component so we can set a custom delegate.
 //!  TODO: move functionalities into c++ side
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-//import Qt.labs.qmlmodels 1.0
 import API.Controls.ScheduleTable 1.0
 
 Item {
@@ -44,7 +45,7 @@ Item {
     property string __warningStringPrefix: "امتحان این درس با درس های زیر در یک روز است:<br>"
 
 
-    // copy of the scheduletable.h enum 'collision_errors'
+    // copy of the scheduletable.h enum 'collision_errors' to get used outside of this component
     enum CollisionErrors {
         NoCollision = 0,
         ExamCollision,
@@ -65,6 +66,7 @@ Item {
 
         if (root.hasWarning && model_item.warningForCourses.length) {
             warning_number = root.__warningNumber;
+            // Check if the warning number has been determined already or not.
             for (var i = 0; i < model_item.warningForCourses.length; ++i) {
                 var temp_obj = courses.courseObjects[model_item.warningForCourses[i]]
                 var w_number = temp_obj !== undefined ? temp_obj[0].warningNumber : 0
@@ -73,15 +75,20 @@ Item {
                     break
                 }
             }
+
+            // increase the global warning number if this component used the current global warning number
             if (warning_number === root.__warningNumber) {
                 root.__warningNumber += 1
             }
+
+            // generate the warning string with names of each course that should be in warning
             warning_string = __warningStringPrefix + __back_end.getCourseNames(model_item.warningForCourses)
+            // If we are not initializing, we should integrate the warnings with other items in table.
             if (!is_initializing)
                 integrateAddedWarning(model_item, model_item.warningForCourses, warning_number)
         }
 
-        // add item to back-end container
+        // add item to back-end container if we are not at initializing
         if (!is_initializing)
             __back_end.addEelement(element_uid, model_item)
 
@@ -116,6 +123,7 @@ Item {
         __back_end.removeEelement(uid)
     }
 
+    // remove all objects in table
     function clear ()
     {
         for (var uid in courses.courseObjects) {
@@ -128,16 +136,26 @@ Item {
         __back_end.clearAll()
     }
 
+    // interface for checkCollision in back-end
     function checkCollision (model_item)
     {
         return __back_end.checkCollision(model_item)
     }
 
+    /*
+        Integrators:
+        if we have warnings enabled, after any change (adding/removing an item) from table
+        the information of warnings for present items should get up-to-date because of possible changes.
+    */
+
+    // integrate warning informations after adding new item
     function integrateAddedWarning (model_item, destinations_uids, warning_number)
     {
         var source_uid = model_item.uid
         var dest_uid = ""
         var name = model_item.name + "<br>"
+        // iterate over the warningForCourses(the 'destinations_uids' actually)
+        // and add the model_item name to the list of the warningForCourses of them.
         for (var i = 0; i < destinations_uids.length; ++i)
         {
             dest_uid = destinations_uids[i]
@@ -150,10 +168,13 @@ Item {
         }
     }
 
+    // integrate warning informations after removing new item
     function integrateRemovedWarning (element_uid)
     {
         var obj = courses.courseObjects[element_uid][0].dataModel
         var uid = "";
+        // iterate over the objects in warningForCourses and remove the desired element
+        // (for removing) information from that objects.
         for (var i = 0; i < obj.warningForCourses.length; ++i) {
             uid = obj.warningForCourses[i]
             var index = courses.courseObjects[uid][0].dataModel.warningForCourses.indexOf(element_uid)
@@ -168,11 +189,13 @@ Item {
         }
     }
 
+    // interface for back-end version of serialize.
     function serialize ()
     {
         return __back_end.serialize()
     }
 
+    // interface for back-end version of deserialize.
     function deserialize (data)
     {
         return __back_end.deserialize(data)
@@ -181,6 +204,7 @@ Item {
     function __initialize ()
     {
         var model_length = root.model.length
+        // make back-end up-to-date
         for (var i = 0; i < model_length; ++i) {
             __back_end.addEelement(root.model[i].uid, root.model[i])
         }
@@ -190,12 +214,12 @@ Item {
         }
     }
 
-    // initialize the component
     Component.onCompleted: {
         // set a random number as a start point for courseColorIndex
         root.__courseColorIndex = parseInt(Math.random() * root.courseColors.length)
     }
 
+    // clear the current model and initialize the component
     onModelChanged: {
         clear();
         __initialize();
@@ -258,7 +282,7 @@ Item {
 //                    height: root.height
                     color: "#262A2F"
                 }
-                // the separator line in the schedule for each hour. this is a thick line.
+                // the separator line in the schedule for each hour. this is a very thin line.
                 Rectangle {
                     x: parent.width
                     y: hours.height
@@ -295,6 +319,7 @@ Item {
                     color: "#FFFFFF"
                     text: modelData
                 }
+
                 // the separator line between each day
                 Rectangle {
                     y: 1
@@ -305,14 +330,6 @@ Item {
                     color: "#262A2F"
                 }
 
-//                Rectangle {
-//                    y: 1
-//                    width: days.width
-////                    width: root.width
-////                    x: -root.width + parent.width
-//                    height: 2
-//                    color: "#262A2F"
-//                }
             }
         }
     }
@@ -341,7 +358,6 @@ Item {
             width: hours.hour_element_width * (dataModel["length"][modelIndex])
             height: dataModel.row[modelIndex] === days_repeater.count - 1 ? (days.days_element_height / 1) - 8 : (days.days_element_height / 1) - 4
             x: courses.width - width - (dataModel.column[modelIndex] * hours.hour_element_width) - 3
-//            y: days.days_element_height * dataModel.row[modelIndex] + 2 + (height / 4)
             y: days.days_element_height * dataModel.row[modelIndex] + 2
 
             ToolTip.visible: course_area.containsMouse
@@ -358,13 +374,12 @@ Item {
                 width: parent.width - 5
                 anchors.centerIn: parent
                 font.family: regular_font.name
-//                font.pixelSize: contentHeight - table_element_root.height > 5 ? 11 : 14
                 color: "#FFFFFF"
                 text: dataModel.name
                 wrapMode: Label.WordWrap
                 horizontalAlignment: Label.AlignHCenter
-//                Component.onCompleted: console.log(contentHeight, table_element_root.height)
             }
+
             MouseArea {
                 id: course_area
                 anchors.fill: parent
