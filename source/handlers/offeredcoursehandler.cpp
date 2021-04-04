@@ -106,6 +106,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 
     while(reader.readNextStartElement()) {
         if(reader.name() != QStringLiteral("row")) continue;
+
+         QXmlStreamAttributes attribute {reader.attributes()};
         // the struture is not empty
         setIsEmpty(false);
         row_datas = new QVariantList;
@@ -116,7 +118,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          * because the order should be equal to the order of roleNames in the OfferedCourseModel
          * otherwise the information would be incorrect
          */
-        temp_data = reader.attributes().value("C1").toString();
+        temp_data = attribute.value("C1").toString();
 
         switch (request_number) {
         case 0:
@@ -137,15 +139,15 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::groupRole), splited_data[1]);
         // course name
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::courseNameRole),
-                           reader.attributes().value("C2").toString());
+                           attribute.value("C2").toString());
         // weight
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::weightRole),
-                           reader.attributes().value("C3").toInt());
+                           attribute.value("C3").toInt());
         // capacity
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::capacityRole),
-                           reader.attributes().value("C5").toInt());
+                           attribute.value("C5").toInt());
 
-        temp_data_ref = reader.attributes().value("C6");
+        temp_data_ref = attribute.value("C6");
 
         // sex
         if (temp_data_ref == QStringLiteral("زن"))
@@ -159,10 +161,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 
         // teacher
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::teacherRole),
-                           reader.attributes().value("C7").toString().remove(QStringLiteral("<BR>")));
+                           attribute.value("C7").toString().remove(QStringLiteral("<BR>")));
 
         // time and exam
-        temp_data = reader.attributes().value("C8").toString();
+        temp_data = attribute.value("C8").toString();
         temp_data.remove(QStringLiteral("درس(ت): "));
         temp_data.remove(QStringLiteral("درس(ع): "));
         /// TODO: determine theory and practical courses
@@ -221,7 +223,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::examRole), temp_data);
 
         // place
-        temp_data_ref = reader.attributes().value("C9");
+        temp_data_ref = attribute.value("C9");
         int underline_pos {temp_data_ref.lastIndexOf('_')};
         int endpos {temp_data_ref.lastIndexOf("<BR>")};
         if (underline_pos != -1 && endpos != -1)
