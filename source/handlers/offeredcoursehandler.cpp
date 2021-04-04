@@ -119,6 +119,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
          */
         temp_data = attribute.value("C1").toString();
 
+        // splitters for each page is different
         switch (request_number) {
         case 0:
             splited_data = temp_data.split("_");
