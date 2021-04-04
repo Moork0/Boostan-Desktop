@@ -108,9 +108,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         if(reader.name() != QStringLiteral("row")) continue;
 
          QXmlStreamAttributes attribute {reader.attributes()};
-        // the struture is not empty
-        setIsEmpty(false);
-        row_datas = new QVariantList;
+
+         row_datas = new QVariantList;
         row_datas->reserve(column_count);
         for (int i {0}; i < column_count; ++i) row_datas->append(QVariant());
         /*
@@ -245,6 +244,11 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 
         reader.skipCurrentElement();
     }
+
+    // check if the struture is not empty
+    if (!container.isEmpty())
+        setIsEmpty(false);
+
     return true;
 }
 
