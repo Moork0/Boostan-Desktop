@@ -209,8 +209,6 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
                QRegularExpressionMatchIterator date_match = re_exam_date.globalMatch(splited_data[exam_index]);
                QRegularExpressionMatchIterator time_match = re_exam_time.globalMatch(splited_data[exam_index]);
                while (date_match.hasNext()) {
-                   if (row_datas->at(OfferedCourseModel::roleToIndex(OfferedCourseModel::groupRole)).toInt() == 95) {
-                   }
                    // template: month.day/hour:minute
                    /// TODO: change template to a more-readable form
                    temp_data += date_match.next().captured(1) % QStringLiteral("/") % time_match.next().captured(1) % QStringLiteral("<br>");
