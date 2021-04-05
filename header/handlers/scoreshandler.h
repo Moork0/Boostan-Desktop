@@ -3,11 +3,17 @@
 
 #include "abstractxmldatahandler.h"
 
-class ScoresHandler : public AbstractXmlDataHandler
+class ScoresHandler final : public AbstractXmlDataHandler
 {
     Q_OBJECT
 
+private:
+
+    // Forced implementation of AbstractXmlDataHandler pure function
+    bool    getIsEmpty              () const override;
+
 public:
+
     ScoresHandler();
 };
 
