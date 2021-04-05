@@ -19,6 +19,7 @@
 #include "header/handlers/briefinfohandler.h"
 #include "header/handlers/courseschedulehandler.h"
 #include "header/handlers/offeredcoursehandler.h"
+#include "header/handlers/scoreshandler.h"
 //! models
 #include "header/models/offeredcoursemodel.h"
 //! Controls
@@ -72,18 +73,19 @@ int main(int argc, char *argv[])
     qmlRegisterType <ScheduleTable>             ("API.Controls.ScheduleTable", 1, 0, "ScheduleTableBackEnd");
 
     /* Handler types */
-    qmlRegisterType <InitHandler>               ("API.InitHandler", 1, 0, "InitHandler");
-    qmlRegisterType <LoginHandler>              ("API.LoginHandler", 1, 0, "LoginHandler");
-    qmlRegisterType <CaptchaHandler>            ("API.LoginHandler", 1, 0, "CaptchaHandler");
-    qmlRegisterType <BriefInfoHandler>          ("API.BriefInfoHandler", 1, 0, "BriefInfoHandler");
-    qmlRegisterType <CourseScheduleHandler>     ("API.CourseScheduleHandler", 1, 0, "CourseScheduleHandler");
-    qmlRegisterType <OfferedCourseHandler>      ("API.OfferedCourseHandler", 1, 0, "OfferedCourseHandler");
+    qmlRegisterType <InitHandler>               ("API.InitHandler",             1, 0, "InitHandler");
+    qmlRegisterType <LoginHandler>              ("API.LoginHandler",            1, 0, "LoginHandler");
+    qmlRegisterType <CaptchaHandler>            ("API.LoginHandler",            1, 0, "CaptchaHandler");
+    qmlRegisterType <BriefInfoHandler>          ("API.BriefInfoHandler",        1, 0, "BriefInfoHandler");
+    qmlRegisterType <CourseScheduleHandler>     ("API.CourseScheduleHandler",   1, 0, "CourseScheduleHandler");
+    qmlRegisterType <OfferedCourseHandler>      ("API.OfferedCourseHandler",    1, 0, "OfferedCourseHandler");
+    qmlRegisterType <ScoresHandler>             ("API.ScoresHandler",           1, 0, "ScoresHandler");
 
     /*   Models   */
-    qmlRegisterType <OfferedCourseModel>        ("API.OfferedCourseHandler", 1, 0, "OfferedCourseModel");
+    qmlRegisterType <OfferedCourseModel>        ("API.OfferedCourseHandler",    1, 0, "OfferedCourseModel");
 
     /*   Helper types   */
-    qmlRegisterType <Errors>                    ("API.Errors", 1, 0, "Error");
+    qmlRegisterType <Errors>                    ("API.Errors",                  1, 0, "Error");
     /// TODO: settings will be a non-creatable object and this should change to non creatable
     qmlRegisterSingletonInstance("API.Settings", 1, 0, "Settings", &settings);
 
