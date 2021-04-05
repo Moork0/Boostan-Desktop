@@ -90,7 +90,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
     if (!match.hasMatch()) return false;
 
     QXmlStreamReader reader(match.captured());
-    /* REGEX patterns for extracting exam date/time */
+    /* REGEX patterns for extracting exam date and time */
     QRegularExpression re_exam_date {QStringLiteral("\\.(\\d{2}.\\d{2})"), QRegularExpression::UseUnicodePropertiesOption};
     QRegularExpression re_exam_time {QStringLiteral("(\\d{2}:\\d{2})-\\d{2}:\\d{2}"), QRegularExpression::UseUnicodePropertiesOption};
 
