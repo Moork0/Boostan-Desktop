@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         source/models/offeredcoursemodel.cpp \
+        source/handlers/scoreshandler.cpp \
         source/handlers/abstractxmldatahandler.cpp \
         source/handlers/courseschedulehandler.cpp \
         source/handlers/offeredcoursehandler.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
         header/handlers/handler.h \
         header/handlers/inithandler.h \
         header/handlers/loginhandler.h \
+        header/handlers/scoreshandler.h \
         header/helpers/errors.h \
         header/helpers/constants.h \
         header/base/network.h \
