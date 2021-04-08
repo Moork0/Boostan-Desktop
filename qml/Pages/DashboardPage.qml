@@ -21,8 +21,10 @@ PageBase {
             start()
         }
         onFinished: {
-            if (!success)
+            if (!success) {
                 error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
+                return;
+            }
 
             universal_storage.studentUid = Number.fromLocaleString(Qt.locale("fa_IR"), briefInfo.id);
             universal_storage.semesters = briefinfo_handler.getRawSemesters();
