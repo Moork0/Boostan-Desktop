@@ -127,11 +127,19 @@ Item {
     // List view that generates the rows
     ListView {
         id: listview
+        property bool isArray: false
         anchors.fill: listview_bg
         clip: true
         boundsBehavior: Flickable.OvershootBounds
         ScrollBar.vertical: ScrollBar { }
         delegate: delegate
+        onModelChanged: {
+            if (model.constructor.name === "Array") {
+                isArray = true;
+                return;
+            }
+            isArray = false;
+        }
     }
 
     // TODO: Check for destructing the columns to prevent errors
@@ -141,7 +149,7 @@ Item {
             id: delegate_root
             height: 70
             width: listview.width
-            property var rowData: model
+            property var rowData: listview.isArray ? modelData : model
             Component.onCompleted: {
                 // Identify the chosen state of the row. If there is no member names 'isChoosed', create one.
                 rowData["isChoosed"] = rowData.isChoosed ?? false;
