@@ -87,14 +87,17 @@ Item {
                         text: modelData
                         color: "#000000"
                     }
+
+                    // column separator
                     Rectangle {
                         visible: index !== 0
                         anchors.right: parent.right
                         // height is summation of container_level2 and listview_bg margins from the container_level1
-                        height: 60
+                        height: root.height
                         width: 2
                         color: "#262A2F"
                     }
+
                 }
             }
         }
@@ -186,16 +189,6 @@ Item {
                                                          })
                         }
 
-                        // Column separator
-                        Rectangle {
-                            visible: index !== 0
-            //                visible: false
-                            anchors.right: parent.right
-                            // height is summation of container_level2 and listview_bg margins from the container_level1 + 10
-                            height: 70
-                            width: 2
-                            color: "#262A2F"
-                        }
                     }
                 }
             }
