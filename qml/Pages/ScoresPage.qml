@@ -1,10 +1,16 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
+import QtQuick.Layouts 1.15
+import API.ScoresHandler 1.0
 import "../Controls"
 
 PageBase {
     id: scores_page
+
+    ScoresHandler {
+        id: scores_handler
+//        Component.onCompleted: start()
+    }
 
     Rectangle {
         id: page_background
@@ -12,97 +18,73 @@ PageBase {
         color: "#262A2F"
     }
 
-    ComboBox {
-        width: 100
+    MyButton {
+        id: btn_select_semester
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        y: 20
+        width: 170
         height: 50
-        model: ["First", "Second", "Third"]
+        // TODO: change text to a more meaningful text
+        text: "برنامه ساخته شده"
+        bgColor: "#19B99A"
+        radius: 8
+        font.family: regular_font.name
+    }
+
+//    Rectangle {
+//        id: test
+//        border.color: "red"
+//        border.width: 2
+//        width: parent.width - 40
+//        // 20 is the btn_select_semester.y and 40 is our specific margin
+//        height: parent.height - btn_select_semester.height - 20 - 40
+//        anchors.top: btn_select_semester.bottom
+//        anchors.topMargin: 10
+//        anchors.horizontalCenter: parent.horizontalCenter
+//    }
+
+    ColumnLayout {
+        id: layout
+        width: parent.width - 40
+        // 20 is the btn_select_semester.y and 40 is our specific margin
+        height: parent.height - btn_select_semester.height - 20 - 40
+        anchors.top: btn_select_semester.bottom
+        anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: control.bottom
-        anchors.topMargin: 50
-        font.pixelSize: 20
-    }
+//        anchors.fill: test
+        spacing: 0
 
-    ComboBox {
-        id: control
-        anchors.centerIn: parent
-        model: ["First", "Second", "Third"]
+        MyTableView {
+            id: scores_table
+            Layout.fillWidth: true
+            Layout.preferredHeight: parent.height * 0.8
+            Layout.maximumHeight: parent.height * 0.75
+            Layout.alignment: Qt.AlignTop
+            model: [
+                {"name": "سلام", "weight": "3", "status": "اعلام شده"},
+                {"name": "سلام", "weight": "3", "status": "اعلام شده"}
+            ]
 
-        delegate: ItemDelegate {
-            width: control.width
-            contentItem: Text {
-                text: modelData
-                color: "#21be2b"
-                font: control.font
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
-            }
-            highlighted: control.highlightedIndex === index
+            columnKey: ["name", "weight", "status"]
+            columnSizes: [0.5, 0.2, 0.3]
+            columnTitle: ["اسم", "واحد", "وضعیت"]
         }
 
-        indicator: Canvas {
-            id: canvas
-            x: control.width - width - control.rightPadding
-            y: control.topPadding + (control.availableHeight - height) / 2
-            width: 12
-            height: 8
-            contextType: "2d"
+        MyTableView {
+            id: brief_scores_table
+            Layout.fillWidth: true
+            Layout.preferredHeight: 120
+            Layout.alignment: Qt.AlignBottom
+            model: [
+                {"name": "سلام", "weight": "3", "status": "اعلام شده"}
+            ]
 
-//            Connections {
-//                target: control
-//                function onPressedChanged() { canvas.requestPaint(); }
-//            }
-
-            onPaint: {
-                context.reset();
-                context.moveTo(0, 0);
-                context.lineTo(width, 0);
-                context.lineTo(width / 2, height);
-                context.closePath();
-                context.fillStyle = control.pressed ? "#17a81a" : "#21be2b";
-                context.fill();
-            }
-        }
-
-        contentItem: Text {
-            leftPadding: 0
-            rightPadding: control.indicator.width + control.spacing
-
-            text: control.displayText
-            font: control.font
-            color: control.pressed ? "#17a81a" : "#21be2b"
-            verticalAlignment: Text.AlignVCenter
-            elide: Text.ElideRight
-        }
-
-        background: Rectangle {
-            id: bgrect
-            implicitWidth: 120
-            implicitHeight: 40
-            border.color: control.pressed ? "#17a81a" : "#21be2b"
-            border.width: control.visualFocus ? 2 : 1
-            radius: 2
-        }
-
-        popup: Popup {
-            y: control.height - 1
-            width: control.width
-            implicitHeight: contentItem.implicitHeight
-            padding: 1
-
-            contentItem: ListView {
-                clip: true
-                implicitHeight: contentHeight
-                model: control.popup.visible ? control.delegateModel : null
-                currentIndex: control.highlightedIndex
-
-                ScrollIndicator.vertical: ScrollIndicator { }
-            }
-
-            background: Rectangle {
-                border.color: "#21be2b"
-                radius: 2
-            }
+            columnKey: ["name", "weight", "status"]
+            columnSizes: [0.5, 0.2, 0.3]
+            columnTitle: ["اسم", "واحد", "وضعیت"]
         }
 
     }
+
 }
