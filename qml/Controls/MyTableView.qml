@@ -31,7 +31,7 @@ Item {
     // List of choosed rows indexes.
     property var choosedList: []
     // The items are choose-able or not
-    property bool chooseable: true
+    property bool choosable: true
 
     /**  Signals  **/
 
@@ -200,7 +200,7 @@ Item {
                 id: mouse_area
                 anchors.fill: parent
                 onPressAndHold: {
-                    if (!root.chooseable)
+                    if (!root.choosable)
                         return;
                     // if already choosed, unchoose them.
                     if (delegate_root.rowData.isChoosed) {
