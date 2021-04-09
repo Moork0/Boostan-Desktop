@@ -37,7 +37,6 @@ PageBase {
 //        border.color: "red"
 //        border.width: 2
 //        width: parent.width - 40
-//        // 20 is the btn_select_semester.y and 40 is our specific margin
 //        height: parent.height - btn_select_semester.height - 20 - 40
 //        anchors.top: btn_select_semester.bottom
 //        anchors.topMargin: 10
@@ -57,10 +56,13 @@ PageBase {
 
         MyTableView {
             id: scores_table
-            Layout.fillWidth: true
+            Layout.preferredWidth: parent.width * 0.9
+//            Layout.fillWidth: true
             Layout.preferredHeight: parent.height * 0.8
             Layout.maximumHeight: parent.height * 0.75
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+
+            choosable: false
             model: [
                 {"name": "سلام", "weight": "3", "status": "اعلام شده"},
                 {"name": "سلام", "weight": "3", "status": "اعلام شده"}
@@ -76,6 +78,8 @@ PageBase {
             Layout.fillWidth: true
             Layout.preferredHeight: 120
             Layout.alignment: Qt.AlignBottom
+
+            choosable: false
             model: [
                 {"name": "سلام", "weight": "3", "status": "اعلام شده"}
             ]
