@@ -30,6 +30,8 @@ Item {
     property var columnItem: column_repeater_delegate
     // List of choosed rows indexes.
     property var choosedList: []
+    // The items are choose-able or not
+    property bool chooseable: true
 
     /**  Signals  **/
 
@@ -198,6 +200,8 @@ Item {
                 id: mouse_area
                 anchors.fill: parent
                 onPressAndHold: {
+                    if (!root.chooseable)
+                        return;
                     // if already choosed, unchoose them.
                     if (delegate_root.rowData.isChoosed) {
                         var ind = root.choosedList.indexOf(index)
