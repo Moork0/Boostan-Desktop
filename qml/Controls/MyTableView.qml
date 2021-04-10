@@ -26,6 +26,8 @@ Item {
     // Sizes MUST be a number between 0 and 1.
     // 0 means width = 0 and 1 means the width of column would equivalent to the whole Table.
     property alias columnSizes: table_header_repeater.sizes
+    // height of each row
+    property real rowHeight: 70
     // A component for showing each cells.
     property var columnItem: column_repeater_delegate
     // List of choosed rows indexes.
@@ -94,7 +96,6 @@ Item {
                     Rectangle {
                         visible: index !== 0
                         anchors.right: parent.right
-                        // height is summation of container_level2 and listview_bg margins from the container_level1
                         height: root.height
                         width: 2
                         color: "#262A2F"
@@ -152,7 +153,7 @@ Item {
         id: delegate
         Item {
             id: delegate_root
-            height: 70
+            height: root.rowHeight
             width: listview.width
             property var rowData: listview.isArray ? modelData : model
             Component.onCompleted: {
