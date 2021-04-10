@@ -68,9 +68,10 @@ PageBase {
             choosable: false
             model: []
             columnKey: ["name", "weight", "score", "status"]
-            columnSizes: [0.4, 0.15, 0.2, 0.2]
-            columnTitle: ["اسم", "واحد","نمره", "وضعیت"]
+            columnSizes: [0.5, 0.1, 0.15, 0.25]
+            columnTitle: ["درس", "واحد","نمره", "وضعیت"]
             columnItem: scores_table_cell
+            rowHeight: 55
         }
 
         MyTableView {
@@ -97,22 +98,17 @@ PageBase {
                 if (model.status === ScoresHandler.Deleted) {
                     model_text = role === "status" ? "حذف شده" : model[role]
                     text_color = "#757575"
-                    return;
-                }
-
-                if (role === "score" || role === "status") {
-                    if (model.status === ScoresHandler.Passed) {
-                        model_text = role === "score" ? model.score : "قبول"
-                        text_color = "#22E533"
-                    } else if (model.status === ScoresHandler.Failed) {
-                        model_text = role === "score" ? model.score : "رد"
-                        text_color = "#E25D5D"
-                    } else if (model.status === ScoresHandler.Temporary) {
-                        model_text = role === "score" ? model.score : "موقت"
-                        text_color = "#F4FC7C"
-                    } else if (model.status === ScoresHandler.Undefined) {
-                        model_text = role === "score" ? model.score : "نامشخص"
-                    }
+                } else if (model.status === ScoresHandler.Passed) {
+                    model_text = role === "status" ? "قبول" : model[role]
+                    text_color = "#22E533"
+                } else if (model.status === ScoresHandler.Failed) {
+                    model_text = role === "status" ? "مردود" : model[role]
+                    text_color = "#E25D5D"
+                } else if (model.status === ScoresHandler.Temporary) {
+                    model_text = role === "status" ? "موقت" : model[role]
+                    text_color = "#F4FC7C"
+                } else if (model.status === ScoresHandler.Undefined) {
+                    model_text = role === "status" ? "نامشخص" : model[role]
                 }
             }
 
