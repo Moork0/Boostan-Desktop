@@ -9,7 +9,11 @@ PageBase {
 
     ScoresHandler {
         id: scores_handler
-//        Component.onCompleted: start()
+        Component.onCompleted: {
+            start()
+            scores_table.model = getScores();
+        }
+
     }
 
     Rectangle {
@@ -57,20 +61,16 @@ PageBase {
         MyTableView {
             id: scores_table
             Layout.preferredWidth: parent.width * 0.9
-//            Layout.fillWidth: true
             Layout.preferredHeight: parent.height * 0.8
             Layout.maximumHeight: parent.height * 0.75
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
 
             choosable: false
-            model: [
-                {"name": "سلام", "weight": "3", "status": "اعلام شده"},
-                {"name": "سلام", "weight": "3", "status": "اعلام شده"}
-            ]
-
-            columnKey: ["name", "weight", "status"]
-            columnSizes: [0.5, 0.2, 0.3]
-            columnTitle: ["اسم", "واحد", "وضعیت"]
+            model: []
+            columnKey: ["name", "weight", "score", "status"]
+            columnSizes: [0.4, 0.15, 0.2, 0.2]
+            columnTitle: ["اسم", "واحد","نمره", "وضعیت"]
+            columnItem: scores_table_cell
         }
 
         MyTableView {
@@ -80,15 +80,52 @@ PageBase {
             Layout.alignment: Qt.AlignBottom
 
             choosable: false
-            model: [
-                {"name": "سلام", "weight": "3", "status": "اعلام شده"}
-            ]
-
+            model: []
             columnKey: ["name", "weight", "status"]
             columnSizes: [0.5, 0.2, 0.3]
             columnTitle: ["اسم", "واحد", "وضعیت"]
         }
 
+    }
+
+    Component {
+        id: scores_table_cell
+        MyTableView.BaseColumnItem {
+            property var model_text: model[role]
+            property var text_color: "#FFFFFF"
+            Component.onCompleted: {
+                if (model.status === ScoresHandler.Deleted) {
+                    model_text = role === "status" ? "حذف شده" : model[role]
+                    text_color = "#757575"
+                    return;
+                }
+
+                if (role === "score" || role === "status") {
+                    if (model.status === ScoresHandler.Passed) {
+                        model_text = role === "score" ? model.score : "قبول"
+                        text_color = "#22E533"
+                    } else if (model.status === ScoresHandler.Failed) {
+                        model_text = role === "score" ? model.score : "رد"
+                        text_color = "#E25D5D"
+                    } else if (model.status === ScoresHandler.Temporary) {
+                        model_text = role === "score" ? model.score : "موقت"
+                        text_color = "#F4FC7C"
+                    } else if (model.status === ScoresHandler.Undefined) {
+                        model_text = role === "score" ? model.score : "نامشخص"
+                    }
+                }
+            }
+
+            Label {
+                anchors.centerIn: parent
+                width: parent.width - 5
+                horizontalAlignment: Label.AlignHCenter
+                wrapMode: Label.WordWrap
+                font.family: regular_font.name
+                text: parent.model_text
+                color: parent.text_color
+            }
+        }
     }
 
 }
