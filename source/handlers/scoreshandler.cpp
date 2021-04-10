@@ -59,7 +59,7 @@ bool ScoresHandler::extractScores(const QString& data)
             status = Failed;
         }
 
-        scores.append(
+        _scores.append(
                     QVariantMap {
                         {QStringLiteral("name"), name},
                         {QStringLiteral("weight"), attribute.value(QStringLiteral("F0205")).toString()},
@@ -89,7 +89,6 @@ bool ScoresHandler::extractBirefScores(const QString& data)
     if (reader.name() != QStringLiteral("Root"))
         return false;
 
-    QString temp_data;
     while(reader.readNextStartElement()) {
         if(reader.name() != QStringLiteral("N"))
             continue;
@@ -109,7 +108,7 @@ ScoresHandler::ScoresHandler()
 
 void ScoresHandler::start()
 {
-    scores.clear();
+    _scores.clear();
     QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
     QFile file("res2.html");
     if (file.open(QIODevice::ReadOnly)) {
@@ -124,5 +123,5 @@ void ScoresHandler::start()
 
 QVariantList ScoresHandler::getScores() const
 {
-    return scores;
+    return _scores;
 }

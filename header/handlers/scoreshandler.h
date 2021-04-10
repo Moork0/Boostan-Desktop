@@ -9,8 +9,8 @@ class ScoresHandler : public AbstractXmlDataHandler
     Q_OBJECT
 
 private:
-    QVariantList scores;
-    QVariantMap score_brief;
+    QVariantList _scores;
+    QVariantMap _score_brief;
 
     // Forced implementation of AbstractXmlDataHandler pure function
     bool    getIsEmpty              () const override;
