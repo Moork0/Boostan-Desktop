@@ -12,6 +12,7 @@ PageBase {
         Component.onCompleted: {
             start()
             scores_table.model = getScores();
+            brief_scores_table.model = getBriefScores()
         }
 
     }
@@ -36,33 +37,22 @@ PageBase {
         font.family: regular_font.name
     }
 
-//    Rectangle {
-//        id: test
-//        border.color: "red"
-//        border.width: 2
-//        width: parent.width - 40
-//        height: parent.height - btn_select_semester.height - 20 - 40
-//        anchors.top: btn_select_semester.bottom
-//        anchors.topMargin: 10
-//        anchors.horizontalCenter: parent.horizontalCenter
-//    }
-
     ColumnLayout {
         id: layout
         width: parent.width - 40
         // 20 is the btn_select_semester.y and 40 is our specific margin
-        height: parent.height - btn_select_semester.height - 20 - 40
+        height: parent.height - btn_select_semester.height - 30 - 40
         anchors.top: btn_select_semester.bottom
-        anchors.topMargin: 10
+        anchors.topMargin: 15
         anchors.horizontalCenter: parent.horizontalCenter
 //        anchors.fill: test
         spacing: 0
 
         MyTableView {
             id: scores_table
-            Layout.preferredWidth: parent.width * 0.9
+            Layout.preferredWidth: parent.width * 0.85
             Layout.preferredHeight: parent.height * 0.8
-            Layout.maximumHeight: parent.height * 0.75
+            Layout.maximumHeight: parent.height * 0.8
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
 
             choosable: false
@@ -76,15 +66,18 @@ PageBase {
 
         MyTableView {
             id: brief_scores_table
-            Layout.fillWidth: true
-            Layout.preferredHeight: 120
-            Layout.alignment: Qt.AlignBottom
+//            Layout.fillWidth: true
+            Layout.preferredWidth: parent.width * 0.9
+            Layout.preferredHeight: 100
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
 
+            interactive: false
             choosable: false
             model: []
-            columnKey: ["name", "weight", "status"]
-            columnSizes: [0.5, 0.2, 0.3]
-            columnTitle: ["اسم", "واحد", "وضعیت"]
+            columnKey: ["average", "semesterUnits", "passedUnits", "passedUnits", "passedUnits"]
+            columnSizes: [0.2, 0.2, 0.2, 0.15, 0.25]
+            columnTitle: ["معدل این ترم", "چند واحد گرفتی", "چند واحد پاس شدی", "معدل کل", "کلا چند واحد پاس کردی"]
+            rowHeight: 50
         }
 
     }
@@ -100,13 +93,13 @@ PageBase {
                     text_color = "#757575"
                 } else if (model.status === ScoresHandler.Passed) {
                     model_text = role === "status" ? "قبول" : model[role]
-                    text_color = "#22E533"
+                    text_color = "#22FF32"
                 } else if (model.status === ScoresHandler.Failed) {
                     model_text = role === "status" ? "مردود" : model[role]
-                    text_color = "#E25D5D"
+                    text_color = "#FF6363"
                 } else if (model.status === ScoresHandler.Temporary) {
                     model_text = role === "status" ? "موقت" : model[role]
-                    text_color = "#F4FC7C"
+                    text_color = "#F7FF7D"
                 } else if (model.status === ScoresHandler.Undefined) {
                     model_text = role === "status" ? "نامشخص" : model[role]
                 }
@@ -120,6 +113,7 @@ PageBase {
                 font.family: regular_font.name
                 text: parent.model_text
                 color: parent.text_color
+                font.weight: Font.DemiBold
             }
         }
     }
