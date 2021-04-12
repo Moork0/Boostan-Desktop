@@ -21,6 +21,8 @@ Item {
     property var columnKey: ["group", "courseNumber", "courseName", "weight", "capacity", "teacher", "time", "place", "exam"]
     // List of titles for each column.
     property alias columnTitle: table_header_repeater.model
+    // alias for listview.interactive
+    property alias interactive: listview.interactive
 
     // List of width(width coefficient actually) of each column corresponding to columnTitle element.
     // Sizes MUST be a number between 0 and 1.
