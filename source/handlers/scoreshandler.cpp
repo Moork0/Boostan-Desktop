@@ -70,7 +70,6 @@ bool ScoresHandler::extractScores(const QString& data)
 
         reader.skipCurrentElement();
     }
-
     return true;
 }
 
@@ -81,24 +80,30 @@ bool ScoresHandler::extractBirefScores(const QString& data)
     QRegularExpressionMatch match {re.match(data)};
     if (!match.hasMatch()) return false;
 
-    QXmlStreamReader reader(match.captured(1));
-
-    if (!reader.readNextStartElement())
-        return false;
-
-    if (reader.name() != QStringLiteral("Root"))
-        return false;
-
-    while(reader.readNextStartElement()) {
-        if(reader.name() != QStringLiteral("N"))
-            continue;
-
-        QXmlStreamAttributes attribute {reader.attributes()};
-
-
-        reader.skipCurrentElement();
-    }
+    QString texts {match.captured(1)};
+    _score_brief.insert(QStringLiteral("average"), extractXmlAttr(texts, QStringLiteral("F4360=\""), false));
+    _score_brief.insert(QStringLiteral("passedUnits"), extractXmlAttr(texts, QStringLiteral("F4370=\""), false));
+    _score_brief.insert(QStringLiteral("semesterUnits"), extractXmlAttr(texts, QStringLiteral("F4365=\""), false));
     return true;
+}
+
+QString ScoresHandler::extractXmlAttr(const QString &data, const QString& key, const bool search_at_start) const
+{
+    static int start_point {0};
+    int start_index, end_index;
+
+    if (search_at_start)
+        start_index = data.indexOf(key);
+    else
+        start_index = data.indexOf(key, start_point);
+
+    if (start_index == -1)
+        return QString();
+
+    start_index += 7;
+    end_index = data.indexOf(QChar('"'), start_index);
+    start_point = start_index;
+    return data.mid(start_index, end_index - start_index);
 }
 
 ScoresHandler::ScoresHandler()
@@ -114,6 +119,7 @@ void ScoresHandler::start()
     if (file.open(QIODevice::ReadOnly)) {
         QString rr {file.readAll()};
         extractScores(rr);
+        extractBirefScores(rr);
     } else {
         qDebug() << file.errorString();
     }
@@ -124,4 +130,9 @@ void ScoresHandler::start()
 QVariantList ScoresHandler::getScores() const
 {
     return _scores;
+}
+
+QVariantList ScoresHandler::getBriefScores() const
+{
+    return QVariantList {_score_brief};
 }

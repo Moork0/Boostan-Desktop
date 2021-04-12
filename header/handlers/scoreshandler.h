@@ -19,6 +19,7 @@ private:
     void    normalizeName(QString& name);
     bool    extractScores(const QString& data);
     bool    extractBirefScores(const QString& data);
+    QString extractXmlAttr(const QString& data, const QString& key, const bool search_at_start = true) const;
 
 public:
     enum status
@@ -36,6 +37,7 @@ public:
 public slots:
     void start();
     QVariantList getScores() const;
+    QVariantList getBriefScores() const;
 };
 
 #endif // SCORESHANDLER_H
