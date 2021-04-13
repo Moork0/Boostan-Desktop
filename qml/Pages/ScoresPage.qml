@@ -23,7 +23,7 @@ PageBase {
         color: "#262A2F"
     }
 
-    MyButton {
+    MyComboBox {
         id: btn_select_semester
         anchors.right: parent.right
         anchors.rightMargin: 20
@@ -31,10 +31,10 @@ PageBase {
         width: 170
         height: 50
         // TODO: change text to a more meaningful text
-        text: "برنامه ساخته شده"
-        bgColor: "#19B99A"
-        radius: 8
-        font.family: regular_font.name
+//        text: "برنامه ساخته شده"
+//        bgColor: "#19B99A"
+//        radius: 8
+//        font.family: regular_font.name
     }
 
     ColumnLayout {
@@ -51,7 +51,8 @@ PageBase {
         MyTableView {
             id: scores_table
             Layout.preferredWidth: parent.width * 0.85
-            Layout.preferredHeight: parent.height * 0.8
+            autoHeight: true
+//            Layout.preferredHeight: parent.height * 0.8
             Layout.maximumHeight: parent.height * 0.8
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
 
