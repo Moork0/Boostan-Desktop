@@ -23,6 +23,10 @@ Item {
     property alias columnTitle: table_header_repeater.model
     // alias for listview.interactive
     property alias interactive: listview.interactive
+    // determine if the component should calculate the height based on listview contents automaticly
+    property bool autoHeight: false
+    // check if autoheight is true
+    implicitHeight: autoHeight ? listview.contentHeight + 60 : 300
 
     // List of width(width coefficient actually) of each column corresponding to columnTitle element.
     // Sizes MUST be a number between 0 and 1.
