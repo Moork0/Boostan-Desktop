@@ -3,8 +3,6 @@ import QtQuick.Controls 2.15
 
 ComboBox {
     id: control
-    anchors.centerIn: parent
-    width: 170
     model: ["سلام", "سلام دو", "سلام سه"]
     font.family: regular_font.name
     font.weight: Font.DemiBold
