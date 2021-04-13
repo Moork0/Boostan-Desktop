@@ -74,7 +74,7 @@ PageBase {
             interactive: false
             choosable: false
             model: []
-            columnKey: ["average", "semesterUnits", "passedUnits", "passedUnits", "passedUnits"]
+            columnKey: ["average", "semesterUnits", "passedUnits", "totalAvg", "totalPassedUnits"]
             columnSizes: [0.2, 0.2, 0.2, 0.15, 0.25]
             columnTitle: ["معدل این ترم", "چند واحد گرفتی", "چند واحد پاس شدی", "معدل کل", "کلا چند واحد پاس کردی"]
             rowHeight: 50

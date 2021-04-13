@@ -81,9 +81,11 @@ bool ScoresHandler::extractBirefScores(const QString& data)
     if (!match.hasMatch()) return false;
 
     QString texts {match.captured(1)};
-    _score_brief.insert(QStringLiteral("average"), extractXmlAttr(texts, QStringLiteral("F4360=\""), false));
+    _score_brief.insert(QStringLiteral("average"), extractXmlAttr(texts, QStringLiteral("F4360=\"")));
     _score_brief.insert(QStringLiteral("passedUnits"), extractXmlAttr(texts, QStringLiteral("F4370=\""), false));
     _score_brief.insert(QStringLiteral("semesterUnits"), extractXmlAttr(texts, QStringLiteral("F4365=\""), false));
+    _score_brief.insert(QStringLiteral("totalAvg"), extractXmlAttr(texts, QStringLiteral("F4360=\""), false));
+    _score_brief.insert(QStringLiteral("totalPassedUnits"), extractXmlAttr(texts, QStringLiteral("F4370=\""), false));
     return true;
 }
 
