@@ -9,8 +9,20 @@ PageBase {
 
     ScoresHandler {
         id: scores_handler
+
         Component.onCompleted: {
-            start()
+            right_pane.disableNavigator()
+            start(universal_storage.currentSemester, universal_storage.studentUid)
+        }
+
+        onFinished: {
+            right_pane.enableNavigator()
+            if (!success) {
+                console.log("error")
+                error_handler.raiseError(this, function(){offered_course_handler.start()}, notifier)
+                return;
+            }
+
             scores_table.model = getScores();
             brief_scores_table.model = getBriefScores()
         }
@@ -23,6 +35,16 @@ PageBase {
         color: "#262A2F"
     }
 
+    Notifier {
+        id: notifier
+        showType: Notifier.ShowType.LeftToRight
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        z: 2
+        font.family: regular_font.name
+        bgColor: "#E65100"
+    }
+
     MyComboBox {
         id: btn_select_semester
         anchors.right: parent.right
@@ -30,6 +52,19 @@ PageBase {
         y: 20
         width: 170
         height: 50
+        textRole: "text"
+        valueRole: "value"
+        onActivated: {
+//            console.log(currentValue)
+            scores_handler.getScoresOf(currentValue)
+        }
+
+        model: [
+            {"value": 3971, "text": "نیمسال ۹۷۱"},
+            {"value": 3972, "text": "نیمسال ۹۷۲"},
+            {"value": 3981, "text": "نیمسال ۹۸۱"},
+        ]
+
         // TODO: change text to a more meaningful text
 //        text: "برنامه ساخته شده"
 //        bgColor: "#19B99A"
