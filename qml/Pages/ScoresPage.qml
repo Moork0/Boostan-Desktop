@@ -66,16 +66,12 @@ PageBase {
         popupMaxHeight: 200
         textRole: "text"
         valueRole: "value"
+
+        model: 0
+
         onActivated: {
-//            console.log(currentValue)
             scores_handler.getScoresOf(currentValue)
         }
-
-        model: [
-            {"value": 3971, "text": "نیمسال ۹۷۱"},
-            {"value": 3972, "text": "نیمسال ۹۷۲"},
-            {"value": 3981, "text": "نیمسال ۹۸۱"},
-        ]
 
     }
 
