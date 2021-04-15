@@ -11,9 +11,13 @@ PageBase {
         id: scores_handler
 
         Component.onCompleted: {
+            right_pane.disableNavigator()
+
+            // model for using in 'btn_select_semester'
             var combo_model = []
             var currentSem = universal_storage.currentSemester
             var currentSemText = "نیمسال " + Number(currentSem % 1000).toLocaleString(Qt.locale("fa_IR"), "f", 0)
+
             for (var i = 0; i < universal_storage.semesters.length; ++i) {
                 var sem_value = universal_storage.semesters[i];
                 var sem_text = "نیمسال " + Number(sem_value % 1000).toLocaleString(Qt.locale("fa_IR"), "f", 0);
@@ -22,7 +26,7 @@ PageBase {
             combo_model.push({"value": currentSem, "text": currentSemText})
             btn_select_semester.model = combo_model;
             btn_select_semester.currentIndex = universal_storage.semesters.length
-            right_pane.disableNavigator()
+
             start(currentSem, universal_storage.studentUid)
         }
 
