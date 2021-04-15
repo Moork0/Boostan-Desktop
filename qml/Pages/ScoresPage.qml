@@ -66,10 +66,10 @@ PageBase {
         anchors.rightMargin: 20
         y: 20
         width: 170
-        height: 50
+        height: 60
         popupMaxHeight: 200
-        textRole: "text"
-        valueRole: "value"
+        comboItem.textRole: "text"
+        comboItem.valueRole: "value"
 
         model: 0
 
