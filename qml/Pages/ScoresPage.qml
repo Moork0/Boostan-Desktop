@@ -11,8 +11,19 @@ PageBase {
         id: scores_handler
 
         Component.onCompleted: {
+            var combo_model = []
+            var currentSem = universal_storage.currentSemester
+            var currentSemText = "نیمسال " + Number(currentSem % 1000).toLocaleString(Qt.locale("fa_IR"), "f", 0)
+            for (var i = 0; i < universal_storage.semesters.length; ++i) {
+                var sem_value = universal_storage.semesters[i];
+                var sem_text = "نیمسال " + Number(sem_value % 1000).toLocaleString(Qt.locale("fa_IR"), "f", 0);
+                combo_model.push({"value": sem_value, "text": sem_text})
+            }
+            combo_model.push({"value": currentSem, "text": currentSemText})
+            btn_select_semester.model = combo_model;
+            btn_select_semester.currentIndex = universal_storage.semesters.length
             right_pane.disableNavigator()
-            start(universal_storage.currentSemester, universal_storage.studentUid)
+            start(currentSem, universal_storage.studentUid)
         }
 
         onFinished: {
@@ -52,6 +63,7 @@ PageBase {
         y: 20
         width: 170
         height: 50
+        popupMaxHeight: 200
         textRole: "text"
         valueRole: "value"
         onActivated: {
@@ -65,11 +77,6 @@ PageBase {
             {"value": 3981, "text": "نیمسال ۹۸۱"},
         ]
 
-        // TODO: change text to a more meaningful text
-//        text: "برنامه ساخته شده"
-//        bgColor: "#19B99A"
-//        radius: 8
-//        font.family: regular_font.name
     }
 
     ColumnLayout {
