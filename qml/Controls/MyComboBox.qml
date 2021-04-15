@@ -23,11 +23,12 @@ ComboBox {
 
             onClicked: {
                 control.currentIndex = index
+                control.activated(index)
                 pop.close()
             }
 
             contentItem: Text {
-                text: modelData
+                text: modelData[textRole] === undefined ? modelData : modelData[textRole]
                 color: "#FFFFFF"
                 font: control.font
                 elide: Text.ElideRight
