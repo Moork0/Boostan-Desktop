@@ -8,6 +8,7 @@ ComboBox {
     font.weight: Font.DemiBold
     font.pixelSize: 17
     property real radius: 12
+    property real popupMaxHeight: 150
 
     Behavior on height {
         NumberAnimation { duration: 150 }
@@ -109,7 +110,7 @@ ComboBox {
 
         contentItem: ListView {
             clip: true
-            implicitHeight: contentHeight <= 150 ? contentHeight + 5 : 150
+            implicitHeight: contentHeight <= control.popupMaxHeight ? contentHeight + 5 : control.popupMaxHeight
 
             model: control.popup.visible ? control.delegateModel : null
             currentIndex: control.highlightedIndex
