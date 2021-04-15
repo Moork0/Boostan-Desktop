@@ -9,6 +9,10 @@ Item {
     property alias font: control.font
     property alias model: control.model
     property alias popupMaxHeight: control.popupMaxHeight
+    property alias currentValue: control.currentValue
+    property alias currentIndex: control.currentIndex
+
+    signal activated(var index);
 
     ComboBox {
         id: control
@@ -24,6 +28,8 @@ Item {
         Behavior on height {
             NumberAnimation { duration: 150 }
         }
+
+        onActivated: root.activated(index)
 
         delegate: Item {
             width: control.width
