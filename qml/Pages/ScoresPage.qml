@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import API.ScoresHandler 1.0
 import "../Controls"
+import "../Helpers"
 
 PageBase {
     id: scores_page
@@ -33,7 +34,6 @@ PageBase {
         onFinished: {
             right_pane.enableNavigator()
             if (!success) {
-                console.log("error")
                 error_handler.raiseError(this, function(){offered_course_handler.start()}, notifier)
                 return;
             }
@@ -81,6 +81,7 @@ PageBase {
 
     ColumnLayout {
         id: layout
+        visible: scores_handler.finished
         width: parent.width - 40
         // 20 is the btn_select_semester.y and 40 is our specific margin
         height: parent.height - btn_select_semester.height - 30 - 40
@@ -121,6 +122,49 @@ PageBase {
             columnSizes: [0.2, 0.2, 0.2, 0.15, 0.25]
             columnTitle: ["معدل این ترم", "چند واحد گرفتی", "چند واحد پاس شدی", "معدل کل", "کلا چند واحد پاس کردی"]
             rowHeight: 50
+
+        }
+
+    }
+
+    Item {
+        width: layout.width
+        height: layout.height
+        x: layout.x
+        y: layout.y
+        LoadingAnimationColor {
+            id: scores_loading_anim
+            width: parent.width
+            height: parent.height * 0.70
+            radius: 5
+            visible: !scores_handler.finished
+        }
+        ErrorRectangle {
+            id: scores_err_rec
+            visible: scores_handler.finished && scores_handler.is_empty
+            anchors.fill: this
+            width: parent.width
+            height: parent.height * 0.70
+            name: "نمرات"
+            radius: 5
+        }
+
+        LoadingAnimationColor {
+            y: scores_loading_anim.height + 40
+            id: briefscores_loading_anim
+            width: parent.width
+            height: parent.height * 0.20
+            radius: 5
+            visible: scores_loading_anim.visible
+        }
+        ErrorRectangle {
+            visible: scores_err_rec.visible
+            anchors.fill: this
+            y: scores_loading_anim.height + 50
+            width: parent.width
+            height: parent.height * 0.25
+            name: "نیمسال"
+            radius: 5
         }
 
     }
