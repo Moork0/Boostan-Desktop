@@ -34,7 +34,7 @@ PageBase {
         onFinished: {
             right_pane.enableNavigator()
             if (!success) {
-                error_handler.raiseError(this, function(){offered_course_handler.start()}, notifier)
+                error_handler.raiseError(this, function(){scores_handler.start(universal_storage.currentSemester, universal_storage.studentUid)}, notifier)
                 return;
             }
 
@@ -74,6 +74,7 @@ PageBase {
         model: 0
 
         onActivated: {
+            right_pane.disableNavigator()
             scores_handler.getScoresOf(currentValue)
         }
 
@@ -81,21 +82,19 @@ PageBase {
 
     ColumnLayout {
         id: layout
-        visible: !scores_handler.working
+        visible: !scores_handler.working && scores_handler.success
         width: parent.width - 40
         // 20 is the btn_select_semester.y and 40 is our specific margin
         height: parent.height - btn_select_semester.height - 30 - 40
         anchors.top: btn_select_semester.bottom
         anchors.topMargin: 15
         anchors.horizontalCenter: parent.horizontalCenter
-//        anchors.fill: test
         spacing: 0
 
         MyTableView {
             id: scores_table
             Layout.preferredWidth: parent.width * 0.85
             autoHeight: true
-//            Layout.preferredHeight: parent.height * 0.8
             Layout.maximumHeight: parent.height * 0.8
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
 
@@ -110,7 +109,6 @@ PageBase {
 
         MyTableView {
             id: brief_scores_table
-//            Layout.fillWidth: true
             Layout.preferredWidth: parent.width * 0.9
             Layout.preferredHeight: 100
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
@@ -128,43 +126,42 @@ PageBase {
     }
 
     Item {
-        width: layout.width
-        height: layout.height
-        x: layout.x
-        y: layout.y
+        anchors.fill: layout
         LoadingAnimationColor {
             id: scores_loading_anim
-            width: parent.width
-            height: parent.height * 0.70
+            width: parent.width * 0.87
+            height: parent.height * 0.8
             radius: 5
             visible: scores_handler.working
+            anchors.horizontalCenter: parent.horizontalCenter
         }
         ErrorRectangle {
             id: scores_err_rec
             visible: !scores_handler.working && scores_handler.is_empty
-            anchors.fill: this
-            width: parent.width
-            height: parent.height * 0.70
+            width: parent.width * 0.87
+            height: parent.height * 0.8
+            anchors.horizontalCenter: parent.horizontalCenter
             name: "نمرات"
             radius: 5
         }
 
         LoadingAnimationColor {
-            y: scores_loading_anim.height + 40
+            y: parent.height - 100
             id: briefscores_loading_anim
-            width: parent.width
-            height: parent.height * 0.20
+            width: parent.width * 0.92
+            height: 100
             radius: 5
             visible: scores_loading_anim.visible
+            anchors.horizontalCenter: parent.horizontalCenter
         }
         ErrorRectangle {
             visible: scores_err_rec.visible
-            anchors.fill: this
-            y: scores_loading_anim.height + 50
-            width: parent.width
-            height: parent.height * 0.25
+            y: parent.height - 100
+            width: parent.width * 0.92
+            height: 100
             name: "نیمسال"
             radius: 5
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
     }
