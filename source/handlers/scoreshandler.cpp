@@ -10,6 +10,20 @@ void ScoresHandler::start(const int semester, const QString student_id)
     _semester = semester;
     _student_id = student_id;
     requestTokens();
+
+//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+//    QFile file("res2.html");
+//    if (file.open(QIODevice::ReadOnly)) {
+//        QString rr {file.readAll()};
+//        extractScores(rr);
+//        extractBirefScores(rr);
+//    } else {
+//        qDebug() << file.errorString();
+//    }
+//    setErrorCode(Errors::ExtractError);
+//    setSuccess(false);
+//    setFinished(true);
+
 }
 
 void ScoresHandler::getScoresOf(const int semester)
@@ -46,6 +60,8 @@ void ScoresHandler::parseTokens(QNetworkReply &reply)
 void ScoresHandler::requestScores()
 {
     connect(&request, &Network::complete, this, &ScoresHandler::parseScores);
+    setFinished(false);
+    setIsEmpty(true);
     _scores.clear();
 
     request.setUrl(root_url + _scores_url + request_validators["tck"]);
@@ -75,7 +91,7 @@ void ScoresHandler::parseScores(QNetworkReply &reply)
     if (!verifyResponse(reply, data))
         parse_success = false;
 
-    if (!extractScores(data) || !extractBirefScores(data)) {
+    if (parse_success && (!extractScores(data) || !extractBirefScores(data))) {
         setErrorCode(Errors::ExtractError);
         parse_success = false;
     }
@@ -155,6 +171,10 @@ bool ScoresHandler::extractScores(const QString& data)
 
         reader.skipCurrentElement();
     }
+
+    if (!_scores.isEmpty())
+        setIsEmpty(false);
+
     return true;
 }
 
