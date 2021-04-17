@@ -81,7 +81,7 @@ PageBase {
 
     ColumnLayout {
         id: layout
-        visible: scores_handler.finished
+        visible: !scores_handler.working
         width: parent.width - 40
         // 20 is the btn_select_semester.y and 40 is our specific margin
         height: parent.height - btn_select_semester.height - 30 - 40
@@ -137,11 +137,11 @@ PageBase {
             width: parent.width
             height: parent.height * 0.70
             radius: 5
-            visible: !scores_handler.finished
+            visible: scores_handler.working
         }
         ErrorRectangle {
             id: scores_err_rec
-            visible: scores_handler.finished && scores_handler.is_empty
+            visible: !scores_handler.working && scores_handler.is_empty
             anchors.fill: this
             width: parent.width
             height: parent.height * 0.70
