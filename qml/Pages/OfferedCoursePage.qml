@@ -220,6 +220,7 @@ PageBase {
         }
         ErrorRectangle {
             visible: !schedule_loading_animation.visible && offered_course_handler.is_empty
+            anchors.fill: parent
             name: "دروس ارائه شده"
             radius: 5
         }

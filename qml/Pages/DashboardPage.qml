@@ -117,6 +117,7 @@ PageBase {
                 }
                 ErrorRectangle {
                     visible: !avgplot_loading_anim.visible && !briefinfo_handler.success
+                    anchors.fill: parent
                     name: "نمودار معدل"
                     radius: 10
                 }
@@ -191,6 +192,7 @@ PageBase {
                 }
                 ErrorRectangle {
                     visible: !personalinfo_loading_anim.visible && !briefinfo_handler.success
+                    anchors.fill: parent
                     name: "خلاصه اطلاعات"
                     radius: 10
                 }
@@ -245,6 +247,7 @@ PageBase {
 
             ErrorRectangle {
                 visible: !schedule_loading_animation.visible && schedule_handler.is_empty
+                anchors.fill: parent
                 name: "برنامه هفتگی"
                 radius: 10
             }
