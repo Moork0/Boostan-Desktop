@@ -52,7 +52,7 @@ private:
         {ExtractError, Normal},
         // this is built-in Golestan error codes that we might see.
         {1, Normal},
-        {24, SemiCritical},
+        {24, Critical},     // authorization destroyed.
         {27, SemiCritical},
         {18, Normal}        // Access is limited(access denied actually)
     };
