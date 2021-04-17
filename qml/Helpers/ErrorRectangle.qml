@@ -10,7 +10,6 @@ Rectangle {
 
     property string name: ""
 
-    anchors.fill: parent
     color: "#1D2025"
     z: 1
     Label {
