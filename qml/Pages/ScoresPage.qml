@@ -1,3 +1,8 @@
+/*
+    * This is a scores page for student
+    * In this page, the users can view their scores and their status per semesters.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -15,13 +20,13 @@ PageBase {
             right_pane.disableNavigator()
 
             // model for using in 'btn_select_semester'
-            var combo_model = []
-            var currentSem = universal_storage.currentSemester
-            var currentSemText = "نیمسال " + Number(currentSem % 1000).toLocaleString(Qt.locale("fa_IR"), "f", 0)
+            let combo_model = []
+            let currentSem = universal_storage.currentSemester
+            let currentSemText = "نیمسال " + Number(currentSem).toLocaleString(Qt.locale("fa_IR"), "f", 0).slice(2)
 
             for (var i = 0; i < universal_storage.semesters.length; ++i) {
-                var sem_value = universal_storage.semesters[i];
-                var sem_text = "نیمسال " + Number(sem_value % 1000).toLocaleString(Qt.locale("fa_IR"), "f", 0);
+                let sem_value = universal_storage.semesters[i];
+                let sem_text = "نیمسال " + Number(sem_value).toLocaleString(Qt.locale("fa_IR"), "f", 0).slice(2);
                 combo_model.push({"value": sem_value, "text": sem_text})
             }
             combo_model.push({"value": currentSem, "text": currentSemText})
