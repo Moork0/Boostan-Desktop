@@ -56,6 +56,12 @@ ApplicationWindow {
             title: "دروس ارائه شده"
             componentPath: "qrc:/Pages/OfferedCoursePage.qml"
         }
+
+        SideBarItem {
+            title: "کارنامه"
+            componentPath: "qrc:/Pages/ScoresPage.qml"
+        }
+
     }
 
     ErrorHandler {
