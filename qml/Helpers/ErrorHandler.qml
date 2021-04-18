@@ -14,7 +14,7 @@ Error {
     // error type for using in universal errors
     property var errorType: ErrorHandler.Critical
 
-    function raiseError(caller_object, callback_function = {}, notifier = undefined)
+    function raiseError(caller_object, callback_function = {}, notifier = undefined, force_callback = false)
     {
         var critical_status = caller_object.errorType
         // check if error is normal then just notify to the user
@@ -22,6 +22,9 @@ Error {
             notifier.text = caller_object.getErrorString()
             notifier.solution = caller_object.getErrorSolution()
             notifier.show()
+            // call callback_function() if we are forced to
+            if (force_callback)
+                callback_function();
             return;
         }
 
@@ -38,7 +41,7 @@ Error {
         })
     }
 
-    // set error_code to the internal Error object data-members
+    // set error_code to the internal Error object data-member
     // and call raiseError with 'this' as a caller_object
     function raiseUniversalError(error_code)
     {
