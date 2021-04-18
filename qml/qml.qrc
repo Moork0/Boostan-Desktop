@@ -33,7 +33,6 @@
         <file>pics/icon-girl.svg</file>
         <file>Helpers/ErrorRectangle.qml</file>
         <file>Pages/ScoresPage.qml</file>
-        <file>Test.qml</file>
         <file>Controls/MyComboBox.qml</file>
     </qresource>
 </RCC>
