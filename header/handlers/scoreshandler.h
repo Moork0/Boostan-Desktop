@@ -45,7 +45,7 @@ private:
     bool    extractScores(const QString& data);
     bool    extractBirefScores(const QString& data);
     // extract the value of 'key' from Golestan-provided XML data which have stored in 'data'
-    QString extractXmlAttr(const QString& data, const QString& key, const bool search_from_first = true) const;
+    QString extractXmlAttr(const QString& data, const QString& key, const bool start_from_first = true) const;
 
 private slots:
     // parse the response to requestTokens()
