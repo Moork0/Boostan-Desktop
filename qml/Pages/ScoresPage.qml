@@ -61,6 +61,7 @@ PageBase {
     }
 
     MyComboBox {
+        enabled: !scores_handler.working
         id: btn_select_semester
         anchors.right: parent.right
         anchors.rightMargin: 20
