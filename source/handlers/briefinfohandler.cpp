@@ -40,8 +40,8 @@ QStringList BriefInfoHandler::getSemesterYears() const
 {
     QStringList list;
     for (int year : passed_semesters) {
-        // years are like this: 3991. we just need the 991 part.
-        list << locale.toString(year % 1000);
+        // years are like this: 3XXX. we just need the XXX part.
+        list << locale.toString(year).remove(0, 1);
     }
     return list;
 }
