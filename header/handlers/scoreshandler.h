@@ -12,10 +12,10 @@ private:
     QVariantList _scores;
     QVariantMap _score_brief;
     // the semester number we wanna get information of
-    int _semester;
+    QString _semester;
+    QString _student_id;
     float _custom_average;
     bool  _need_custom_avg;
-    QString _student_id;
 
     // url of section we gonna send our requests.
     const inline static QString       _scores_url {QStringLiteral("/Forms/F1802_PROCESS_MNG_STDJAMEHMON/F1802_01_PROCESS_MNG_STDJAMEHMON_Dat.aspx?r=0.9638806400489983&fid=0;12310&b=0&l=0&&lastm=20180201081222&tck=")};
@@ -53,7 +53,7 @@ public:
     ScoresHandler();
 
 public slots:
-    void start(const int semester, const QString student_id);
+    void start(const QString semester, const QString student_id);
     void getScoresOf(const int semester);
     QVariantList getScores() const;
     QVariantList getBriefScores() const;

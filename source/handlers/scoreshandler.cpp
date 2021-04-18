@@ -5,24 +5,24 @@ bool ScoresHandler::getIsEmpty() const
     return is_empty;
 }
 
-void ScoresHandler::start(const int semester, const QString student_id)
+void ScoresHandler::start(const QString semester, const QString student_id)
 {
     _semester = semester;
     _student_id = student_id;
-    requestTokens();
+//    requestTokens();
 
-//    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-//    QFile file("res2.html");
-//    if (file.open(QIODevice::ReadOnly)) {
-//        QString rr {file.readAll()};
-//        extractScores(rr);
-//        extractBirefScores(rr);
-//    } else {
-//        qDebug() << file.errorString();
-//    }
-//    setErrorCode(Errors::ExtractError);
-//    setSuccess(true);
-//    setFinished(true);
+    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
+    QFile file("res2.html");
+    if (file.open(QIODevice::ReadOnly)) {
+        QString rr {file.readAll()};
+        extractScores(rr);
+        extractBirefScores(rr);
+    } else {
+        qDebug() << file.errorString();
+    }
+    setErrorCode(Errors::ExtractError);
+    setSuccess(true);
+    setFinished(true);
 
 }
 
@@ -70,7 +70,7 @@ void ScoresHandler::requestScores()
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
-    QString param_txtmiddle {QString(QStringLiteral("<r F41251=\"%1\" F43501=\"%2\"/>")).arg(_student_id, QString::number(_semester))};
+    QString param_txtmiddle {QString(QStringLiteral("<r F41251=\"%1\" F43501=\"%2\"/>")).arg(_student_id, _semester)};
     QString data{
             QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
             % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
