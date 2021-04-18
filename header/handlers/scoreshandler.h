@@ -54,7 +54,7 @@ public:
 
 public slots:
     void start(const QString semester, const QString student_id);
-    void getScoresOf(const int semester);
+    void getScoresOf(const QString semester);
     QVariantList getScores() const;
     QVariantList getBriefScores() const;
 };

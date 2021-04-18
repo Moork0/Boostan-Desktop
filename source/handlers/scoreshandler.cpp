@@ -26,7 +26,7 @@ void ScoresHandler::start(const QString semester, const QString student_id)
 
 }
 
-void ScoresHandler::getScoresOf(const int semester)
+void ScoresHandler::getScoresOf(const QString semester)
 {
     _semester = semester;
     requestScores();
