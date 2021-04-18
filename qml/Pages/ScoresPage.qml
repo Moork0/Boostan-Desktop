@@ -19,9 +19,12 @@ PageBase {
         Component.onCompleted: {
             right_pane.disableNavigator()
 
-            // model for using in 'btn_select_semester'
+            /** Prepare a model for using in combo box 'btn_select_semester' **/
+
+            // our model storage
             let combo_model = []
             let currentSem = universal_storage.currentSemester
+            // the semester is like 3,xxx. we just need the 'x's. thus we used slice(2)
             let currentSemText = "نیمسال " + Number(currentSem).toLocaleString(Qt.locale("fa_IR"), "f", 0).slice(2)
 
             for (var i = 0; i < universal_storage.semesters.length; ++i) {
@@ -80,6 +83,7 @@ PageBase {
         model: 0
 
         onActivated: {
+            // request for selected semester scores
             right_pane.disableNavigator()
             scores_handler.getScoresOf(currentValue)
         }
@@ -88,9 +92,10 @@ PageBase {
 
     ColumnLayout {
         id: layout
+        // just show whenever the data is completely ready
         visible: !scores_handler.working && scores_handler.success
         width: parent.width - 40
-        // 20 is the btn_select_semester.y and 40 is our specific margin
+        // 30 is the btn_select_semester.y + 10 and 40 is our specific margin
         height: parent.height - btn_select_semester.height - 30 - 40
         anchors.top: btn_select_semester.bottom
         anchors.topMargin: 15
@@ -100,10 +105,10 @@ PageBase {
         MyTableView {
             id: scores_table
             Layout.preferredWidth: parent.width * 0.85
-            autoHeight: true
             Layout.maximumHeight: parent.height * 0.8
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
 
+            autoHeight: true
             choosable: false
             model: []
             columnKey: ["name", "weight", "score", "status"]
@@ -131,6 +136,7 @@ PageBase {
 
     }
 
+    // loading animations and error sections are here
     Item {
         anchors.fill: layout
         LoadingAnimationColor {
@@ -178,6 +184,8 @@ PageBase {
             property var model_text: model[role]
             property var text_color: "#FFFFFF"
             Component.onCompleted: {
+                // determine the color of the text by checking the status
+                // also make model.status human readable
                 if (model.status === ScoresHandler.Deleted) {
                     model_text = role === "status" ? "حذف شده" : model[role]
                     text_color = "#757575"
