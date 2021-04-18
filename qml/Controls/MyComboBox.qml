@@ -1,3 +1,12 @@
+/*
+    * Custom RTL ComboBox component
+    * This component made from an customized ComboBox inside an Item.
+    * The reason of this choice is the ComboBox reaction(animation) in response to activation
+    * or deactivation. The ComboBox height will change by 10 in those situtaion and Would
+    * make problem if We only have ComboBox(Without wrapping in Item) and any other component has
+    * binding with this ComboBox.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 Item {
@@ -17,12 +26,14 @@ Item {
     ComboBox {
         id: control
         width: parent.width
+        // we need 10 unit for the animation
         height: parent.height - 10
         model: ["سلام", "سلام دو", "سلام سه"]
         font.family: regular_font.name
         font.weight: Font.DemiBold
         font.pixelSize: 17
         property real radius: 12
+        // specify the maximum height of popup.
         property real popupMaxHeight: 150
 
         Behavior on height {
@@ -73,6 +84,7 @@ Item {
             height: 8
             contextType: "2d"
 
+            // rotate the 'indicator' by enabling/disabling the popup
             Connections {
                 target: pop
                 function onAboutToShow() { rotate.from= 0; rotate.to = 180; rotate.start() }
@@ -87,7 +99,6 @@ Item {
                 context.lineTo(width / 2, height);
                 context.closePath();
                 context.fillStyle = "#121212";
-    //                context.strokeStyle = "#121212";
                 context.fill();
             }
             RotationAnimation {
@@ -103,7 +114,6 @@ Item {
 
             text: control.displayText
             font: control.font
-    //            color: control.pressed ? "#17a81a" : "#21be2b"
             color: "#262125"
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -122,7 +132,6 @@ Item {
             y: control.height - 15
             width: control.width
             height: contentItem.implicitHeight
-    //        implicitHeight: contentItem.implicitHeight
             padding: 1
 
             Behavior on height {
@@ -145,6 +154,7 @@ Item {
                 radius: control.radius
             }
 
+            // change the component height whenever popup being visible/invisible
             onAboutToShow: {
                 control.height += 10
                 control.topPadding -= 10
