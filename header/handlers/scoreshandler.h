@@ -13,6 +13,8 @@ private:
     QVariantMap _score_brief;
     // the semester number we wanna get information of
     int _semester;
+    float _custom_average;
+    bool  _need_custom_avg;
     QString _student_id;
 
     // url of section we gonna send our requests.

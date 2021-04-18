@@ -21,7 +21,7 @@ void ScoresHandler::start(const int semester, const QString student_id)
 //        qDebug() << file.errorString();
 //    }
 //    setErrorCode(Errors::ExtractError);
-//    setSuccess(false);
+//    setSuccess(true);
 //    setFinished(true);
 
 }
@@ -62,6 +62,7 @@ void ScoresHandler::requestScores()
     connect(&request, &Network::complete, this, &ScoresHandler::parseScores);
     setFinished(false);
     setIsEmpty(true);
+    _need_custom_avg = false;
     _scores.clear();
 
     request.setUrl(root_url + _scores_url + request_validators["tck"]);
@@ -128,7 +129,9 @@ bool ScoresHandler::extractScores(const QString& data)
     if (reader.name() != QStringLiteral("Root"))
         return false;
 
-    QString name, score, score_result, score_status;
+    int weight_sum {0}, int_weight;
+    float scores_sum {0};
+    QString name, score, score_result, score_status, weight;
     while(reader.readNextStartElement()) {
         if(reader.name() != QStringLiteral("N"))
             continue;
@@ -145,25 +148,34 @@ bool ScoresHandler::extractScores(const QString& data)
         score_result = attribute.value(QStringLiteral("F3965")).toString();
         // score status
         score_status = attribute.value(QStringLiteral("F3955")).toString();
+        weight = attribute.value(QStringLiteral("F0205")).toString();
+        int_weight = weight.toInt();
 
         int status = Temporary;
+        weight_sum += int_weight;
 
         if (score_status.startsWith("حذف")) {
             status = Deleted;
             score = "-";
+            weight_sum -= int_weight;
         } else if (score.isEmpty()) {
             status = Undefined;
             score = "-";
+            weight_sum -= int_weight;
         } else if (score_result.startsWith(QStringLiteral("قبول"))) {
             status = Passed;
         } else if (score_result.startsWith(QStringLiteral("رد"))) {
             status = Failed;
         }
 
+        scores_sum += (score.toFloat() * int_weight);
+        if (status == Temporary)
+            _need_custom_avg = true;
+
         _scores.append(
                     QVariantMap {
                         {QStringLiteral("name"), name},
-                        {QStringLiteral("weight"), attribute.value(QStringLiteral("F0205")).toString()},
+                        {QStringLiteral("weight"), weight},
                         {QStringLiteral("score"), score},
                         {QStringLiteral("status"), status}
                                 }
@@ -172,8 +184,12 @@ bool ScoresHandler::extractScores(const QString& data)
         reader.skipCurrentElement();
     }
 
-    if (!_scores.isEmpty())
+    if (!_scores.isEmpty()) {
         setIsEmpty(false);
+
+        if (_need_custom_avg)
+            _custom_average = scores_sum / weight_sum;
+    }
 
     return true;
 }
@@ -186,7 +202,10 @@ bool ScoresHandler::extractBirefScores(const QString& data)
     if (!match.hasMatch()) return false;
 
     QString texts {match.captured(1)};
-    _score_brief.insert(QStringLiteral("average"), extractXmlAttr(texts, QStringLiteral("F4360=\"")));
+    QString average = _need_custom_avg ? QString::number(_custom_average)  : extractXmlAttr(texts, QStringLiteral("F4360=\""));
+    if (average.isEmpty())
+        average = QStringLiteral("-");
+    _score_brief.insert(QStringLiteral("average"), average);
     _score_brief.insert(QStringLiteral("passedUnits"), extractXmlAttr(texts, QStringLiteral("F4370=\""), false));
     _score_brief.insert(QStringLiteral("semesterUnits"), extractXmlAttr(texts, QStringLiteral("F4365=\""), false));
     _score_brief.insert(QStringLiteral("totalAvg"), extractXmlAttr(texts, QStringLiteral("F4360=\""), false));
