@@ -43,7 +43,7 @@ PageBase {
                 right_pane.toOption(0, false);
                 return;
             }
-            error_handler.raiseError(this, function(){init_handler.start()}, notifier)
+            error_handler.raiseError(this, function(){init_handler.start()}, notifier, true)
         }
     }
 
