@@ -5,27 +5,15 @@ bool ScoresHandler::getIsEmpty() const
     return is_empty;
 }
 
+// Initialize the requests
 void ScoresHandler::start(const QString semester, const QString student_id)
 {
     _semester = semester;
     _student_id = student_id;
-//    requestTokens();
-
-    QDir::setCurrent("/home/moorko/cpp/boostan/boostan/test/");
-    QFile file("res2.html");
-    if (file.open(QIODevice::ReadOnly)) {
-        QString rr {file.readAll()};
-        extractScores(rr);
-        extractBirefScores(rr);
-    } else {
-        qDebug() << file.errorString();
-    }
-    setErrorCode(Errors::ExtractError);
-    setSuccess(true);
-    setFinished(true);
-
+    requestTokens();
 }
 
+// QML api for requesting scores of semester 'semester'
 void ScoresHandler::getScoresOf(const QString semester)
 {
     _semester = semester;
@@ -60,6 +48,7 @@ void ScoresHandler::parseTokens(QNetworkReply &reply)
 void ScoresHandler::requestScores()
 {
     connect(&request, &Network::complete, this, &ScoresHandler::parseScores);
+    // reset the status and continer and flag for every request
     setFinished(false);
     setIsEmpty(true);
     _need_custom_avg = false;
@@ -148,6 +137,7 @@ bool ScoresHandler::extractScores(const QString& data)
         score_result = attribute.value(QStringLiteral("F3965")).toString();
         // score status
         score_status = attribute.value(QStringLiteral("F3955")).toString();
+        // course weight
         weight = attribute.value(QStringLiteral("F0205")).toString();
         int_weight = weight.toInt();
 
@@ -157,10 +147,12 @@ bool ScoresHandler::extractScores(const QString& data)
         if (score_status.startsWith("حذف")) {
             status = Deleted;
             score = "-";
+            // we don't wanna include deleted courses in our calculation
             weight_sum -= int_weight;
         } else if (score.isEmpty()) {
             status = Undefined;
             score = "-";
+            // we don't wanna include undefined courses in our calculation
             weight_sum -= int_weight;
         } else if (score_result.startsWith(QStringLiteral("قبول"))) {
             status = Passed;
@@ -168,6 +160,7 @@ bool ScoresHandler::extractScores(const QString& data)
             status = Failed;
         }
 
+        // summation of scores when each score multiplied to their corresponding course weight
         scores_sum += (score.toFloat() * int_weight);
         if (status == Temporary)
             _need_custom_avg = true;
@@ -187,6 +180,7 @@ bool ScoresHandler::extractScores(const QString& data)
     if (!_scores.isEmpty()) {
         setIsEmpty(false);
 
+        // calculate average
         if (_need_custom_avg)
             _custom_average = scores_sum / weight_sum;
     }
@@ -202,6 +196,7 @@ bool ScoresHandler::extractBirefScores(const QString& data)
     if (!match.hasMatch()) return false;
 
     QString texts {match.captured(1)};
+    // if _need_custom average, use our custom average. otherwise, use Golestan-provided average
     QString average = _need_custom_avg ? QString::number(_custom_average)  : extractXmlAttr(texts, QStringLiteral("F4360=\""));
     if (average.isEmpty())
         average = QStringLiteral("-");
@@ -213,12 +208,15 @@ bool ScoresHandler::extractBirefScores(const QString& data)
     return true;
 }
 
-QString ScoresHandler::extractXmlAttr(const QString &data, const QString& key, const bool search_at_start) const
+// extract the value of 'key' in XML stored in 'data'
+// start_from_first determine that if the function should start from the first of 'data' or continue from the last
+// position
+QString ScoresHandler::extractXmlAttr(const QString &data, const QString& key, const bool start_from_first) const
 {
     static int start_point {0};
     int start_index, end_index;
 
-    if (search_at_start)
+    if (start_from_first)
         start_index = data.indexOf(key);
     else
         start_index = data.indexOf(key, start_point);
@@ -226,6 +224,8 @@ QString ScoresHandler::extractXmlAttr(const QString &data, const QString& key, c
     if (start_index == -1)
         return QString();
 
+    // the 7 is the specific offset for Golestan keys.
+    // keys are something like this: XXXXX="
     start_index += 7;
     end_index = data.indexOf(QChar('"'), start_index);
     start_point = start_index;

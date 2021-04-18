@@ -1,6 +1,14 @@
 #ifndef SCORESHANDLER_H
 #define SCORESHANDLER_H
 
+/*
+    * Class: ScoresHandler
+    * Files: scoreshandler.h, scoreshandler.cpp
+    * The task of this class is:
+    * 1- Retrieve scores for a specific semester from Golestan
+    * 2- re-calculate scores average if we have some temporary scores (because Golestan would not count them)
+*/
+
 #include "abstractxmldatahandler.h"
 #include <QDebug>
 
@@ -9,12 +17,16 @@ class ScoresHandler : public AbstractXmlDataHandler
     Q_OBJECT
 
 private:
+    // containers
     QVariantList _scores;
     QVariantMap _score_brief;
+
     // the semester number we wanna get information of
     QString _semester;
     QString _student_id;
+    // re-calculated average stores here
     float _custom_average;
+    // flag which determine the need of re-calculating of averages
     bool  _need_custom_avg;
 
     // url of section we gonna send our requests.
@@ -24,7 +36,7 @@ private:
     // Forced implementation of AbstractXmlDataHandler pure function
     bool    getIsEmpty              () const override;
 
-    //
+    // requests to Golestan
     void    requestTokens();
     void    requestScores();
 
@@ -32,14 +44,17 @@ private:
     void    normalizeName(QString& name);
     bool    extractScores(const QString& data);
     bool    extractBirefScores(const QString& data);
-    QString extractXmlAttr(const QString& data, const QString& key, const bool search_at_start = true) const;
+    // extract the value of 'key' from Golestan-provided XML data which have stored in 'data'
+    QString extractXmlAttr(const QString& data, const QString& key, const bool search_from_first = true) const;
 
 private slots:
     // parse the response to requestTokens()
     void            parseTokens(QNetworkReply& reply);
+    // parse the response to requestScores()
     void            parseScores(QNetworkReply& reply);
 
 public:
+    // Course status
     enum status
     {
         Passed,
@@ -53,8 +68,11 @@ public:
     ScoresHandler();
 
 public slots:
+    // Initialize the request-sequence
     void start(const QString semester, const QString student_id);
+    // get scores of semester 'semester'
     void getScoresOf(const QString semester);
+    // return containers
     QVariantList getScores() const;
     QVariantList getBriefScores() const;
 };
