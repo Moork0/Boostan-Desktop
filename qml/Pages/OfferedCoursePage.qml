@@ -1,3 +1,9 @@
+/*
+    * This is Page which in offered course for current semester will show
+    * In this page the users also can create their self-made weekly schedule for the upcoming
+    * semester and save it on disk.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -23,6 +29,7 @@ PageBase {
                 return;
             }
 
+            // send data to the model in order to show them
             sendDataTo(offered_course_model)
             table_view.model = offered_course_model
         }
