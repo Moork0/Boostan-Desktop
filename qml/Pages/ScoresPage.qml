@@ -111,9 +111,9 @@ PageBase {
             autoHeight: true
             choosable: false
             model: []
-            columnKey: ["name", "weight", "score", "status"]
-            columnSizes: [0.5, 0.1, 0.15, 0.25]
-            columnTitle: ["درس", "واحد","نمره", "وضعیت"]
+            columnRoles: ["name", "weight", "score", "status"]
+            columnWidthRatios: [0.5, 0.1, 0.15, 0.25]
+            columnTitles: ["درس", "واحد","نمره", "وضعیت"]
             columnItem: scores_table_cell
             rowHeight: 55
         }
@@ -127,9 +127,9 @@ PageBase {
             interactive: false
             choosable: false
             model: []
-            columnKey: ["average", "semesterUnits", "passedUnits", "totalAvg", "totalPassedUnits"]
-            columnSizes: [0.2, 0.2, 0.2, 0.15, 0.25]
-            columnTitle: ["معدل این ترم", "چند واحد گرفتی", "چند واحد پاس شدی", "معدل کل", "کلا چند واحد پاس کردی"]
+            columnRoles: ["average", "semesterUnits", "passedUnits", "totalAvg", "totalPassedUnits"]
+            columnWidthRatios: [0.2, 0.2, 0.2, 0.15, 0.25]
+            columnTitles: ["معدل این ترم", "چند واحد گرفتی", "چند واحد پاس شدی", "معدل کل", "کلا چند واحد پاس کردی"]
             rowHeight: 50
 
         }

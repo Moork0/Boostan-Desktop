@@ -18,9 +18,9 @@ Item {
 
     property alias model: listview.model
     // Roles used for accessing information in model.
-    property var columnKey: ["group", "courseNumber", "courseName", "weight", "capacity", "teacher", "time", "place", "exam"]
+    property var columnRoles: ["group", "courseNumber", "courseName", "weight", "capacity", "teacher", "time", "place", "exam"]
     // List of titles for each column.
-    property alias columnTitle: table_header_repeater.model
+    property alias columnTitles: table_header_repeater.model
     // alias for listview.interactive
     property alias interactive: listview.interactive
     // determine if the component should calculate the height based on listview contents automaticly
@@ -28,10 +28,11 @@ Item {
     // check if autoheight is true
     implicitHeight: autoHeight ? listview.contentHeight + 60 : 300
 
-    // List of width(width coefficient actually) of each column corresponding to columnTitle element.
+    // List of width(width coefficient actually) of each column corresponding to columnTitles element.
     // Sizes MUST be a number between 0 and 1.
     // 0 means width = 0 and 1 means the width of column would equivalent to the whole Table.
-    property alias columnSizes: table_header_repeater.sizes
+    // the best occasion is when the summation of ratios being equal(or nearly equal) to 1.
+    property alias columnWidthRatios: table_header_repeater.sizes
     // height of each row
     property real rowHeight: 70
     // A component for showing each cells.
