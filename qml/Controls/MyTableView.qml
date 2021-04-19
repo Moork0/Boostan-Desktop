@@ -183,7 +183,7 @@ Item {
                 // Generate the columns
                 Repeater {
                     id: column_repeater
-                    model: root.columnKey
+                    model: root.columnRoles
                     property var rowIndex: index
 
                     Item {
