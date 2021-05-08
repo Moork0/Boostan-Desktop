@@ -115,10 +115,10 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         if(reader.name() != QStringLiteral("row")) continue;
 
         QXmlStreamAttributes attribute {reader.attributes()};
-        map[QStringLiteral("teacher")] = attribute.value("C7").toString();
-        map[QStringLiteral("name")] = attribute.value("C2").toString();
+        map[QStringLiteral("teacher")] = attribute.value(QStringLiteral("C7")).toString();
+        map[QStringLiteral("name")] = attribute.value(QStringLiteral("C2")).toString();
 
-        temp_stringlist = attribute.value("C1").toString().split("_");
+        temp_stringlist = attribute.value(QStringLiteral("C1")).toString().split(QStringLiteral("_"));
         // Generate unique id using ScheduleTable::getUid
         map[QStringLiteral("uid")] = ScheduleTable::getUid(temp_stringlist.at(0), temp_stringlist.at(1));
 
@@ -133,13 +133,13 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
             daytime_str = daytime_str.simplified();
 
             // find the index of exam time in temp_stringlist
-            if (daytime_str.startsWith("امتحان")) {
+            if (daytime_str.startsWith(QStringLiteral("امتحان"))) {
                 exam_index = counter;
                 break;
             }
 
-            int time_index {daytime_str.indexOf("-") - 5};
-            int day_index {daytime_str.indexOf(":") + 2};
+            int time_index {daytime_str.indexOf('-') - 5};
+            int day_index {daytime_str.indexOf(':') + 2};
             // storing hour string: 12:34-56:78
             temp_string = daytime_str.mid(time_index, 11);
             float calculated_column {calculateScheduleColumn(temp_string)};
