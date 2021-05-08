@@ -207,7 +207,7 @@ float CourseScheduleHandler::calculateScheduleColumn(const QString& hour) const
     // iterate over hours between first_hour and last_hour
     // and find the correct hour and corresponding column number (i)
     /// TODO: There must be more efficient way instead of iteration. Find that!
-    for (int i {0}; i < columns_length; ++i) {
+    for (int i {0}; i <= columns_length; ++i) {
         current_hour = QString::number(first_hour + i);
         if (current_hour.size() == 1)
             current_hour = QString(QStringLiteral("0")) + current_hour;
