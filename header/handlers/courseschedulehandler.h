@@ -39,13 +39,6 @@ private:
     // request the weekly schedule
     bool    requestSchedule();
 
-    // calculate the corresponding row(in scheduleTable component) for the given day
-    int     calculateScheduleRow        (const QString& day) const;
-    // calculate the corresponding column(in scheduleTable component) for the given hour
-    float   calculateScheduleColumn     (const QString& hour) const;
-    // calculate the the duration of a course in hour.
-    float   calculateScheduleLen        (const QString& hour, const float start_column) const;
-
     // forced getter implementation (because of abstract parent class) for is_empty
     bool    getIsEmpty() const override;
 
