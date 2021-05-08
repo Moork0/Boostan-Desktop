@@ -19,6 +19,51 @@ ScheduleTable::ScheduleTable(QObject *parent) : QObject(parent)
 
 }
 
+int ScheduleTable::calculateScheduleRow(const QString& day)
+{
+    // list of days
+    static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
+    static const int keyword_size {days_keyword.size()};
+
+    for (int i {0}; i < keyword_size; ++i) {
+        if (day.startsWith(days_keyword[i])) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+float ScheduleTable::calculateScheduleColumn(const QString& hour)
+{
+    // 8:00 is hour that classes could start(We have no class befor 08:00)
+    static constexpr int first_hour {8};
+    // 20:00 is hour that classes could end(We have no class after 20:00)
+    static constexpr int last_hour {20};
+    static constexpr int columns_length {last_hour - first_hour};
+
+    QString current_hour;
+    // iterate over hours between first_hour and last_hour
+    // and find the correct hour and corresponding column number (i)
+    /// TODO: There must be more efficient way instead of iteration. Find that!
+    for (int i {0}; i <= columns_length; ++i) {
+        current_hour = QString::number(first_hour + i);
+        if (current_hour.size() == 1)
+            current_hour = QString(QStringLiteral("0")) + current_hour;
+
+        // Divide minutes by 60 to have result as hour. for examle: 10:30 => column number 2.5
+        if (hour.startsWith(current_hour))
+            return i + (hour.midRef(3, 2).toFloat() / 60);
+    }
+    return -1;
+}
+
+float ScheduleTable::calculateScheduleLen(const QString& hour, const float start_column)
+{
+    // 5 is the length of the last 5 character of "12:34-56:78" which is "56:78"
+    float end_column {calculateScheduleColumn(hour.right(5))};
+    return end_column - start_column;
+}
+
 void ScheduleTable::addEelement(const QString uid, QVariantMap element)
 {
     model_data.insert(uid, element);
