@@ -15,7 +15,7 @@ namespace Constants {
 
     inline const QString    application_name{QStringLiteral("Boostan")},
                             organization_name{QStringLiteral("AVID")},
-                            domain_name{QStringLiteral("SeedPuller.space")},
+                            domain_name{QStringLiteral("SeedPuller.ir")},
                             application_path {QDir::currentPath() + "/"},
                             // default golestan url for inserting to settings if no configuration is available
                             root_url {QStringLiteral("https://golestan.umz.ac.ir")},
