@@ -372,12 +372,15 @@ Item {
             Label {
                 id: table_element_root_text
                 width: parent.width - 5
+                height: parent.height - 5
                 anchors.centerIn: parent
                 font.family: regular_font.name
                 color: "#FFFFFF"
                 text: dataModel.name
                 wrapMode: Label.WordWrap
+                elide: Label.ElideRight
                 horizontalAlignment: Label.AlignHCenter
+                verticalAlignment: Label.AlignVCenter
             }
 
             MouseArea {
