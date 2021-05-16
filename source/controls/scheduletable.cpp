@@ -98,7 +98,12 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
         iterator_exam = iterator_value.value("exam").toString().split(QStringLiteral("<br>"));
         // check for any collision for exam times
         for (int itexam_index {0}; itexam_index < iterator_exam.size(); ++itexam_index) {
+            if (iterator_exam.at(itexam_index) == QStringLiteral("نامشخص"))
+                continue;
+
             for (int exam_index {0}; exam_index < exam.size(); ++exam_index) {
+                if (exam.at(exam_index) == QStringLiteral("نامشخص"))
+                    continue;
 
                 if (iterator_exam.at(itexam_index) == exam.at(exam_index))
                     return QVariantList {ExamCollision, iterator_value.value("name").toString()};
