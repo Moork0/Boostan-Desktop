@@ -68,6 +68,7 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
+        return;
     }
 
     reply.deleteLater();
@@ -103,7 +104,7 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
         parse_success = false;
 
     student_id = extractStuId(data);
-    if (student_id.isEmpty()) {
+    if (parse_success && student_id.isEmpty()) {
         setErrorCode(Errors::ExtractError);
         parse_success = false;
     }
