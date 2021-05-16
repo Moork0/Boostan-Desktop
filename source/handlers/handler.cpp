@@ -127,6 +127,9 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
     }
     if (data.isEmpty()) data = reply.readAll();
 //    qDebug() << data;
+    if (Settings::getValue(QStringLiteral("logging"), true).toBool() == true) {
+        Logger::log(QStringLiteral("RECIEVIED: %1").arg(data).toUtf8());
+    }
 
     setErrorCode(extractDataError(data));
     if (getErrorCode() != Errors::NoError) {

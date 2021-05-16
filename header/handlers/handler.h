@@ -24,6 +24,7 @@
 #include "../base/network.h"
 #include "../base/settings.h"
 #include "../helpers/errors.h"
+#include "../helpers/logger.h"
 
 class Handler : public QObject
 {
