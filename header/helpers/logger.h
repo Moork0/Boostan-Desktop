@@ -6,14 +6,14 @@
 class Logger
 {
 
-private:    
-    QString _file_name;
-    QFile _file;
+private:
+    static inline QString   _file_name      {"boostan.log"};
+    static inline QFile      _file          {_file_name};
+
 public:
-    Logger();
-    ~Logger();
-    bool init();
-    void log(const QByteArray& data);
+    Logger() = default;
+    static bool init    ();
+    static void log     (const QByteArray& data, const bool more = false);
 
 };
 
