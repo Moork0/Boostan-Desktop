@@ -42,6 +42,10 @@ bool Network::post(const QByteArray& data)
     request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
     setRequestHeader(request);
     QNetworkReply *reply = netaccman.post(request, data);
+    if (Settings::getValue(QStringLiteral("logging"), true).toBool() == true) {
+        Logger::log(QStringLiteral("Sending POST request: %1").arg(this->url.toString()).toUtf8(), true);
+        Logger::log(data);
+    }
     return reply->error() == QNetworkReply::NoError;
 }
 
@@ -52,6 +56,9 @@ bool Network::get()
     request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
     setRequestHeader(request);
     QNetworkReply* reply = netaccman.get(request);
+    if (Settings::getValue(QStringLiteral("logging"), true).toBool() == true) {
+        Logger::log(QStringLiteral("Sending GET request: %1").arg(this->url.toString()).toUtf8());
+    }
     return reply->error() == QNetworkReply::NoError;
 }
 

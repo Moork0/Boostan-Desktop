@@ -15,6 +15,9 @@
 
 #include <QDebug>
 
+#include "settings.h"
+#include "../helpers/logger.h"
+
 class Network : public QObject
 {
     Q_OBJECT
