@@ -23,6 +23,7 @@ PageBase {
         onFinished: {
             if (!success) {
                 error_handler.raiseError(this, function(){briefinfo_handler.start()}, notifier)
+                right_pane.enableNavigator()
                 return;
             }
 
