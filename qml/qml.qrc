@@ -34,5 +34,6 @@
         <file>Helpers/ErrorRectangle.qml</file>
         <file>Pages/ScoresPage.qml</file>
         <file>Controls/MyComboBox.qml</file>
+        <file>Pages/SettingsPage.qml</file>
     </qresource>
 </RCC>
