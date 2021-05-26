@@ -58,16 +58,38 @@ PageBase {
             currentIndex: 1
 
             Item {
-                MyTextInput {
-                    id: password_input
-                    Layout.alignment: Qt.AlignHCenter
-                    width: 240
-                    height: 40
-                    direction: Qt.RightToLeft
-                    placeHolder: "رمز عبور"
-                    mode: TextInput.Password
-                    icon: "\ue800" // profile icon
-                    iconSize: 24
+                Row {
+                    width: parent.width
+                    height: parent.height
+                    spacing: 0
+                    Column {
+                        width: parent.width / 2
+                        height: parent.height - 50
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 20
+                        MySwitch {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: 110
+                            height: 35
+                        }
+                    }
+
+                    Column {
+                        width: parent.width / 2
+                        height: parent.height - 50
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 20
+
+                        Label {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            text: "ذخیره رویدادها"
+                            color: "#FCFCFC"
+                            font.family: regular_font.name
+                            font.weight: Font.Bold
+                            height: 35
+                        }
+                    }
                 }
             }
 
