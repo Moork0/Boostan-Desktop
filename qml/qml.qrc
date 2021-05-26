@@ -35,5 +35,7 @@
         <file>Pages/ScoresPage.qml</file>
         <file>Controls/MyComboBox.qml</file>
         <file>Pages/SettingsPage.qml</file>
+        <file>Helpers/SettingsPage/GolestanSettings.qml</file>
+        <file>Controls/MySwitch.qml</file>
     </qresource>
 </RCC>
