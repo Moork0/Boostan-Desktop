@@ -51,10 +51,11 @@ Item {
             Layout.alignment: Qt.AlignRight
             Layout.rightMargin: 50
             Layout.preferredHeight: 30
-            Switch {
+            MySwitch {
                 id: change_un
                 anchors.verticalCenter: parent.verticalCenter
-
+                width: 110
+                height: 35
             }
 
             Label {
