@@ -1,13 +1,18 @@
 #include "header/base/settings.h"
+#include <QDebug>
 
 Settings::Settings()
 {
 
 }
 
-void Settings::setValue(const QString key, const QString value)
+void Settings::setValue(const QString key, const QString value, const bool raw_key)
 {
     // The '//' is used in .ini format files to categorize the information
+    if (raw_key) {
+        settings.setValue(key, value);
+        return;
+    }
     settings.setValue(prefix_url % QStringLiteral("//") % prefix_uid % QStringLiteral("//") % key, value);
 }
 

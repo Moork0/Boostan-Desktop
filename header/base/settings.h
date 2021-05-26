@@ -28,7 +28,7 @@ public:
 
 public slots:
     // set value 'value' to key 'key'
-    static void     setValue(const QString key, const QString value);
+    static void     setValue(const QString key, const QString value, const bool raw_key = false);
     // get value of key 'key'. raw_key defines if we should include prefixes in key or not.
     static QVariant getValue(const QString key, const bool raw_key = false);
     // set uid to prefix_uid
