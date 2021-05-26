@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import API.Settings 1.0
 import "../../Controls"
 
 Item {
@@ -16,6 +17,11 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 110
                 height: 35
+                checked: Settings.getValue("logging", true) === "false" ? false : true
+
+                onCheckedChanged: {
+                    Settings.setValue("logging", checked, true)
+                }
             }
         }
 
