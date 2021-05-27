@@ -91,7 +91,6 @@ Item {
             Layout.preferredHeight: 40
             direction: Qt.RightToLeft
             placeHolder: "نام کاربری جدید"
-            mode: TextInput.Password
             icon: "\ue805" // person icon
             iconSize: 24
         }
