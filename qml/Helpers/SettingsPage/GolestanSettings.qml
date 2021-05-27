@@ -1,15 +1,31 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import API.Settings 1.0
+import API.AccountHandler 1.0
+
 import "../../Controls"
 
 Item {
+
+    AccountHandler {
+        id: account_handler
+        onFinished: {
+            right_pane.enableNavigator()
+            if (!success) {
+                error_handler.raiseError(this, function(){}, notifier)
+                return;
+            }
+        }
+    }
+
     ColumnLayout {
         width: parent.width - 10
         height: parent.height - 20
         anchors.centerIn: parent
         spacing: 0
         MyTextInput {
+            id: currpass_inp
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.topMargin: 20
             width: 240
@@ -23,6 +39,7 @@ Item {
         }
 
         MyTextInput {
+            id: newpass_inp
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             width: 240
             height: 40
@@ -35,7 +52,7 @@ Item {
         }
 
         MyTextInput {
-            id: newpass_re
+            id: newpass_re_inp
             Layout.alignment: Qt.AlignHCenter
             width: 240
             height: 40
@@ -66,6 +83,7 @@ Item {
         }
 
         MyTextInput {
+            id: new_username_inp
             visible: change_un.checked
             Layout.alignment: Qt.AlignHCenter
             width: 240
@@ -90,6 +108,30 @@ Item {
             font.pixelSize: 15
             font.family: regular_font.name
             font.weight: Font.Bold
+            onClicked:  {
+
+                if (currpass_inp.isEmpty || newpass_inp.isEmpty || newpass_re_inp.isEmpty || (new_username_inp.isEmpty && change_un.checked)) {
+                    notifier.text = "ورودی ها نباید خالی باشن!"
+                    notifier.solution = "یک بار دیگه فرم رو بررسی کن و همه ورودی هارو پر کن"
+                    notifier.show()
+                    return;
+                }
+
+                if (newpass_inp.text !== newpass_re_inp) {
+                    notifier.text = "رمز های جدید باهم مطابقت ندارن!"
+                    notifier.solution = "رمز جدید و تکرارش رو بررسی کن"
+                    notifier.show()
+                    return;
+                }
+
+                right_pane.disableNavigator()
+
+                if (change_un.checked)
+                    account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text)
+                else
+                    account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text, new_username_inp.text)
+
+            }
         }
     }
 }
