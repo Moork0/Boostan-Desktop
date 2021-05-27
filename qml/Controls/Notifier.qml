@@ -13,7 +13,7 @@ Item {
     height: notifier_text.contentHeight + notifier_solution.contentHeight + 20
 
     // identify the animation direction of notifier
-    // Do not use anchors on direction of showType
+    // Do not use anchors on the same direction with showType
     property int showType: Notifier.ShowType.DownToUp
     property alias bgColor: notifier_background.color
     property alias textColor: notifier_text.color
