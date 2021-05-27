@@ -38,6 +38,7 @@ void ScoresHandler::parseTokens(QNetworkReply &reply)
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
+        return;
     }
 
     reply.deleteLater();
