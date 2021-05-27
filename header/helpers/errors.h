@@ -52,6 +52,14 @@ private:
         {ExtractError, Normal},
         // this is built-in Golestan error codes that we might see.
         {1, Normal},
+
+        // start of account settings errors
+        {3, Normal},
+        {4, Normal},
+        {6, Normal},
+        {8, Normal},
+        // end of account settings errors
+
         {24, Critical},     // authorization destroyed.
         {27, SemiCritical},
         {18, Normal}        // Access is limited(access denied actually)
@@ -68,6 +76,10 @@ private:
         {ExtractError, QStringLiteral("مشکلی در استخراج اطلاعات از گلستان بوجود اومده!")},
         // this is built-in Golestan error codes that we might see.
         {1, QStringLiteral("نام کاربری یا رمز عبوری که وارد شده اشتباهه!")},
+        {3, QStringLiteral("نام کاربری فعلی‌ت رو اشتباه وارد کردی!")},
+        {4, QStringLiteral("رمز فعلی‌ت رو اشتباه وارد کردی!")},
+        {6, QStringLiteral("رمز های جدید باهمدیگه مطابقت ندارن!")},
+        {8, QStringLiteral("نام کاربری ای که وارد کردی قبلا انتخاب شده!")},
         {24, QStringLiteral("گلستان میگه دوباره باید وارد بشی!")},
         {27, QStringLiteral("تعداد تلاش ناموفق برای ورود بیش از حد مجاز شده!")},
         {18, QStringLiteral("امکان دسترسی به محتوای مورد نظر محدود شده!")}
@@ -84,6 +96,10 @@ private:
         {ExtractError, QStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
         // this is built-in Golestan error codes that we might see.
         {1, QStringLiteral("دوباره با دقت تلاش کن :)")},
+        {3, QStringLiteral("دوباره با دقت تلاش کن :)")},
+        {4, QStringLiteral("دوباره با دقت تلاش کن :)")},
+        {6, QStringLiteral("دوباره با دقت تلاش کن :)")},
+        {8, QStringLiteral("یک نام کاربری دیگه رو انتخاب کن :)")},
         {24, QStringLiteral("دوباره برای ورود تلاش کن تا این مشکل رفع بشه. اگر نشد لطفا در گیتهاب خبر بده")},
         {27, QStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
         {18, QStringLiteral("از خودِ سایت گلستان چک کن ببین آیا همه چیز درسته؟ اگر درست بود، این مشکل از بوستانه پس لطفا در گیتهاب به ما گزارش بده.")}
