@@ -25,6 +25,8 @@ ApplicationWindow {
         property int currentSemester: 3992
         property string studentName: ""
         property string studentUid: ""
+        property string username: ""
+
         // update prefix uid
         onStudentUidChanged: Settings.setPrefixUid(studentUid)
     }
@@ -40,6 +42,7 @@ ApplicationWindow {
                 return;
             }
             stackview.rawPush("qrc:/Pages/LoginPage.qml", "qrc:/Pages/LoginPage.qml")
+
         }
     }
 
@@ -60,6 +63,11 @@ ApplicationWindow {
         SideBarItem {
             title: "کارنامه"
             componentPath: "qrc:/Pages/ScoresPage.qml"
+        }
+
+        SideBarItem {
+            title: "تنظیمات"
+            componentPath: "qrc:/Pages/SettingsPage.qml"
         }
 
     }
