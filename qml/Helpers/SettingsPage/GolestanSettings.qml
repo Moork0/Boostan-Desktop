@@ -119,7 +119,7 @@ Item {
                     return;
                 }
 
-                if (newpass_inp.text !== newpass_re_inp) {
+                if (newpass_inp.text !== newpass_re_inp.text) {
                     notifier.text = "رمز های جدید باهم مطابقت ندارن!"
                     notifier.solution = "رمز جدید و تکرارش رو بررسی کن"
                     notifier.show()
