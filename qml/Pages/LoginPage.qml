@@ -33,11 +33,13 @@ PageBase {
             // login handler job is finished so the submit_loading should not be visible
             submit_loading.visible = false
             if (login_handler.success) {
+                let uname = username_input.text;
                 if (remember_checkbox.checked) {
-                    Settings.setValue("username", username_input.text)
+                    Settings.setValue("username", uname)
                     Settings.setValue("password", password_input.text)
                 }
                 universal_storage.studentName = getName()
+                universal_storage.username = uname;
                 right_pane.enabled = true;
                 // redirect to dashboard page and don't cache current page
                 right_pane.toOption(0, false);
