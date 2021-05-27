@@ -16,6 +16,9 @@ Item {
                 error_handler.raiseError(this, function(){}, notifier)
                 return;
             }
+            notifier.text = "اطلاعات با موفقیت تغییر پیدا کردند."
+            notifier.solution = "این موفقیت رو به شما تبریک عرض می‌نماییم"
+            notifier.show()
         }
     }
 
@@ -119,6 +122,13 @@ Item {
                 if (newpass_inp.text !== newpass_re_inp) {
                     notifier.text = "رمز های جدید باهم مطابقت ندارن!"
                     notifier.solution = "رمز جدید و تکرارش رو بررسی کن"
+                    notifier.show()
+                    return;
+                }
+
+                if (currpass_inp.text === newpass_inp.text) {
+                    notifier.text = "نمیشه که رمز فعلیتو نباید بجای رمز جدید وارد کنی!"
+                    notifier.solution = "نمیشه که رمز فعلی‌ت رو بجای رمز فعلی‌ت بذاری آخه :))"
                     notifier.show()
                     return;
                 }
