@@ -17,7 +17,7 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 110
                 height: 35
-                checked: Settings.getValue("logging", true) === "false" ? false : true
+                checked: Settings.getValue("logging", true) === "true" ? true : false
 
                 onCheckedChanged: {
                     Settings.setValue("logging", checked, true)
