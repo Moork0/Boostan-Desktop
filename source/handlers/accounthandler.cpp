@@ -21,19 +21,19 @@ void AccountHandler::requestChangeCreds()
 {
     connect(&request, &Network::complete, this, &AccountHandler::parseChangeCreds);
 
-    request.setUrl(root_url + _account_url + request_validators["tck"]);
+    request.setUrl(root_url + _account_url + request_validators[QStringLiteral("tck")]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
-    QString param_txtmiddle {QString(QStringLiteral("<r+MaxHlp=\"\"+F51801=\"ميرزائي+فرد++عليرضا\"+F80301=\"281121\"+F80351=\"%1\"+F51301=\"%2\"+F51601=\"1\"+F80751=\"\"+F80431=\"\"+F80352=\"%3\"+F51302=\"%4\"+F51303=\"%4\"/>")).arg(_username, _password, _new_username, _new_password)};
+    QString param_txtmiddle {QString(QStringLiteral("<r MaxHlp=\"\" F51801=\"\" F80301=\"%1\" F80351=\"%2\" F51301=\"%3\" F51601=\"1\" F80751=\"\" F80431=\"\" F80352=\"%4\" F51302=\"%5\" F51303=\"%5\"/>")).arg(request_validators[QStringLiteral("uid")], _username, _password, _new_username, _new_password)};
     QString data{
             QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
             % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
             % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
             % QStringLiteral("&TicketTextBox=")         % ticket_tbox
             % QStringLiteral("&TxtMiddle=")             % QUrl::toPercentEncoding(param_txtmiddle)
-            % QStringLiteral("&Fm_Action=80&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")
+            % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")
                 };
 
     request.post(data.toUtf8());
@@ -47,11 +47,13 @@ void AccountHandler::parseTokens(QNetworkReply &reply)
         reply.deleteLater();
         setSuccess(false);
         setFinished(true);
+        return;
     }
 
     reply.deleteLater();
     request_validators.insert(extractFormValidators(data));
     requestChangeCreds();
+
 }
 
 void AccountHandler::parseChangeCreds(QNetworkReply &reply)
