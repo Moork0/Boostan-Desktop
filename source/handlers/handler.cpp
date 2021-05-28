@@ -246,7 +246,7 @@ int Handler::extractDataErrorCode(const QString& response)
 */
 int Handler::extractDataError(const QString& response)
 {
-    if (response.contains(QStringLiteral("ErrorArr = new Array()"))) return Errors::NoError;
+    if (!response.contains(QStringLiteral("ErrorArr = new Array('"))) return Errors::NoError;
     int code {extractDataErrorCode(response)};
     if (code != Errors::NoCodeFound) return code;
     QHash<int, QString>::const_iterator it {Errors::error_keywords.cbegin()};
