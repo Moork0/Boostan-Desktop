@@ -4,12 +4,14 @@
 #include "handler.h"
 #include <QObject>
 
+
+
 class AccountHandler : public Handler
 {
     Q_OBJECT
 
 private:
-    const QString _account_url {QStringLiteral("/Forms/F0217_PROCESS_SCROLDPASS/F0217_01_PROCESS_SCROLDPASS_Dat.aspx?r=0.8555344031558193&fid=0;11160&b=0&l=0&&lastm=20190220153948&tck=")};
+    const QString _account_url {QStringLiteral("/Forms/F0217_PROCESS_SCROLDPASS/F0217_01_PROCESS_SCROLDPASS_Dat.aspx?r=0.8555344031558193&fid=0%3b11160&b=0&l=0&&lastm=20190220153948&tck=")};
     QString _username, _password, _new_password, _new_username;
 
     void    requestTokens       ();
