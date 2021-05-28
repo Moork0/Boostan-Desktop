@@ -20,6 +20,7 @@
 #include "header/handlers/courseschedulehandler.h"
 #include "header/handlers/offeredcoursehandler.h"
 #include "header/handlers/scoreshandler.h"
+#include "header/handlers/accounthandler.h"
 //! models
 #include "header/models/offeredcoursemodel.h"
 //! Controls
@@ -80,6 +81,8 @@ int main(int argc, char *argv[])
     qmlRegisterType <CourseScheduleHandler>     ("API.CourseScheduleHandler",   1, 0, "CourseScheduleHandler");
     qmlRegisterType <OfferedCourseHandler>      ("API.OfferedCourseHandler",    1, 0, "OfferedCourseHandler");
     qmlRegisterType <ScoresHandler>             ("API.ScoresHandler",           1, 0, "ScoresHandler");
+    qmlRegisterType <AccountHandler>            ("API.AccountHandler",          1, 0, "AccountHandler");
+
 
     /*   Models   */
     qmlRegisterType <OfferedCourseModel>        ("API.OfferedCourseHandler",    1, 0, "OfferedCourseModel");
