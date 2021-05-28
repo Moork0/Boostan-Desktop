@@ -35,8 +35,8 @@ PageBase {
             if (login_handler.success) {
                 let uname = username_input.text;
                 if (remember_checkbox.checked) {
-                    Settings.setValue("username", uname)
-                    Settings.setValue("password", password_input.text)
+                    Settings.setValue("username", uname, true)
+                    Settings.setValue("password", password_input.text, true)
                 }
                 universal_storage.studentName = getName()
                 universal_storage.username = uname;
@@ -119,7 +119,7 @@ PageBase {
                 direction: Qt.RightToLeft
                 placeHolder: "نام کاربری"
                 icon: "\ue805" // profile icon
-                text: Settings.getValue("username") === undefined ? "" : Settings.getValue("username")
+                text: Settings.getValue("username", true) ?? ""
             }
 
             MyTextInput {
@@ -132,7 +132,7 @@ PageBase {
                 mode: TextInput.Password
                 icon: "\ue800" // profile icon
                 iconSize: 24
-                text: Settings.getValue("password") === undefined ? "" : Settings.getValue("password")
+                text: Settings.getValue("password", true) ?? ""
             }
 
             /*
