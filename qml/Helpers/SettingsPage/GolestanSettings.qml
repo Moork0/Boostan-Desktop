@@ -127,8 +127,8 @@ Item {
                 }
 
                 if (currpass_inp.text === newpass_inp.text) {
-                    notifier.text = "نمیشه که رمز فعلیتو نباید بجای رمز جدید وارد کنی!"
-                    notifier.solution = "نمیشه که رمز فعلی‌ت رو بجای رمز فعلی‌ت بذاری آخه :))"
+                    notifier.text = "رمز فعلیتو نباید بجای رمز جدید وارد کنی!"
+                    notifier.solution = "نمیشه رمز فعلی‌ت رو بجای رمز فعلی‌ت بذاری که آخه :))"
                     notifier.show()
                     return;
                 }
