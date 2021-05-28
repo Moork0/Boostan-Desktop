@@ -13,6 +13,11 @@ PageBase {
         color: "#262A2F"
     }
 
+    Notifier {
+        id: notifier
+        anchors.horizontalCenter: parent.horizontalCenter
+        font.family: regular_font.name
+    }
 
     Rectangle {
         id: tabbar_bg
