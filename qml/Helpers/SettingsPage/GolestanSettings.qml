@@ -10,15 +10,28 @@ Item {
 
     AccountHandler {
         id: account_handler
+        property bool unameChanged: false
+        property string newUsername
+        property string newPassword
+
         onFinished: {
             right_pane.enableNavigator()
             if (!success) {
                 error_handler.raiseError(this, function(){}, notifier)
                 return;
             }
-            notifier.text = "اطلاعات با موفقیت تغییر پیدا کردند."
-            notifier.solution = "این موفقیت رو به شما تبریک عرض می‌نماییم"
+            notifier.text = "اطلاعات با موفقیت تغییر پیدا کردند!"
+            notifier.solution = ""
             notifier.show()
+            if (Settings.getValue("username", true) === universal_storage.username) {
+                Settings.setValue("password", newPassword, true);
+                if (unameChanged)
+                    Settings.setValue("username", newUsername, true);
+            }
+
+            if (unameChanged) {
+                universal_storage.username = newUsername
+            }
         }
     }
 
@@ -135,11 +148,15 @@ Item {
 
                 right_pane.disableNavigator()
 
-                if (!change_un.checked)
+                account_handler.newPassword = newpass_inp.text
+                if (!change_un.checked) {
+                    account_handler.unameChanged = false
                     account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text)
-                else
+                } else {
+                    account_handler.unameChanged = true;
+                    account_handler.newUsername = new_username_inp.text
                     account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text, new_username_inp.text)
-
+                }
             }
         }
     }
