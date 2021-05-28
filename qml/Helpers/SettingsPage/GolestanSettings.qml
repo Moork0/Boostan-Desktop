@@ -135,7 +135,7 @@ Item {
 
                 right_pane.disableNavigator()
 
-                if (change_un.checked)
+                if (!change_un.checked)
                     account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text)
                 else
                     account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text, new_username_inp.text)
