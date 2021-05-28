@@ -132,12 +132,16 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
         Logger::log(QStringLiteral("RECIEVIED: %1").arg(data).toUtf8());
     }
 
+    // try to update the tokens
+    bool token_up_res {updateTokens(data)};
+
+    // find out whether we have error or not
     setErrorCode(extractDataError(data));
     if (getErrorCode() != Errors::NoError) {
         return false;
     }
 
-    if (!updateTokens(data)) {
+    if (!token_up_res) {
         // we don't know what will gonna prevent updateTokens() to not updating tokens.
         // so the error is unknown and no more progress can be done.
         setErrorCode(Errors::UnknownError);
