@@ -117,6 +117,7 @@ bool Handler::updateTokens(const QString& data)
         cookies[it.key()] = it.value();
     }
     request_validators["tck"] = tokens["tck"];
+    request_validators[QStringLiteral("uid")] = tokens[QStringLiteral("u")];
     return true;
 }
 
