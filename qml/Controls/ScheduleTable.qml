@@ -369,7 +369,7 @@ Item {
                 dataModelChanged.connect(warningNumberChanged)
             }
 
-            Label {
+            Label {                
                 id: table_element_root_text
                 width: parent.width - 5
                 height: parent.height - 5
@@ -381,6 +381,14 @@ Item {
                 elide: Label.ElideRight
                 horizontalAlignment: Label.AlignHCenter
                 verticalAlignment: Label.AlignVCenter
+                // reload the text.
+                // i don't know why we should do that but
+                // i just know this would fix the bug in which
+                // the label got disappeared
+                onHeightChanged: {
+                    text = ""
+                    text = dataModel.name
+                }
             }
 
             MouseArea {
