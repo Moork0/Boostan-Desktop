@@ -81,7 +81,7 @@ Rectangle {
             id: today_date
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
-            text: "۱۱ شهریور ۱۳۹۹"
+            text: TodayDate
             font.pixelSize: 12
             font.family: regular_font.name
             color: "#F8F7F2"
