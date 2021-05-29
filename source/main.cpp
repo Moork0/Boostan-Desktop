@@ -27,7 +27,6 @@
 #include "header/controls/scheduletable.h"
 
 /// TODO: use QString::at() instead of [] for readonly purpose
-
 int main(int argc, char *argv[])
 {
 
@@ -65,6 +64,7 @@ int main(int argc, char *argv[])
     /** Constants **/
 
     engine.rootContext()->setContextProperty(QStringLiteral("ApplicationPath"), Constants::application_path);
+    engine.rootContext()->setContextProperty(QStringLiteral("TodayDate"), Constants::today_date);
     engine.rootContext()->setContextProperty(QStringLiteral("UniversalError"), universal_error);
     engine.rootContext()->setContextProperty(QStringLiteral("UniversalErrorCode"), universal_error_code);
 
