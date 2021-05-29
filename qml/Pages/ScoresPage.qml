@@ -191,10 +191,10 @@ PageBase {
                     text_color = "#757575"
                 } else if (model.status === ScoresHandler.Passed) {
                     model_text = role === "status" ? "قبول" : model[role]
-                    text_color = "#22FF32"
+                    text_color = role === "status" || role === "score" ? "#22FF32" : "#FFFFFF"
                 } else if (model.status === ScoresHandler.Failed) {
                     model_text = role === "status" ? "مردود" : model[role]
-                    text_color = "#FF6363"
+                    text_color = role === "status" || role === "score" ? "#FF6363" : "#FFFFFF"
                 } else if (model.status === ScoresHandler.Temporary) {
                     model_text = role === "status" ? "موقت" : model[role]
                     text_color = "#F7FF7D"
