@@ -16,6 +16,8 @@ Item {
 
         onFinished: {
             right_pane.enableNavigator()
+            submit_loading.visible = false
+
             if (!success) {
                 error_handler.raiseError(this, function(){}, notifier)
                 return;
@@ -146,6 +148,7 @@ Item {
                     return;
                 }
 
+                submit_loading.visible = true
                 right_pane.disableNavigator()
 
                 account_handler.newPassword = newpass_inp.text
@@ -156,6 +159,27 @@ Item {
                     account_handler.unameChanged = true;
                     account_handler.newUsername = new_username_inp.text
                     account_handler.changeCreds(universal_storage.username, currpass_inp.text, newpass_inp.text, new_username_inp.text)
+                }
+            }
+
+            Rectangle {
+                // the visiblity of this component is managed by
+                // account_handler.onFinished and submit_button.onCLicked
+                id: submit_loading
+                visible: false
+                anchors.fill: submit_button
+                color: "#19B99A"
+                LoadingAnimationPulse {
+                    anchors.centerIn: parent
+                    running: parent.visible
+                    barCount: 3
+                    color: "#FAFAFA"
+                    width: 40
+                    height: 25
+                }
+
+                MouseArea {
+                    anchors.fill: parent
                 }
             }
         }
