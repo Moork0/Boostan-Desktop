@@ -33,7 +33,8 @@ namespace Constants {
                                 // default golestan url for inserting to settings if no configuration is available
                                 root_url {QStringLiteral("https://golestan.umz.ac.ir")},
                                 settings_path {application_path + QStringLiteral("settings.ini")},
-                                today_date {generateTodayDate()};
+                                today_date {generateTodayDate()},
+                                version {"0.1.2"};
 
 };  // namespace Constants
 
