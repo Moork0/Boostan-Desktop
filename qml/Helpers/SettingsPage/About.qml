@@ -31,7 +31,7 @@ Item {
             color: "#FCFCFC"
             font.family: regular_font.name
             font.pixelSize: 16
-            text: "نسخه: " + "0.1.0"
+            text: "نسخه: " + Version
         }
 
         Rectangle {
