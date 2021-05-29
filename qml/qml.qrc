@@ -38,5 +38,6 @@
         <file>Helpers/SettingsPage/GolestanSettings.qml</file>
         <file>Controls/MySwitch.qml</file>
         <file>Helpers/SettingsPage/BoostanSettings.qml</file>
+        <file>Helpers/SettingsPage/About.qml</file>
     </qresource>
 </RCC>

@@ -34,7 +34,7 @@ PageBase {
             spacing: 0
             Repeater {
                 id: tabbar_repeater
-                model: ["تنظیمات بوستان", "تنظیمات گلستان",]
+                model: ["درباره" ,"تنظیمات بوستان" ,"تنظیمات گلستان"]
                 delegate: tabbar_comp
                 signal tabChanged(var index)
                 onTabChanged: {
@@ -60,7 +60,9 @@ PageBase {
         StackLayout {
             id: stack_layout
             anchors.fill: parent
-            currentIndex: 1
+            currentIndex: 2
+
+            About { }
 
             BoostanSettings { }
 
