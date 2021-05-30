@@ -76,15 +76,16 @@ PageBase {
         width: parent.width - 40
         height: parent.height - 40
         anchors.centerIn: parent
-        spacing: 15
+        spacing: 25
         RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: parent.width / 2
-            spacing: 15
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: parent.height / 2
+            spacing: 25
 
             Rectangle {
                 id: averages_plot_bg
-                Layout.preferredWidth: parent.width * 0.70
+//                Layout.preferredWidth: parent.width * 0.68
+                Layout.fillWidth: true
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
@@ -128,26 +129,30 @@ PageBase {
             // TODO: use Repeater instead of raw duplicated code.
             Rectangle {
                 id: personal_info_bg
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width * 0.30
+                Layout.maximumWidth: 330
                 Layout.fillHeight: true
                 color: "#1D2025"
                 radius: 10
                 ColumnLayout {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
-                    height: layout.height / 2 - 40
+                    height: parent.height - 40
+                    width: parent.width
+
                     Label {
                         Layout.alignment: Qt.AlignRight
-                        Layout.preferredWidth: personal_info_bg.width
+                        Layout.rightMargin: 22
                         Layout.fillHeight: true
+                        Layout.preferredWidth: parent.width - 20
                         text: "نام و نام خانوادگی: " + right_pane.studentName
                         wrapMode: Text.WordWrap
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
+
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        Layout.rightMargin: 22
                         Layout.fillHeight: true
                         text: "دوره آموزشی:‌         " + briefinfo_handler.briefInfoData.studyType
                         font.family: regular_font.name
@@ -155,6 +160,7 @@ PageBase {
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        Layout.rightMargin: 22
                         Layout.fillHeight: true
                         text: "رشته تحصیلی:      " + briefinfo_handler.briefInfoData.field
                         font.family: regular_font.name
@@ -162,6 +168,7 @@ PageBase {
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        Layout.rightMargin: 22
                         Layout.fillHeight: true
                         text: "شماره دانشجویی:   " + briefinfo_handler.briefInfoData.id
                         font.family: regular_font.name
@@ -170,6 +177,7 @@ PageBase {
 
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        Layout.rightMargin: 22
                         Layout.fillHeight: true
                         text: "واحد گذرانیده:        " + briefinfo_handler.briefInfoData.passedUnits
                         font.family: regular_font.name
@@ -178,6 +186,7 @@ PageBase {
 
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        Layout.rightMargin: 22
                         Layout.fillHeight: true
                         text: "معدل کل:             " + briefinfo_handler.briefInfoData.average
                         font.family: regular_font.name
