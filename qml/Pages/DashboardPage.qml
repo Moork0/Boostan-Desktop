@@ -149,29 +149,21 @@ PageBase {
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "دوره آموزشی:‌ " + briefinfo_handler.briefInfoData.studyType
+                        text: "دوره آموزشی:‌         " + briefinfo_handler.briefInfoData.studyType
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "رشته تحصیلی: " + briefinfo_handler.briefInfoData.field
+                        text: "رشته تحصیلی:      " + briefinfo_handler.briefInfoData.field
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "شماره دانشجویی: " + briefinfo_handler.briefInfoData.id
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.fillHeight: true
-                        text: "واحد گذرانیده: " + briefinfo_handler.briefInfoData.passedUnits
+                        text: "شماره دانشجویی:   " + briefinfo_handler.briefInfoData.id
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
@@ -179,7 +171,15 @@ PageBase {
                     Label {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        text: "معدل کل: " + briefinfo_handler.briefInfoData.average
+                        text: "واحد گذرانیده:        " + briefinfo_handler.briefInfoData.passedUnits
+                        font.family: regular_font.name
+                        color: "#FFFFFF"
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        Layout.fillHeight: true
+                        text: "معدل کل:             " + briefinfo_handler.briefInfoData.average
                         font.family: regular_font.name
                         color: "#FFFFFF"
                     }
