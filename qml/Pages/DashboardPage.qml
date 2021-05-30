@@ -73,148 +73,151 @@ PageBase {
 
     ColumnLayout {
         id: layout
-        width: parent.width - 40
+        width: parent.width - (parent.width * 0.1)
         height: parent.height - 40
         anchors.centerIn: parent
         spacing: 25
-        RowLayout {
+
+        Item {
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: parent.height / 2
-            spacing: 25
+            Layout.preferredHeight: (parent.height / 2) - 50
+            RowLayout {
+                anchors.fill: parent
+                spacing: 25
 
-            Rectangle {
-                id: averages_plot_bg
-//                Layout.preferredWidth: parent.width * 0.68
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: "#1D2025"
-                radius: 10
-                property bool ready: briefinfo_handler.finished
-
-                Icon {
-                    id: save_plot
-                    visible: averages_plot_bg.ready
-                    anchors { top: parent.top; left: parent.left; leftMargin: 10; topMargin: 10 }
-                    text: "\u1f4b"
-                    color: "#FFFFFF"
-                    description: "ذخیره نمودار معدل"
-                    clickAble: true
-                    onClicked: screenshot.saveItem(averages_plot_bg, save_plot)
-                }
-
-                Plot {
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-                    height: parent.height - 40
-                    xAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterYears() : []
-                    yAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterAvgs() : []
-                    fontFamily: regular_font.name
-                }
-
-                LoadingAnimationColor {
-                    id: avgplot_loading_anim
-                    anchors.fill: parent
+                Rectangle {
+                    id: averages_plot_bg
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    color: "#1D2025"
                     radius: 10
-                    visible: !averages_plot_bg.ready
+                    property bool ready: briefinfo_handler.finished
+
+                    Icon {
+                        id: save_plot
+                        visible: averages_plot_bg.ready
+                        anchors { top: parent.top; left: parent.left; leftMargin: 10; topMargin: 10 }
+                        text: "\u1f4b"
+                        color: "#FFFFFF"
+                        description: "ذخیره نمودار معدل"
+                        clickAble: true
+                        onClicked: screenshot.saveItem(averages_plot_bg, save_plot)
+                    }
+
+                    Plot {
+                        anchors.bottom: parent.bottom
+                        width: parent.width
+                        height: parent.height - 40
+                        xAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterYears() : []
+                        yAxis: averages_plot_bg.ready ? briefinfo_handler.getSemesterAvgs() : []
+                        fontFamily: regular_font.name
+                    }
+
+                    LoadingAnimationColor {
+                        id: avgplot_loading_anim
+                        anchors.fill: parent
+                        radius: 10
+                        visible: !averages_plot_bg.ready
+                    }
+                    ErrorRectangle {
+                        visible: !avgplot_loading_anim.visible && !briefinfo_handler.success
+                        anchors.fill: parent
+                        name: "نمودار معدل"
+                        radius: 10
+                    }
+
                 }
-                ErrorRectangle {
-                    visible: !avgplot_loading_anim.visible && !briefinfo_handler.success
-                    anchors.fill: parent
-                    name: "نمودار معدل"
+
+                // TODO: use Repeater instead of raw duplicated code.
+                Rectangle {
+                    id: personal_info_bg
+                    Layout.preferredWidth: parent.width * 0.30
+                    Layout.maximumWidth: 330
+                    Layout.fillHeight: true
+                    color: "#1D2025"
                     radius: 10
+                    ColumnLayout {
+                        anchors.verticalCenter: parent.verticalCenter
+                        height: parent.height - 40
+                        width: parent.width
+
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.rightMargin: 22
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: parent.width - 20
+                            text: "نام و نام خانوادگی: " + right_pane.studentName
+                            wrapMode: Text.WordWrap
+                            font.family: regular_font.name
+                            color: "#FFFFFF"
+                        }
+
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.rightMargin: 22
+                            Layout.fillHeight: true
+                            text: "دوره آموزشی:‌         " + briefinfo_handler.briefInfoData.studyType
+                            font.family: regular_font.name
+                            color: "#FFFFFF"
+                        }
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.rightMargin: 22
+                            Layout.fillHeight: true
+                            text: "رشته تحصیلی:      " + briefinfo_handler.briefInfoData.field
+                            font.family: regular_font.name
+                            color: "#FFFFFF"
+                        }
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.rightMargin: 22
+                            Layout.fillHeight: true
+                            text: "شماره دانشجویی:   " + briefinfo_handler.briefInfoData.id
+                            font.family: regular_font.name
+                            color: "#FFFFFF"
+                        }
+
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.rightMargin: 22
+                            Layout.fillHeight: true
+                            text: "واحد گذرانیده:        " + briefinfo_handler.briefInfoData.passedUnits
+                            font.family: regular_font.name
+                            color: "#FFFFFF"
+                        }
+
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.rightMargin: 22
+                            Layout.fillHeight: true
+                            text: "معدل کل:             " + briefinfo_handler.briefInfoData.average
+                            font.family: regular_font.name
+                            color: "#FFFFFF"
+                        }
+
+                    }
+                    LoadingAnimationColor {
+                        id: personalinfo_loading_anim
+                        anchors.fill: parent
+                        radius: 10
+                        visible: !briefinfo_handler.finished
+                    }
+                    ErrorRectangle {
+                        visible: !personalinfo_loading_anim.visible && !briefinfo_handler.success
+                        anchors.fill: parent
+                        name: "خلاصه اطلاعات"
+                        radius: 10
+                    }
+
                 }
 
             }
-
-            // TODO: use Repeater instead of raw duplicated code.
-            Rectangle {
-                id: personal_info_bg
-                Layout.preferredWidth: parent.width * 0.30
-                Layout.maximumWidth: 330
-                Layout.fillHeight: true
-                color: "#1D2025"
-                radius: 10
-                ColumnLayout {
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: parent.height - 40
-                    width: parent.width
-
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.rightMargin: 22
-                        Layout.fillHeight: true
-                        Layout.preferredWidth: parent.width - 20
-                        text: "نام و نام خانوادگی: " + right_pane.studentName
-                        wrapMode: Text.WordWrap
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.rightMargin: 22
-                        Layout.fillHeight: true
-                        text: "دوره آموزشی:‌         " + briefinfo_handler.briefInfoData.studyType
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.rightMargin: 22
-                        Layout.fillHeight: true
-                        text: "رشته تحصیلی:      " + briefinfo_handler.briefInfoData.field
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.rightMargin: 22
-                        Layout.fillHeight: true
-                        text: "شماره دانشجویی:   " + briefinfo_handler.briefInfoData.id
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.rightMargin: 22
-                        Layout.fillHeight: true
-                        text: "واحد گذرانیده:        " + briefinfo_handler.briefInfoData.passedUnits
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-
-                    Label {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.rightMargin: 22
-                        Layout.fillHeight: true
-                        text: "معدل کل:             " + briefinfo_handler.briefInfoData.average
-                        font.family: regular_font.name
-                        color: "#FFFFFF"
-                    }
-
-                }
-                LoadingAnimationColor {
-                    id: personalinfo_loading_anim
-                    anchors.fill: parent
-                    radius: 10
-                    visible: !briefinfo_handler.finished
-                }
-                ErrorRectangle {
-                    visible: !personalinfo_loading_anim.visible && !briefinfo_handler.success
-                    anchors.fill: parent
-                    name: "خلاصه اطلاعات"
-                    radius: 10
-                }
-
-            }
-
         }
 
         Item {
             id: table_schedule_bg
             Layout.fillWidth: true
-            Layout.preferredHeight: parent.height / 2
+            Layout.fillHeight: true
             width: layout.width
             height: layout.height / 2
             property bool ready: schedule_handler.finished
