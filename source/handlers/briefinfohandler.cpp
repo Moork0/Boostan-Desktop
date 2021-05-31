@@ -4,6 +4,10 @@ BriefInfoHandler::BriefInfoHandler() : _locale{QLocale::Persian, QLocale::Iran},
 {
     // we don't need to numbers being separated by thousands
     _locale.setNumberOptions(QLocale::OmitGroupSeparator);
+    // In this occasion, Unavailability of data is not acceptable.
+    // So this error is Critical in this situation.
+    // 18 is the number of error code which indicate the Limited access to the content.
+    error_handler.setCriticalStatus(18, Errors::Critical);
 }
 
 int BriefInfoHandler::getCurrentYear() const
