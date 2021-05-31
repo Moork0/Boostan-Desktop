@@ -134,10 +134,10 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
                 float orig_column {columns[orig_index].toFloat()};
                 float orig_len {lengths[orig_index].toFloat()};
 
-                if (iter_column >= orig_column and iter_column < (orig_column + orig_len))
+                if (iter_column >= orig_column && iter_column < (orig_column + orig_len))
                     return QVariantList {TimeCollision, iterator_value.value("name").toString()};
 
-                if (orig_column >= iter_column and orig_column < (iter_column + iter_len))
+                if (orig_column >= iter_column && orig_column < (iter_column + iter_len))
                     return QVariantList {TimeCollision, iterator_value.value("name").toString()};
             } // end of third 'for'
 
