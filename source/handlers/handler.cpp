@@ -1,7 +1,7 @@
 #include "header/handlers/handler.h"
 
 
-Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}
+Handler::Handler(QObject *parent) : QObject(parent), _is_finished{false}, _success{false}
 {
     _root_url = Settings::getValue(QStringLiteral("root_url"), true).toString();
 }
@@ -45,58 +45,58 @@ bool Handler::hasError(QNetworkReply::NetworkError ecode)
 
 bool Handler::getFinished() const
 {
-    return is_finished;
+    return _is_finished;
 }
 
 void Handler::setFinished(bool value)
 {
-    is_finished = value;
+    _is_finished = value;
     // we only wanna use finished() when an request is finished.
-    if (is_finished == true) emit finished();
+    if (_is_finished == true) emit finished();
     emit workingChanged();
 }
 
 bool Handler::getWorking() const
 {
-    return !is_finished;
+    return !_is_finished;
 }
 
 uint Handler::getErrorCode() const
 {
-    return error_handler.getErrorCode();
+    return _error_handler.getErrorCode();
 }
 
 void Handler::setErrorCode(int ecode)
 {
-    if (error_handler.setErrorCode(ecode))
+    if (_error_handler.setErrorCode(ecode))
         emit errorCodeChanged();
 }
 
 int Handler::getErrorType() const
 {
-    return error_handler.getErrorType();
+    return _error_handler.getErrorType();
 }
 
 QString Handler::getErrorString() const
 {
-    return error_handler.getErrorString();
+    return _error_handler.getErrorString();
 }
 
 QString Handler::getErrorSolution() const
 {
-    return error_handler.getErrorSolution();
+    return _error_handler.getErrorSolution();
 }
 
 void Handler::setSuccess(bool state)
 {
-    if (success == state) return;
-    success = state;
+    if (_success == state) return;
+    _success = state;
     emit successChanged();
 }
 
 bool Handler::getSuccess() const
 {
-    return success;
+    return _success;
 }
 
 void Handler::clearCookies()

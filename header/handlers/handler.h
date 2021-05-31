@@ -76,9 +76,9 @@ protected:
     static inline QHashString      _cookies, _request_validators;
     static inline QString          _root_url;
 
-    Network                 request;
-    Errors                  error_handler;
-    bool                    is_finished, success;
+    Network                 _request;
+    Errors                  _error_handler;
+    bool                    _is_finished, _success;
 
     /** Functions **/
 

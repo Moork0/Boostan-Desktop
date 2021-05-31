@@ -46,17 +46,17 @@ void OfferedCourseHandler::start()
 
 void OfferedCourseHandler::requestCourses()
 {
-    connect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
+    connect(&_request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
     const QString tck_token {getTckToken()};
     const QString url {_offered_course_url.arg(_url_fids.at(_request_number))};
-    request.setUrl(_root_url + url + tck_token);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.get();
+    _request.setUrl(_root_url + url + tck_token);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    _request.get();
 }
 
 void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
 {
-    disconnect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
+    disconnect(&_request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
     QString data;
     bool parse_success {true};
     if (!verifyResponse(reply, data))

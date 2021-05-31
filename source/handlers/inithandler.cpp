@@ -7,9 +7,9 @@ InitHandler::InitHandler()
 
 bool InitHandler::start()
 {
-    connect(&request, &Network::complete, this, &InitHandler::parseInit);
-    request.setUrl(_root_url + _loginurl);
-    return request.get();
+    connect(&_request, &Network::complete, this, &InitHandler::parseInit);
+    _request.setUrl(_root_url + _loginurl);
+    return _request.get();
 }
 
 /*
@@ -19,7 +19,7 @@ bool InitHandler::start()
 */
 bool InitHandler::parseInit(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &InitHandler::parseInit);
+    disconnect(&_request, &Network::complete, this, &InitHandler::parseInit);
 
     if (hasError(reply.error())) {
         reply.deleteLater();

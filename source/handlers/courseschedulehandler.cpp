@@ -18,16 +18,16 @@ QVariantList CourseScheduleHandler::getSchedule() const
 
 bool CourseScheduleHandler::requestTokens()
 {
-    connect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
+    connect(&_request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
     QString tck_token {getTckToken()};
-    request.setUrl(_root_url + _schedule_url + tck_token);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    return request.get();
+    _request.setUrl(_root_url + _schedule_url + tck_token);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    return _request.get();
 }
 
 void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
+    disconnect(&_request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
     QString data;
     if (!verifyResponse(reply, data)) {
         reply.deleteLater();
@@ -44,11 +44,11 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 
 bool CourseScheduleHandler::requestSchedule()
 {
-    connect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
+    connect(&_request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
     QString tck_token {getTckToken()};
-    request.setUrl(_root_url + _schedule_url + tck_token);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    _request.setUrl(_root_url + _schedule_url + tck_token);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    _request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
                 % QStringLiteral("&__VIEWSTATEGENERATOR=")  % _request_validators["__VIEWSTATEGENERATOR"]
@@ -58,7 +58,7 @@ bool CourseScheduleHandler::requestSchedule()
                 // below is like this: <Root><N+UQID="10"+id="1"+F="%1"+T="%1"/></Root> in url encoded format
                 % QStringLiteral("&XmlPriPrm=")             % QString(QStringLiteral("%3CRoot%3E%3CN+UQID%3D%2210%22+id%3D%221%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E")).arg(_semester)
                 % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&F_ID=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex=")};
-    return request.post(data.toUtf8());
+    return _request.post(data.toUtf8());
 }
 
 bool CourseScheduleHandler::getIsEmpty () const
@@ -68,7 +68,7 @@ bool CourseScheduleHandler::getIsEmpty () const
 
 void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
+    disconnect(&_request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
     QString data;
     bool parse_success {true};
 

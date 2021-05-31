@@ -5,7 +5,7 @@ LoginHandler::LoginHandler()
     // In this occasion, Unavailability of data is not acceptable.
     // So this error is Critical in this situation.
     // 18 is the number of error code which indicate the Limited access to the content.
-    error_handler.setCriticalStatus(18, Errors::Critical);
+    _error_handler.setCriticalStatus(18, Errors::Critical);
 }
 
 /*
@@ -13,10 +13,10 @@ LoginHandler::LoginHandler()
 */
 bool LoginHandler::tryLogin(const QString username, const QString password, const QString captcha)
 {
-    connect(&request, &Network::complete, this, &LoginHandler::parseLogin);
-    request.setUrl(_root_url + _login_url);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    connect(&_request, &Network::complete, this, &LoginHandler::parseLogin);
+    _request.setUrl(_root_url + _login_url);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    _request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // credentials would bind here
     QString logincreds = QString(QStringLiteral("<r F51851=\"\" F80351=\"%1\" F80401=\"%2\" F51701=\"%3\" F83181=\"\"/>")).arg(username, password, captcha);
@@ -27,12 +27,12 @@ bool LoginHandler::tryLogin(const QString username, const QString password, cons
                 % QStringLiteral("&__EVENTVALIDATION=") % QUrl::toPercentEncoding(_request_validators["__EVENTVALIDATION"])
                 % QStringLiteral("&TxtMiddle=") % QUrl::toPercentEncoding(logincreds) % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&TicketTextBox=")};
 
-    return request.post(data.toUtf8());
+    return _request.post(data.toUtf8());
 }
 
 bool LoginHandler::parseLogin(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &LoginHandler::parseLogin);
+    disconnect(&_request, &Network::complete, this, &LoginHandler::parseLogin);
     QString data;
     bool parse_success {true};
     if (!verifyResponse(reply, data))

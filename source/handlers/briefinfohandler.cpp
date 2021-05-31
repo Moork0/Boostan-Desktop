@@ -7,7 +7,7 @@ BriefInfoHandler::BriefInfoHandler() : _locale{QLocale::Persian, QLocale::Iran},
     // In this occasion, Unavailability of data is not acceptable.
     // So this error is Critical in this situation.
     // 18 is the number of error code which indicate the Limited access to the content.
-    error_handler.setCriticalStatus(18, Errors::Critical);
+    _error_handler.setCriticalStatus(18, Errors::Critical);
 }
 
 int BriefInfoHandler::getCurrentYear() const
@@ -57,16 +57,16 @@ QList<int> BriefInfoHandler::getRawSemesters() const
 
 bool BriefInfoHandler::requestTokens()
 {
-    connect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
+    connect(&_request, &Network::complete, this, &BriefInfoHandler::parseTokens);
     QString tck_token {getTckToken()};
-    request.setUrl(_root_url + _user_info_url + tck_token);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    return request.get();
+    _request.setUrl(_root_url + _user_info_url + tck_token);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    return _request.get();
 }
 
 void BriefInfoHandler::parseTokens(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
+    disconnect(&_request, &Network::complete, this, &BriefInfoHandler::parseTokens);
     QString data;
     if (!verifyResponse(reply, data)) {
         reply.deleteLater();
@@ -83,10 +83,10 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
 
 bool BriefInfoHandler::requestStuId()
 {
-    connect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
-    request.setUrl(_root_url + _user_info_url + _request_validators["tck"]);
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.addHeader("Cookie", getCookies().toUtf8());
+    connect(&_request, &Network::complete, this, &BriefInfoHandler::parseStuId);
+    _request.setUrl(_root_url + _user_info_url + _request_validators["tck"]);
+    _request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    _request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
     QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
@@ -95,12 +95,12 @@ bool BriefInfoHandler::requestStuId()
                 % QStringLiteral("&TicketTextBox=")         % ticket_tbox
                 % QStringLiteral("&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex=")};
 
-    return request.post(data.toUtf8());
+    return _request.post(data.toUtf8());
 }
 
 void BriefInfoHandler::parseStuId(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
+    disconnect(&_request, &Network::complete, this, &BriefInfoHandler::parseStuId);
     bool parse_success {true};
 
     QString data, student_id;
@@ -127,10 +127,10 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
 
 bool BriefInfoHandler::requestBriefInfo()
 {
-    connect(&request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
-    request.setUrl(_root_url + _user_info_url + _request_validators["tck"]);
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.addHeader("Cookie", getCookies().toUtf8());
+    connect(&_request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
+    _request.setUrl(_root_url + _user_info_url + _request_validators["tck"]);
+    _request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    _request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
     QString data{QStringLiteral("__VIEWSTATE=")                  % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
@@ -140,12 +140,12 @@ bool BriefInfoHandler::requestBriefInfo()
                 % QStringLiteral("&TxtMiddle=%3Cr+F41251%3D%22") % _student_info["id"].toString()
                 % QStringLiteral("%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")};
 
-    return request.post(data.toUtf8());
+    return _request.post(data.toUtf8());
 }
 
 void BriefInfoHandler::parseUserInfo(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
+    disconnect(&_request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
     bool parse_success {true};
 
     QString data;

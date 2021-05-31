@@ -23,16 +23,16 @@ void ScoresHandler::getScoresOf(const QString semester)
 
 void ScoresHandler::requestTokens()
 {
-    connect(&request, &Network::complete, this, &ScoresHandler::parseTokens);
+    connect(&_request, &Network::complete, this, &ScoresHandler::parseTokens);
     QString tck_token {getTckToken()};
-    request.setUrl(_root_url + _scores_url + tck_token);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.get();
+    _request.setUrl(_root_url + _scores_url + tck_token);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    _request.get();
 }
 
 void ScoresHandler::parseTokens(QNetworkReply &reply)
 {
-    disconnect(&request, &Network::complete, this, &ScoresHandler::parseTokens);
+    disconnect(&_request, &Network::complete, this, &ScoresHandler::parseTokens);
     QString data;
     if (!verifyResponse(reply, data)) {
         reply.deleteLater();
@@ -48,16 +48,16 @@ void ScoresHandler::parseTokens(QNetworkReply &reply)
 
 void ScoresHandler::requestScores()
 {
-    connect(&request, &Network::complete, this, &ScoresHandler::parseScores);
+    connect(&_request, &Network::complete, this, &ScoresHandler::parseScores);
     // reset the status and continer and flag for every request
     setFinished(false);
     setIsEmpty(true);
     _need_custom_avg = false;
     _scores.clear();
 
-    request.setUrl(_root_url + _scores_url + _request_validators["tck"]);
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.addHeader("Cookie", getCookies().toUtf8());
+    _request.setUrl(_root_url + _scores_url + _request_validators["tck"]);
+    _request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    _request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
     QString param_txtmiddle {QString(QStringLiteral("<r F41251=\"%1\" F43501=\"%2\"/>")).arg(_student_id, _semester)};
@@ -70,12 +70,12 @@ void ScoresHandler::requestScores()
             % QStringLiteral("&Fm_Action=80&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")
                 };
 
-    request.post(data.toUtf8());
+    _request.post(data.toUtf8());
 }
 
 void ScoresHandler::parseScores(QNetworkReply &reply)
 {
-    disconnect(&request, &Network::complete, this, &ScoresHandler::parseScores);
+    disconnect(&_request, &Network::complete, this, &ScoresHandler::parseScores);
     bool parse_success {true};
 
     QString data;

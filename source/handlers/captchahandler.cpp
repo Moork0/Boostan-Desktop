@@ -7,16 +7,16 @@ CaptchaHandler::CaptchaHandler()
 
 bool CaptchaHandler::getCaptcha()
 {
-    connect(&request, &Network::complete, this, &CaptchaHandler::parseGetCaptcha);
+    connect(&_request, &Network::complete, this, &CaptchaHandler::parseGetCaptcha);
     setFinished(false);
-    request.setUrl(_root_url + _captcha_url);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    return request.get();
+    _request.setUrl(_root_url + _captcha_url);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    return _request.get();
 }
 
 bool CaptchaHandler::parseGetCaptcha(QNetworkReply& reply)
 {
-    disconnect(&request, &Network::complete, this, &CaptchaHandler::parseGetCaptcha);
+    disconnect(&_request, &Network::complete, this, &CaptchaHandler::parseGetCaptcha);
     if (hasError(reply.error())) {
         reply.deleteLater();
         setSuccess(false);

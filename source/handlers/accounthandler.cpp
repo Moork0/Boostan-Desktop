@@ -7,23 +7,23 @@ AccountHandler::AccountHandler()
 
 void AccountHandler::requestTokens()
 {
-    connect(&request, &Network::complete, this, &AccountHandler::parseTokens);
+    connect(&_request, &Network::complete, this, &AccountHandler::parseTokens);
     // reset the status and continer and flag for every request
     setFinished(false);
 
     QString tck_token {getTckToken()};
-    request.setUrl(_root_url + _account_url + tck_token);
-    request.addHeader("Cookie", getCookies().toUtf8());
-    request.get();
+    _request.setUrl(_root_url + _account_url + tck_token);
+    _request.addHeader("Cookie", getCookies().toUtf8());
+    _request.get();
 }
 
 void AccountHandler::requestChangeCreds()
 {
-    connect(&request, &Network::complete, this, &AccountHandler::parseChangeCreds);
+    connect(&_request, &Network::complete, this, &AccountHandler::parseChangeCreds);
 
-    request.setUrl(_root_url + _account_url + _request_validators[QStringLiteral("tck")]);
-    request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.addHeader("Cookie", getCookies().toUtf8());
+    _request.setUrl(_root_url + _account_url + _request_validators[QStringLiteral("tck")]);
+    _request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    _request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
     QString param_txtmiddle {QString(QStringLiteral("<r MaxHlp=\"\" F51801=\"\" F80301=\"%1\" F80351=\"%2\" F51301=\"%3\" F51601=\"1\" F80751=\"\" F80431=\"\" F80352=\"%4\" F51302=\"%5\" F51303=\"%5\"/>")).arg(_request_validators[QStringLiteral("uid")], _username, _password, _new_username, _new_password)};
@@ -36,12 +36,12 @@ void AccountHandler::requestChangeCreds()
             % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")
                 };
 
-    request.post(data.toUtf8());
+    _request.post(data.toUtf8());
 }
 
 void AccountHandler::parseTokens(QNetworkReply &reply)
 {
-    disconnect(&request, &Network::complete, this, &AccountHandler::parseTokens);
+    disconnect(&_request, &Network::complete, this, &AccountHandler::parseTokens);
     QString data;
     if (!verifyResponse(reply, data)) {
         reply.deleteLater();
@@ -58,7 +58,7 @@ void AccountHandler::parseTokens(QNetworkReply &reply)
 
 void AccountHandler::parseChangeCreds(QNetworkReply &reply)
 {
-    disconnect(&request, &Network::complete, this, &AccountHandler::parseChangeCreds);
+    disconnect(&_request, &Network::complete, this, &AccountHandler::parseChangeCreds);
     bool parse_success {true};
 
     QString data;
