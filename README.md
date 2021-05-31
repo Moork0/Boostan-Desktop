@@ -4,5 +4,5 @@ Boostan is a client written in C++/QML for using Golestan system without pain(An
 
 # Acknowledgement
 
-- [mailto:azadivida@gmail.com](Vida Azadi): UI design
-- [https://t.me/TheBurningOne](Amir TBO): Designing the UI of login page and also designing icon
+- [Vida Azadi](mailto:azadivida@gmail.com): UI design
+- [Amir TBO](https://t.me/TheBurningOne): Designing the UI of login page and also designing icon
