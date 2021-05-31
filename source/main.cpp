@@ -9,6 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
+#include <QIcon>
 
 #include "header/helpers/errors.h"
 #include "header/base/settings.h"
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName(Constants::application_name);
     app.setOrganizationDomain(Constants::domain_name);
     app.setApplicationName(Constants::organization_name);
+    app.setWindowIcon(QIcon(":/pics/boostan.ico"));
 
     QQmlApplicationEngine engine;
 

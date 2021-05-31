@@ -39,5 +39,6 @@
         <file>Controls/MySwitch.qml</file>
         <file>Helpers/SettingsPage/BoostanSettings.qml</file>
         <file>Helpers/SettingsPage/About.qml</file>
+        <file>pics/boostan.ico</file>
     </qresource>
 </RCC>
