@@ -82,7 +82,7 @@ void AccountHandler::parseChangeCreds(QNetworkReply &reply)
 
 bool AccountHandler::isChangeSuccess(const QString &data)
 {
-    const QString key {QStringLiteral("SuccArr = new Array('شن")};
+    const QString key {MyStringLiteral("SuccArr = new Array('شن")};
 
     if (!data.contains(key))
         return false;

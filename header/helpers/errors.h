@@ -11,6 +11,7 @@
 
 #include <QObject>
 #include <QNetworkReply>
+#include "commonmacros.h"
 
 class Errors : public QObject
 {
@@ -68,41 +69,41 @@ private:
     // Error title for each error code that identifyed so far
     inline static const QHash<uint, QString> error_strings
     {
-        {ServerConnenctionError, QStringLiteral("خطا در اتصال به سرور")},
-        {UnknownError, QStringLiteral("اوه! یک خطای ناشناخته رخ داده!")},
-        {WrongCaptcha, QStringLiteral("کد امنیتی اشتباه وارد شده!")},
-        {CaptchaStoreError, QStringLiteral("مشکلی در ذخیره تصویر امنیتی بوجود اومده!")},
-        {SettingsError, QStringLiteral("مشکلی در تنظیمات بوستان بوجود اومده!")},
-        {ExtractError, QStringLiteral("مشکلی در استخراج اطلاعات از گلستان بوجود اومده!")},
+        {ServerConnenctionError, MyStringLiteral("خطا در اتصال به سرور")},
+        {UnknownError, MyStringLiteral("اوه! یک خطای ناشناخته رخ داده!")},
+        {WrongCaptcha, MyStringLiteral("کد امنیتی اشتباه وارد شده!")},
+        {CaptchaStoreError, MyStringLiteral("مشکلی در ذخیره تصویر امنیتی بوجود اومده!")},
+        {SettingsError, MyStringLiteral("مشکلی در تنظیمات بوستان بوجود اومده!")},
+        {ExtractError, MyStringLiteral("مشکلی در استخراج اطلاعات از گلستان بوجود اومده!")},
         // this is built-in Golestan error codes that we might see.
-        {1, QStringLiteral("نام کاربری یا رمز عبوری که وارد شده اشتباهه!")},
-        {3, QStringLiteral("نام کاربری فعلی‌ت رو اشتباه وارد کردی!")},
-        {4, QStringLiteral("رمز فعلی‌ت رو اشتباه وارد کردی!")},
-        {6, QStringLiteral("رمز های جدید باهمدیگه مطابقت ندارن!")},
-        {8, QStringLiteral("نام کاربری ای که وارد کردی قبلا انتخاب شده!")},
-        {24, QStringLiteral("گلستان میگه دوباره باید وارد بشی!")},
-        {27, QStringLiteral("تعداد تلاش ناموفق برای ورود بیش از حد مجاز شده!")},
-        {18, QStringLiteral("امکان دسترسی به محتوای مورد نظر محدود شده!")}
+        {1, MyStringLiteral("نام کاربری یا رمز عبوری که وارد شده اشتباهه!")},
+        {3, MyStringLiteral("نام کاربری فعلی‌ت رو اشتباه وارد کردی!")},
+        {4, MyStringLiteral("رمز فعلی‌ت رو اشتباه وارد کردی!")},
+        {6, MyStringLiteral("رمز های جدید باهمدیگه مطابقت ندارن!")},
+        {8, MyStringLiteral("نام کاربری ای که وارد کردی قبلا انتخاب شده!")},
+        {24, MyStringLiteral("گلستان میگه دوباره باید وارد بشی!")},
+        {27, MyStringLiteral("تعداد تلاش ناموفق برای ورود بیش از حد مجاز شده!")},
+        {18, MyStringLiteral("امکان دسترسی به محتوای مورد نظر محدود شده!")}
     };
 
     // Error description for each error code that identifyed so far
     inline static const QHash<uint, QString> error_solutions
     {
-        {ServerConnenctionError, QStringLiteral("لطفا وضعیت اتصال به اینترنت و وبسایت گلستان رو بررسی کنید")},
-        {UnknownError, QStringLiteral("از اونجایی که منم نمیدونم چه خطاییه، بهتره لاگ هارو بررسی کنی و در صفحه گیتهاب این مشکل رو گزارش بدی")},
-        {WrongCaptcha, QStringLiteral("دوباره با دقت تلاش کن :)")},
-        {CaptchaStoreError, QStringLiteral("دسترسی های پوشه بوستان رو بررسی کنید و برنامه رو دوباره اجرا کنید")},
-        {SettingsError, QStringLiteral("دسترسی های فایل تنظیمات که در پوشه برنامه قرار داره رو بررسی کنید")},
-        {ExtractError, QStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
+        {ServerConnenctionError, MyStringLiteral("لطفا وضعیت اتصال به اینترنت و وبسایت گلستان رو بررسی کنید")},
+        {UnknownError, MyStringLiteral("از اونجایی که منم نمیدونم چه خطاییه، بهتره لاگ هارو بررسی کنی و در صفحه گیتهاب این مشکل رو گزارش بدی")},
+        {WrongCaptcha, MyStringLiteral("دوباره با دقت تلاش کن :)")},
+        {CaptchaStoreError, MyStringLiteral("دسترسی های پوشه بوستان رو بررسی کنید و برنامه رو دوباره اجرا کنید")},
+        {SettingsError, MyStringLiteral("دسترسی های فایل تنظیمات که در پوشه برنامه قرار داره رو بررسی کنید")},
+        {ExtractError, MyStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
         // this is built-in Golestan error codes that we might see.
-        {1, QStringLiteral("دوباره با دقت تلاش کن :)")},
-        {3, QStringLiteral("دوباره با دقت تلاش کن :)")},
-        {4, QStringLiteral("دوباره با دقت تلاش کن :)")},
-        {6, QStringLiteral("دوباره با دقت تلاش کن :)")},
-        {8, QStringLiteral("یک نام کاربری دیگه رو انتخاب کن :)")},
-        {24, QStringLiteral("دوباره برای ورود تلاش کن تا این مشکل رفع بشه. اگر نشد لطفا در گیتهاب خبر بده")},
-        {27, QStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
-        {18, QStringLiteral("از خودِ سایت گلستان چک کن ببین آیا همه چیز درسته؟ اگر درست بود، این مشکل از بوستانه پس لطفا در گیتهاب به ما گزارش بده.")}
+        {1, MyStringLiteral("دوباره با دقت تلاش کن :)")},
+        {3, MyStringLiteral("دوباره با دقت تلاش کن :)")},
+        {4, MyStringLiteral("دوباره با دقت تلاش کن :)")},
+        {6, MyStringLiteral("دوباره با دقت تلاش کن :)")},
+        {8, MyStringLiteral("یک نام کاربری دیگه رو انتخاب کن :)")},
+        {24, MyStringLiteral("دوباره برای ورود تلاش کن تا این مشکل رفع بشه. اگر نشد لطفا در گیتهاب خبر بده")},
+        {27, MyStringLiteral("یکبار دیگه تلاش کن تا بوستان این مشکل رو برات حل کنه")},
+        {18, MyStringLiteral("از خودِ سایت گلستان چک کن ببین آیا همه چیز درسته؟ اگر درست بود، این مشکل از بوستانه پس لطفا در گیتهاب به ما گزارش بده.")}
     };
 
 public:
@@ -119,7 +120,7 @@ public:
     */
     inline static const QHash<int, QString> error_keywords
     {
-        {WrongCaptcha, QStringLiteral("كد امنيتي")}     // error strings that has this keyword are about WrongCaptcha
+        {WrongCaptcha, MyStringLiteral("كد امنيتي")}     // error strings that has this keyword are about WrongCaptcha
     };
 
     explicit            Errors(QObject *parent = nullptr);

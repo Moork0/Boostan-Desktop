@@ -9,8 +9,9 @@
     * 2- re-calculate scores average if we have some temporary scores (because Golestan would not count them)
 */
 
-#include "abstractxmldatahandler.h"
 #include <QDebug>
+#include "abstractxmldatahandler.h"
+#include "../helpers/commonmacros.h"
 
 class ScoresHandler : public AbstractXmlDataHandler
 {

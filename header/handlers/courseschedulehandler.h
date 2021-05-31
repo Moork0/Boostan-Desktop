@@ -10,9 +10,12 @@
     * The data structure we are using is based on ScheduleTable (refer to the scheduletable.cpp comments)
 */
 
+#include <QStringBuilder>
+
 #include "abstractxmldatahandler.h"
 #include "../controls/scheduletable.h"
-#include <QStringBuilder>
+#include "../helpers/commonmacros.h"
+
 
 class CourseScheduleHandler : public AbstractXmlDataHandler
 {

@@ -122,7 +122,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         // Generate unique id using ScheduleTable::getUid
         map[QStringLiteral("uid")] = ScheduleTable::getUid(temp_stringlist.at(0), temp_stringlist.at(1));
 
-        temp_stringlist = attribute.value("C8").toString().replace(QStringLiteral("ك"), QStringLiteral("ک")).simplified().split("،");
+        temp_stringlist = attribute.value("C8").toString().replace(MyStringLiteral("ك"), MyStringLiteral("ک")).simplified().split("،");
         int counter {0}, exam_index {-1};
         // clear data's for storing new informations
         rows.clear();
@@ -133,7 +133,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
             daytime_str = daytime_str.simplified();
 
             // find the index of exam time in temp_stringlist
-            if (daytime_str.startsWith(QStringLiteral("امتحان"))) {
+            if (daytime_str.startsWith(MyStringLiteral("امتحان"))) {
                 exam_index = counter;
                 break;
             }
@@ -160,7 +160,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
             }
 
         } else {
-            exam_string = QStringLiteral("نامشخص || ");
+            exam_string = MyStringLiteral("نامشخص || ");
         }
         // remove " || "  from end of the string
         exam_string.chop(4);

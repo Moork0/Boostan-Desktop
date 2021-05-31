@@ -1,4 +1,6 @@
 #include "header/controls/scheduletable.h"
+#include "header/helpers/commonmacros.h"
+
 /*
     Our data structure is (at least)something like this:
     {
@@ -22,7 +24,7 @@ ScheduleTable::ScheduleTable(QObject *parent) : QObject(parent)
 int ScheduleTable::calculateScheduleRow(const QString& day)
 {
     // list of days
-    static const QStringList days_keyword{ QStringLiteral("شنبه"), QStringLiteral("يک"), QStringLiteral("دو"), QStringLiteral("سه"), QStringLiteral("چهار"), QStringLiteral("پنج"), QStringLiteral("جمعه") };
+    static const QStringList days_keyword{ MyStringLiteral("شنبه"), MyStringLiteral("يک"), MyStringLiteral("دو"), MyStringLiteral("سه"), MyStringLiteral("چهار"), MyStringLiteral("پنج"), MyStringLiteral("جمعه") };
     static const int keyword_size {days_keyword.size()};
 
     for (int i {0}; i < keyword_size; ++i) {
@@ -98,11 +100,11 @@ QVariantList ScheduleTable::checkCollision(const QVariantMap element) const
         iterator_exam = iterator_value.value("exam").toString().split(QStringLiteral("<br>"));
         // check for any collision for exam times
         for (int itexam_index {0}; itexam_index < iterator_exam.size(); ++itexam_index) {
-            if (iterator_exam.at(itexam_index) == QStringLiteral("نامشخص"))
+            if (iterator_exam.at(itexam_index) == MyStringLiteral("نامشخص"))
                 continue;
 
             for (int exam_index {0}; exam_index < exam.size(); ++exam_index) {
-                if (exam.at(exam_index) == QStringLiteral("نامشخص"))
+                if (exam.at(exam_index) == MyStringLiteral("نامشخص"))
                     continue;
 
                 if (iterator_exam.at(itexam_index) == exam.at(exam_index))

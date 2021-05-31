@@ -30,7 +30,7 @@ void OfferedCourseHandler::cleanUp()
 
 void OfferedCourseHandler::normalizeTime(QString &time)
 {
-    time.replace(QStringLiteral("ك"), QStringLiteral("ک"));
+    time.replace(MyStringLiteral("ك"), MyStringLiteral("ک"));
     time = time.simplified();
 }
 
@@ -150,10 +150,10 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         temp_data_ref = attribute.value("C6");
 
         // sex
-        if (temp_data_ref == QStringLiteral("زن"))
+        if (temp_data_ref == MyStringLiteral("زن"))
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::Female);
 
-        else if (temp_data_ref == QStringLiteral("مرد"))
+        else if (temp_data_ref == MyStringLiteral("مرد"))
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::sexRole), OfferedCourseModel::Male);
 
         else
@@ -165,8 +165,8 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 
         // time and exam
         temp_data = attribute.value("C8").toString();
-        temp_data.remove(QStringLiteral("درس(ت): "));
-        temp_data.remove(QStringLiteral("درس(ع): "));
+        temp_data.remove(MyStringLiteral("درس(ت): "));
+        temp_data.remove(MyStringLiteral("درس(ع): "));
         /// TODO: determine theory and practical courses
 
         /*
@@ -185,7 +185,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         int class_time_number {splited_data.size()};
         for (int i {0}; i < class_time_number; ++i) {
             // find the first occurance of exam informations
-            if (splited_data.at(i).contains(QStringLiteral("امتحان"))) {
+            if (splited_data.at(i).contains(MyStringLiteral("امتحان"))) {
                 exam_index = i;
                 class_time_number = i;
                 break;
@@ -201,7 +201,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         // time
         row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::timeRole), temp_data);
 
-        temp_data = QStringLiteral("نامشخص");
+        temp_data = MyStringLiteral("نامشخص");
         if (exam_index != -1) {
             temp_data.clear();
             // iterate over exam informations and extract the data's by using REGEX

@@ -8,6 +8,7 @@
 */
 
 #include "handler.h"
+#include "../helpers/commonmacros.h"
 
 class AccountHandler : public Handler
 {

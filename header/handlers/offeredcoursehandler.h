@@ -12,10 +12,12 @@
     * the schedule with the data
 */
 
+#include <QStringBuilder>
+
 #include "abstractxmldatahandler.h"
 #include "../models/offeredcoursemodel.h"
 #include "../controls/scheduletable.h"
-#include <QStringBuilder>
+#include "../helpers/commonmacros.h"
 
 class OfferedCourseHandler : public AbstractXmlDataHandler
 {

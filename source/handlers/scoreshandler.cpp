@@ -99,8 +99,8 @@ void ScoresHandler::parseScores(QNetworkReply &reply)
 
 void ScoresHandler::normalizeName(QString &name)
 {
-    name.replace(QStringLiteral("ك"), QStringLiteral("ک"));
-    name.replace(QStringLiteral("ي"), QStringLiteral("ی"));
+    name.replace(MyStringLiteral("ك"), MyStringLiteral("ک"));
+    name.replace(MyStringLiteral("ي"), MyStringLiteral("ی"));
     name = name.simplified();
 }
 
@@ -155,9 +155,9 @@ bool ScoresHandler::extractScores(const QString& data)
             score = "-";
             // we don't wanna include undefined courses in our calculation
             weight_sum -= int_weight;
-        } else if (score_result.startsWith(QStringLiteral("قبول"))) {
+        } else if (score_result.startsWith(MyStringLiteral("قبول"))) {
             status = Passed;
-        } else if (score_result.startsWith(QStringLiteral("رد"))) {
+        } else if (score_result.startsWith(MyStringLiteral("رد"))) {
             status = Failed;
         }
 
