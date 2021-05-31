@@ -12,7 +12,7 @@ Rectangle {
     id: side_bar
     color: "#232429"
     anchors.left: stackview.right
-    width: enabled ? 270 : 0
+    width: enabled ? 280 : 0
     height: mainwindow.height
 
     // List of options which are going to be shown.
@@ -105,9 +105,21 @@ Rectangle {
                         width: parent.width
                         height: 40
                         onClicked: side_bar.toOption(index)
-                        Label {
+                        Icon {
+                            id: sidebar_elem_icon
                             anchors.right: parent.right
-                            anchors.rightMargin: 30
+                            anchors.rightMargin: 20
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: model.iconText
+                            color: parent.isEnable ? "#19B99A" : "#F8F7F2"
+                            width: 20
+                            horizontalAlignment: Text.AlignHCenter
+
+                        }
+
+                        Label {
+                            anchors.right: sidebar_elem_icon.left
+                            anchors.rightMargin: 20
                             anchors.verticalCenter: parent.verticalCenter
                             text: model.title
                             color: parent.isEnable ? "#19B99A" : "#F8F7F2"
