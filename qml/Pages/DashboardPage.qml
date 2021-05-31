@@ -144,10 +144,11 @@ PageBase {
                         Label {
                             Layout.alignment: Qt.AlignRight
                             Layout.rightMargin: 22
-                            Layout.fillHeight: true
+                            Layout.preferredHeight: 30
                             Layout.preferredWidth: parent.width - 20
                             text: "نام و نام خانوادگی: " + right_pane.studentName
                             wrapMode: Text.WordWrap
+                            elide: Text.ElideRight
                             font.family: regular_font.name
                             color: "#FFFFFF"
                         }
