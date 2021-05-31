@@ -18,7 +18,13 @@ FileDialog {
     onAccepted: {
         exclude_item.visible = false
         item_to_save.grabToImage(function(result) {
-            result.saveToFile(String(file_dialog.fileUrl).replace("file://", ""))
+            let path;
+            if (Qt.platform.os === "windows")
+                path = String(file_dialog.fileUrl).replace("file://", "").substring(1)
+            else
+                path = String(file_dialog.fileUrl).replace("file://", "")
+
+            result.saveToFile(path)
             callback()
          });
     }
