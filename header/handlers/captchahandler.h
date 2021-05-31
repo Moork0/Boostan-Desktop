@@ -13,8 +13,8 @@ class CaptchaHandler : public Handler
 {
     Q_OBJECT
 private:
-    const QString       captcha_url     {QStringLiteral("/Forms/AuthenticateUser/captcha.aspx?0.03212876247262375")};
-    const QByteArray    image_path      {"captcha.png"};
+    const QString       _captcha_url     {QStringLiteral("/Forms/AuthenticateUser/captcha.aspx?0.03212876247262375")};
+    const QByteArray    _image_path      {"captcha.png"};
 
 private slots:
     // save captcha image to 'image_path'

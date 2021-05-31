@@ -2,7 +2,7 @@
 
 bool ScoresHandler::getIsEmpty() const
 {
-    return is_empty;
+    return _is_empty;
 }
 
 // Initialize the requests
@@ -25,7 +25,7 @@ void ScoresHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &ScoresHandler::parseTokens);
     QString tck_token {getTckToken()};
-    request.setUrl(root_url + _scores_url + tck_token);
+    request.setUrl(_root_url + _scores_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.get();
 }
@@ -42,7 +42,7 @@ void ScoresHandler::parseTokens(QNetworkReply &reply)
     }
 
     reply.deleteLater();
-    request_validators.insert(extractFormValidators(data));
+    _request_validators.insert(extractFormValidators(data));
     requestScores();
 }
 
@@ -55,16 +55,16 @@ void ScoresHandler::requestScores()
     _need_custom_avg = false;
     _scores.clear();
 
-    request.setUrl(root_url + _scores_url + request_validators["tck"]);
+    request.setUrl(_root_url + _scores_url + _request_validators["tck"]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
     QString param_txtmiddle {QString(QStringLiteral("<r F41251=\"%1\" F43501=\"%2\"/>")).arg(_student_id, _semester)};
     QString data{
-            QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-            % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
-            % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+            QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
+            % QStringLiteral("&__VIEWSTATEGENERATOR=")  % _request_validators["__VIEWSTATEGENERATOR"]
+            % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(_request_validators["__EVENTVALIDATION"])
             % QStringLiteral("&TicketTextBox=")         % ticket_tbox
             % QStringLiteral("&TxtMiddle=")             % QUrl::toPercentEncoding(param_txtmiddle)
             % QStringLiteral("&Fm_Action=80&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")

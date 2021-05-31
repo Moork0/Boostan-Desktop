@@ -3,13 +3,13 @@
 
 Handler::Handler(QObject *parent) : QObject(parent), is_finished{false}, success{false}
 {
-    root_url = Settings::getValue(QStringLiteral("root_url"), true).toString();
+    _root_url = Settings::getValue(QStringLiteral("root_url"), true).toString();
 }
 
 
 void Handler::setCookie(const QString& key, const QString& value)
 {
-    cookies[key] = value;
+    _cookies[key] = value;
 }
 
 /*
@@ -26,8 +26,8 @@ void Handler::setCookie(const QString& keyvalue)
 QString Handler::getCookies() const
 {
     QString data;
-    QHashString::const_iterator it = cookies.cbegin();
-    for (; it != cookies.cend(); ++it) {
+    QHashString::const_iterator it = _cookies.cbegin();
+    for (; it != _cookies.cend(); ++it) {
         data += it.key() + "=" + it.value() + "; ";
     }
     data.chop(2);
@@ -101,7 +101,7 @@ bool Handler::getSuccess() const
 
 void Handler::clearCookies()
 {
-    cookies.clear();
+    _cookies.clear();
 }
 
 bool Handler::updateTokens(const QString& data)
@@ -111,13 +111,13 @@ bool Handler::updateTokens(const QString& data)
     QHashString::iterator it {tokens.begin()};
     // we should remove 'ctck' at every update
     // because we should use ctck only when Golestan says.
-    cookies.remove("ctck");
+    _cookies.remove("ctck");
     for (; it != tokens.end(); ++it) {
         if (it.key() == "tck") continue;
-        cookies[it.key()] = it.value();
+        _cookies[it.key()] = it.value();
     }
-    request_validators["tck"] = tokens["tck"];
-    request_validators[QStringLiteral("uid")] = tokens[QStringLiteral("u")];
+    _request_validators["tck"] = tokens["tck"];
+    _request_validators[QStringLiteral("uid")] = tokens[QStringLiteral("u")];
     return true;
 }
 
@@ -154,7 +154,7 @@ bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
 QHashString Handler::extractFormValidators(const QString& response)
 {
     QHashString result;
-    int position {response.indexOf(viewstate_keyword)};
+    int position {response.indexOf(_viewstate_keyword)};
     int endpos;
 
     if (position == -1) return QHashString {};
@@ -162,13 +162,13 @@ QHashString Handler::extractFormValidators(const QString& response)
     endpos = response.indexOf('"', position);
     result[QStringLiteral("__VIEWSTATE")] = response.mid(position, endpos - position);
 
-    position = response.indexOf(viewstate_gen_keyword);
+    position = response.indexOf(_viewstate_gen_keyword);
     if (position == -1) return QHashString {};
     position += 29;
     endpos = response.indexOf('"', position);
     result[QStringLiteral("__VIEWSTATEGENERATOR")] = response.mid(position, endpos - position);
 
-    position = response.indexOf(event_val_keyword);
+    position = response.indexOf(_event_val_keyword);
     if (position == -1) return QHashString {};
     position += 26;
     endpos = response.indexOf('"', position);
@@ -180,7 +180,7 @@ QHashString Handler::extractFormValidators(const QString& response)
 
 QString Handler::getTckToken() const
 {
-    return cookies.contains("ctck") ? cookies.value("ctck") : request_validators.value("tck");
+    return _cookies.contains("ctck") ? _cookies.value("ctck") : _request_validators.value("tck");
 }
 
 QHashString Handler::extractTokens(const QString& response)
@@ -191,7 +191,7 @@ QHashString Handler::extractTokens(const QString& response)
                         {QStringLiteral("f"), QString()}, {QStringLiteral("lt"), QString()}, {QStringLiteral("ctck"), QString()},
                         {QStringLiteral("seq"), QString()}, {QStringLiteral("tck"), QString()}};
     QString capture;
-    QRegularExpression re {tokens_pattern};
+    QRegularExpression re {_tokens_pattern};
     QRegularExpressionMatch match {re.match(response)};
 
     if (!match.hasMatch()) return QHashString {};
@@ -218,7 +218,7 @@ QHashString Handler::extractTokens(const QString& response)
         tokens.remove("ctck");
     } else {
         // 'tck' is defined explicitly. we extract that.
-        int position {response.indexOf(tck_keyword)};
+        int position {response.indexOf(_tck_keyword)};
         if (position == -1) return QHashString {};
         // 14 is the size of tck_keyword
         position += 14;

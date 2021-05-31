@@ -1,14 +1,14 @@
 #include "header/handlers/briefinfohandler.h"
 
-BriefInfoHandler::BriefInfoHandler() : locale{QLocale::Persian, QLocale::Iran}, current_year{0}
+BriefInfoHandler::BriefInfoHandler() : _locale{QLocale::Persian, QLocale::Iran}, _current_year{0}
 {
     // we don't need to numbers being separated by thousands
-    locale.setNumberOptions(QLocale::OmitGroupSeparator);
+    _locale.setNumberOptions(QLocale::OmitGroupSeparator);
 }
 
 int BriefInfoHandler::getCurrentYear() const
 {
-    return current_year;
+    return _current_year;
 }
 
 /*
@@ -16,10 +16,10 @@ int BriefInfoHandler::getCurrentYear() const
 */
 QVariantMap BriefInfoHandler::getStudentInfo() const
 {
-    QVariantMap data {student_info};
-    data[info_title[Index_Id]] = locale.toString(data[info_title[Index_Id]].toULongLong());
-    data[info_title[Index_Passed]] = locale.toString(static_cast<int>(data[info_title[Index_Passed]].toFloat()));
-    data[info_title[Index_TotalAvg]] = locale.toString(data[info_title[Index_TotalAvg]].toFloat());
+    QVariantMap data {_student_info};
+    data[_info_title[Index_Id]] = _locale.toString(data[_info_title[Index_Id]].toULongLong());
+    data[_info_title[Index_Passed]] = _locale.toString(static_cast<int>(data[_info_title[Index_Passed]].toFloat()));
+    data[_info_title[Index_TotalAvg]] = _locale.toString(data[_info_title[Index_TotalAvg]].toFloat());
     return data;
 }
 
@@ -30,7 +30,7 @@ void BriefInfoHandler::start()
 
 QStringList BriefInfoHandler::getSemesterAvgs() const
 {
-    return passed_semesters_avg;
+    return _passed_semesters_avg;
 }
 
 /*
@@ -39,23 +39,23 @@ QStringList BriefInfoHandler::getSemesterAvgs() const
 QStringList BriefInfoHandler::getSemesterYears() const
 {
     QStringList list;
-    for (int year : passed_semesters) {
+    for (int year : _passed_semesters) {
         // years are like this: 3XXX. we just need the XXX part.
-        list << locale.toString(year).remove(0, 1);
+        list << _locale.toString(year).remove(0, 1);
     }
     return list;
 }
 
 QList<int> BriefInfoHandler::getRawSemesters() const
 {
-    return passed_semesters;
+    return _passed_semesters;
 }
 
 bool BriefInfoHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &BriefInfoHandler::parseTokens);
     QString tck_token {getTckToken()};
-    request.setUrl(root_url + user_info_url + tck_token);
+    request.setUrl(_root_url + _user_info_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
 }
@@ -72,7 +72,7 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
     }
 
     reply.deleteLater();
-    request_validators.insert(extractFormValidators(data));
+    _request_validators.insert(extractFormValidators(data));
 
     requestStuId();
 }
@@ -80,14 +80,14 @@ void BriefInfoHandler::parseTokens(QNetworkReply& reply)
 bool BriefInfoHandler::requestStuId()
 {
     connect(&request, &Network::complete, this, &BriefInfoHandler::parseStuId);
-    request.setUrl(root_url + user_info_url + request_validators["tck"]);
+    request.setUrl(_root_url + _user_info_url + _request_validators["tck"]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
-    QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
-                % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+    QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=")  % _request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(_request_validators["__EVENTVALIDATION"])
                 % QStringLiteral("&TicketTextBox=")         % ticket_tbox
                 % QStringLiteral("&Fm_Action=00&Frm_Type=&Frm_No=&XMLStdHlp=&TxtMiddle=%3Cr%2F%3E&ex=")};
 
@@ -116,24 +116,24 @@ void BriefInfoHandler::parseStuId(QNetworkReply& reply)
         return;
     }
 
-    request_validators.insert(extractFormValidators(data));
-    student_info["id"] = student_id;
+    _request_validators.insert(extractFormValidators(data));
+    _student_info["id"] = student_id;
     requestBriefInfo();
 }
 
 bool BriefInfoHandler::requestBriefInfo()
 {
     connect(&request, &Network::complete, this, &BriefInfoHandler::parseUserInfo);
-    request.setUrl(root_url + user_info_url + request_validators["tck"]);
+    request.setUrl(_root_url + _user_info_url + _request_validators["tck"]);
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
     request.addHeader("Cookie", getCookies().toUtf8());
 
     QString ticket_tbox {getTckToken()};
-    QString data{QStringLiteral("__VIEWSTATE=")                  % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                % QStringLiteral("&__VIEWSTATEGENERATOR=")       % request_validators["__VIEWSTATEGENERATOR"]
-                % QStringLiteral("&__EVENTVALIDATION=")          % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+    QString data{QStringLiteral("__VIEWSTATE=")                  % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=")       % _request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=")          % QUrl::toPercentEncoding(_request_validators["__EVENTVALIDATION"])
                 % QStringLiteral("&TicketTextBox=")              % ticket_tbox
-                % QStringLiteral("&TxtMiddle=%3Cr+F41251%3D%22") % student_info["id"].toString()
+                % QStringLiteral("&TxtMiddle=%3Cr+F41251%3D%22") % _student_info["id"].toString()
                 % QStringLiteral("%22%2F%3E&Fm_Action=08&Frm_Type=&Frm_No=&XMLStdHlp=&ex=")};
 
     return request.post(data.toUtf8());
@@ -186,7 +186,7 @@ bool BriefInfoHandler::extractStudentInfo(const QString& response)
         for (int i{position}; response[i] != "'"; ++i) {
             value.append(response[i]);
         }
-        student_info[info_title[title_index]] = value;
+        _student_info[_info_title[title_index]] = value;
         value.clear();
     }
     return true;
@@ -215,19 +215,19 @@ bool BriefInfoHandler::extractStudentAvgs(const QString &response)
         for (int i{avg_position}; response[i] != '"'; ++i) {
             avg_value.append(response[i]);
         }
-        passed_semesters.append(year_value.toInt());
-        passed_semesters_avg.append(avg_value);
+        _passed_semesters.append(year_value.toInt());
+        _passed_semesters_avg.append(avg_value);
 
         year_value.clear();
         avg_value.clear();
         year_position = response.indexOf(year_keyword, year_position);
         avg_position = response.indexOf(avg_keyword, avg_position);
     }
-    current_year = passed_semesters.last();
+    _current_year = _passed_semesters.last();
 
-    if (passed_semesters_avg.last().isEmpty()) {
-        passed_semesters_avg.pop_back();
-        passed_semesters.pop_back();
+    if (_passed_semesters_avg.last().isEmpty()) {
+        _passed_semesters_avg.pop_back();
+        _passed_semesters.pop_back();
     }
     emit currentYearChanged();
     return true;

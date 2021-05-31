@@ -21,10 +21,10 @@ class CourseScheduleHandler : public AbstractXmlDataHandler
 private:
     /** Properties **/
 
-    const QString   schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.10057227848084405&fid=1;423&b=0&l=0&&lastm=20190829142532&tck=")};
+    const QString   _schedule_url          {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.10057227848084405&fid=1;423&b=0&l=0&&lastm=20190829142532&tck=")};
     // container for storing the ScheduleTable material
-    QVariantList    weekly_schedule;
-    QString semester;
+    QVariantList    _weekly_schedule;
+    QString _semester;
 
     /** Functions **/
 

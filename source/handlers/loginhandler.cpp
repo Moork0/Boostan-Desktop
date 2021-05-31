@@ -14,7 +14,7 @@ LoginHandler::LoginHandler()
 bool LoginHandler::tryLogin(const QString username, const QString password, const QString captcha)
 {
     connect(&request, &Network::complete, this, &LoginHandler::parseLogin);
-    request.setUrl(root_url + login_url);
+    request.setUrl(_root_url + _login_url);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
@@ -22,9 +22,9 @@ bool LoginHandler::tryLogin(const QString username, const QString password, cons
     QString logincreds = QString(QStringLiteral("<r F51851=\"\" F80351=\"%1\" F80401=\"%2\" F51701=\"%3\" F83181=\"\"/>")).arg(username, password, captcha);
 
     // data values should be in url-encoded format
-    QString data{QStringLiteral("__VIEWSTATE=") % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                % QStringLiteral("&__VIEWSTATEGENERATOR=") % request_validators["__VIEWSTATEGENERATOR"]
-                % QStringLiteral("&__EVENTVALIDATION=") % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+    QString data{QStringLiteral("__VIEWSTATE=") % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=") % _request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=") % QUrl::toPercentEncoding(_request_validators["__EVENTVALIDATION"])
                 % QStringLiteral("&TxtMiddle=") % QUrl::toPercentEncoding(logincreds) % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&TicketTextBox=")};
 
     return request.post(data.toUtf8());
@@ -66,21 +66,21 @@ bool LoginHandler::extractName(QString& response)
     // 8 is the length of "SetUsr('". we should skip this to capture the main value
     position += 8;
     QChar character;
-    user_name.clear();
+    _user_name.clear();
     // name in the response is like this: 'first name', 'lastname')
     // we skip the single-qoutes and at last remove the comma.
     while (response[position] != ")") {
         character = response[position];
         if (character != '\'') {
-            user_name.append(character);
+            _user_name.append(character);
         }
         ++position;
     }
-    user_name.replace(',', ' ');
+    _user_name.replace(',', ' ');
     return true;
 }
 
 QString LoginHandler::getName() const
 {
-    return user_name;
+    return _user_name;
 }

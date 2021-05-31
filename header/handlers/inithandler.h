@@ -15,7 +15,7 @@ class InitHandler : public Handler
 {
     Q_OBJECT
 private:
-    const QString loginurl{QStringLiteral("/Forms/AuthenticateUser/AuthUser.aspx?fid=0;1&tck=&&&lastm=20190219160242")};
+    const QString _loginurl{QStringLiteral("/Forms/AuthenticateUser/AuthUser.aspx?fid=0;1&tck=&&&lastm=20190219160242")};
 
 private slots:
     // extract session id and parse informations needed to make subsequent requests.

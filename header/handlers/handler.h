@@ -33,13 +33,13 @@ private:
     /**  Properties **/
 
     /* Patterns for extracting necessary data from a response */
-    const QString tokens_pattern            {QStringLiteral("SavAut\\([,a-z0-9'A-Z-]+")};                           // regex pattern for lt,ctck,u,ft,seq and ...
-    const QString error_withcode_pattern    {QStringLiteral("ErrorArr = new Array\\('[\\w :]+")};                   // regex pattern for finding error which has a code
+    const QString _tokens_pattern            {QStringLiteral("SavAut\\([,a-z0-9'A-Z-]+")};                           // regex pattern for lt,ctck,u,ft,seq and ...
+    const QString _error_withcode_pattern    {QStringLiteral("ErrorArr = new Array\\('[\\w :]+")};                   // regex pattern for finding error which has a code
 
-    const QString viewstate_keyword         {QStringLiteral("__VIEWSTATE\" value=\"")};             // keyword for finding view state
-    const QString viewstate_gen_keyword     {QStringLiteral("__VIEWSTATEGENERATOR\" value=\"")};    // keyword for finding viewstate generator
-    const QString event_val_keyword         {QStringLiteral("__EVENTVALIDATION\" value=\"")};       // keyword for finding event validation
-    const QString tck_keyword               {QStringLiteral("SetOpenerTck('")};                     // keyword for finding tck
+    const QString _viewstate_keyword         {QStringLiteral("__VIEWSTATE\" value=\"")};             // keyword for finding view state
+    const QString _viewstate_gen_keyword     {QStringLiteral("__VIEWSTATEGENERATOR\" value=\"")};    // keyword for finding viewstate generator
+    const QString _event_val_keyword         {QStringLiteral("__EVENTVALIDATION\" value=\"")};       // keyword for finding event validation
+    const QString _tck_keyword               {QStringLiteral("SetOpenerTck('")};                     // keyword for finding tck
 
     /** Functions **/
 
@@ -73,8 +73,8 @@ protected:
     Q_PROPERTY(int      errorType       READ getErrorType       NOTIFY errorCodeChanged)
     Q_PROPERTY(bool     working         READ getWorking         NOTIFY workingChanged)
 
-    inline static QHashString      cookies, request_validators;
-    inline static QString          root_url;
+    static inline QHashString      _cookies, _request_validators;
+    static inline QString          _root_url;
 
     Network                 request;
     Errors                  error_handler;

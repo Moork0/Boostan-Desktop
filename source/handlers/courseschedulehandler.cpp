@@ -13,14 +13,14 @@ void CourseScheduleHandler::start(const QString current_semester)
 
 QVariantList CourseScheduleHandler::getSchedule() const
 {
-    return weekly_schedule;
+    return _weekly_schedule;
 }
 
 bool CourseScheduleHandler::requestTokens()
 {
     connect(&request, &Network::complete, this, &CourseScheduleHandler::parseTokens);
     QString tck_token {getTckToken()};
-    request.setUrl(root_url + schedule_url + tck_token);
+    request.setUrl(_root_url + _schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     return request.get();
 }
@@ -38,7 +38,7 @@ void CourseScheduleHandler::parseTokens(QNetworkReply& reply)
 
     reply.deleteLater();
 
-    request_validators.insert(extractFormValidators(data));
+    _request_validators.insert(extractFormValidators(data));
     requestSchedule();
 }
 
@@ -46,24 +46,24 @@ bool CourseScheduleHandler::requestSchedule()
 {
     connect(&request, &Network::complete, this, &CourseScheduleHandler::parseSchedule);
     QString tck_token {getTckToken()};
-    request.setUrl(root_url + schedule_url + tck_token);
+    request.setUrl(_root_url + _schedule_url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(request_validators["__VIEWSTATE"])
-                % QStringLiteral("&__VIEWSTATEGENERATOR=")  % request_validators["__VIEWSTATEGENERATOR"]
-                % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(request_validators["__EVENTVALIDATION"])
+    QString data{QStringLiteral("__VIEWSTATE=")             % QUrl::toPercentEncoding(_request_validators["__VIEWSTATE"])
+                % QStringLiteral("&__VIEWSTATEGENERATOR=")  % _request_validators["__VIEWSTATEGENERATOR"]
+                % QStringLiteral("&__EVENTVALIDATION=")     % QUrl::toPercentEncoding(_request_validators["__EVENTVALIDATION"])
                 % QStringLiteral("&TicketTextBox=")         % tck_token
 
                 // below is like this: <Root><N+UQID="10"+id="1"+F="%1"+T="%1"/></Root> in url encoded format
-                % QStringLiteral("&XmlPriPrm=")             % QString(QStringLiteral("%3CRoot%3E%3CN+UQID%3D%2210%22+id%3D%221%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E")).arg(semester)
+                % QStringLiteral("&XmlPriPrm=")             % QString(QStringLiteral("%3CRoot%3E%3CN+UQID%3D%2210%22+id%3D%221%22+F%3D%22%1%22+T%3D%22%1%22%2F%3E%3C%2FRoot%3E")).arg(_semester)
                 % QStringLiteral("&Fm_Action=09&Frm_Type=&Frm_No=&F_ID=&XmlPubPrm=&XmlMoredi=&F9999=&HelpCode=&Ref1=&Ref2=&Ref3=&Ref4=&Ref5=&NameH=&FacNoH=&GrpNoH=&RepSrc=&ShowError=&TxtMiddle=%3Cr%2F%3E&tbExcel=&txtuqid=&ex=")};
     return request.post(data.toUtf8());
 }
 
 bool CourseScheduleHandler::getIsEmpty () const
 {
-    return is_empty;
+    return _is_empty;
 }
 
 void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
@@ -75,7 +75,7 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
     if (!verifyResponse(reply, data))
         parse_success = false;
 
-    request_validators.insert(extractFormValidators(data));
+    _request_validators.insert(extractFormValidators(data));
     if (parse_success && !extractWeeklySchedule(data)) {
         setErrorCode(Errors::ExtractError);
         parse_success = false;
@@ -93,12 +93,12 @@ void CourseScheduleHandler::parseSchedule(QNetworkReply& reply)
 
 void CourseScheduleHandler::setSemester(const QString &sem)
 {
-    semester = sem;
+    _semester = sem;
 }
 
 bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
 {
-    QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
+    QRegularExpression re {_xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
     QRegularExpressionMatch match {re.match(response)};
     QVariantMap map;
     if (!match.hasMatch()) return false;
@@ -170,7 +170,7 @@ bool CourseScheduleHandler::extractWeeklySchedule(QString& response)
         map[QStringLiteral("length")] = lengths;
         map[QStringLiteral("exam")] = exam_string;
 
-        weekly_schedule.append(map);
+        _weekly_schedule.append(map);
         reader.skipCurrentElement();
     }
 

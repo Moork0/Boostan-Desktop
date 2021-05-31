@@ -22,16 +22,16 @@ class OfferedCourseHandler : public AbstractXmlDataHandler
     Q_OBJECT
 
 private:
-    const QString offered_course_url {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.6914703770312649&fid=1;%1&b=0&l=0&isb=4&lastm=20190829142532&tck=")};
+    const QString _offered_course_url {QStringLiteral("/Forms/F0202_PROCESS_REP_FILTER/F0202_01_PROCESS_REP_FILTER_DAT.ASPX?r=0.6914703770312649&fid=1;%1&b=0&l=0&isb=4&lastm=20190829142532&tck=")};
     // we have 2 pages with information of offered course. their 'fid' parameter is below:
-    const QStringList url_fids {QStringLiteral("212"), QStringLiteral("211")};
+    const QStringList _url_fids {QStringLiteral("212"), QStringLiteral("211")};
 
     // our container for storing offered course data
-    QList <QVariantList*> container;
+    QList <QVariantList*> _container;
     // our container for restoring schedule table from disk
-    const QHash<QString, QVariantMap> schedule;
+    const QHash<QString, QVariantMap> _schedule;
     // indicate how many we tried for retrieving data from Golestan.
-    int     request_number;
+    int     _request_number;
 
     // Forced implementation of AbstractXmlDataHandler pure function
     bool    getIsEmpty              () const override;

@@ -2,8 +2,8 @@
 
 // Retrieve and deserialize the possible information of Schedule table
 OfferedCourseHandler::OfferedCourseHandler()
-    :   schedule (ScheduleTable::deserialize(Settings::getValue(QStringLiteral("offeredSchedule")).toString())),
-        request_number{0}
+    :   _schedule (ScheduleTable::deserialize(Settings::getValue(QStringLiteral("offeredSchedule")).toString())),
+        _request_number{0}
 {
 
 }
@@ -15,17 +15,17 @@ OfferedCourseHandler::~OfferedCourseHandler()
 
 bool OfferedCourseHandler::getIsEmpty() const
 {
-    return is_empty;
+    return _is_empty;
 }
 
 void OfferedCourseHandler::cleanUp()
 {
-    if (container.isEmpty()) return;
-    for (QVariantList* element : qAsConst(container)) {
+    if (_container.isEmpty()) return;
+    for (QVariantList* element : qAsConst(_container)) {
         delete element;
         element = nullptr;
     }
-    container.clear();
+    _container.clear();
 }
 
 void OfferedCourseHandler::normalizeTime(QString &time)
@@ -48,8 +48,8 @@ void OfferedCourseHandler::requestCourses()
 {
     connect(&request, &Network::complete, this, &OfferedCourseHandler::parseCourses);
     const QString tck_token {getTckToken()};
-    const QString url {offered_course_url.arg(url_fids.at(request_number))};
-    request.setUrl(root_url + url + tck_token);
+    const QString url {_offered_course_url.arg(_url_fids.at(_request_number))};
+    request.setUrl(_root_url + url + tck_token);
     request.addHeader("Cookie", getCookies().toUtf8());
     request.get();
 }
@@ -70,8 +70,8 @@ void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
     reply.deleteLater();
 
     if (!parse_success) {
-        ++request_number;
-        if (request_number < (url_fids.size())) {
+        ++_request_number;
+        if (_request_number < (_url_fids.size())) {
             requestCourses();
             return;
         }
@@ -85,7 +85,7 @@ void OfferedCourseHandler::parseCourses(QNetworkReply &reply)
 
 bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 {
-    QRegularExpression re {xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
+    QRegularExpression re {_xmldata_pattern, QRegularExpression::UseUnicodePropertiesOption};
     QRegularExpressionMatch match {re.match(response)};
     if (!match.hasMatch()) return false;
 
@@ -120,7 +120,7 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
         temp_data = attribute.value("C1").toString();
 
         // splitters for each page is different
-        switch (request_number) {
+        switch (_request_number) {
         case 0:
             splited_data = temp_data.split("_");
             break;
@@ -233,19 +233,19 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
                                temp_data_ref.toString());
 
         // isChoosed
-        if (CheckIsChoosed(course_uid, schedule)) {
+        if (CheckIsChoosed(course_uid, _schedule)) {
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole), true);
-            container.push_front(row_datas);
+            _container.push_front(row_datas);
         } else {
             row_datas->replace(OfferedCourseModel::roleToIndex(OfferedCourseModel::isChoosedRole), false);
-            container.push_back(row_datas);
+            _container.push_back(row_datas);
         }
 
         reader.skipCurrentElement();
     }
 
     // check if the struture is not empty
-    if (!container.isEmpty())
+    if (!_container.isEmpty())
         setIsEmpty(false);
 
     return true;
@@ -254,17 +254,17 @@ bool OfferedCourseHandler::extractOfferedCourses(const QString& response)
 void OfferedCourseHandler::sendDataTo(QObject* model)
 {
     OfferedCourseModel* view_model = reinterpret_cast<OfferedCourseModel*>(model);
-    view_model->setDataContainer(container);
+    view_model->setDataContainer(_container);
 }
 
 // convert 'schedule' to a container format which the ScheduleTable could parse
 QVariantList OfferedCourseHandler::restoreSchedule() const
 {
-    if (schedule.isEmpty()) return QVariantList();
+    if (_schedule.isEmpty()) return QVariantList();
 
     QVariantList schedule_list;
-    QHash<QString, QVariantMap>::const_iterator iterator = schedule.cbegin();
-    QHash<QString, QVariantMap>::const_iterator end = schedule.cend();
+    QHash<QString, QVariantMap>::const_iterator iterator = _schedule.cbegin();
+    QHash<QString, QVariantMap>::const_iterator end = _schedule.cend();
     for (; iterator != end; ++iterator) {
         schedule_list.push_back(iterator.value());
     }

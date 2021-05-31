@@ -23,8 +23,8 @@ private:
 
 protected:
     // REGEX pattern for extracting the XML data withing another data's
-    const QString   xmldata_pattern       {QStringLiteral("<Root>[\\W\\w]+<\\/Root>")};
-    bool is_empty;
+    const QString   _xmldata_pattern       {QStringLiteral("<Root>[\\W\\w]+<\\/Root>")};
+    bool _is_empty;
 
 public:
     AbstractXmlDataHandler();

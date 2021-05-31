@@ -8,7 +8,7 @@ InitHandler::InitHandler()
 bool InitHandler::start()
 {
     connect(&request, &Network::complete, this, &InitHandler::parseInit);
-    request.setUrl(root_url + loginurl);
+    request.setUrl(_root_url + _loginurl);
     return request.get();
 }
 
@@ -50,8 +50,8 @@ bool InitHandler::parseInit(QNetworkReply& reply)
         return false;
     }
 
-    request_validators = extractFormValidators(data);
-    if (request_validators.empty()) {
+    _request_validators = extractFormValidators(data);
+    if (_request_validators.empty()) {
         setErrorCode(Errors::UnknownError);
         reply.deleteLater();
         setSuccess(false);

@@ -14,8 +14,8 @@ class LoginHandler : public Handler
 {
     Q_OBJECT
 private:
-    const QString   login_url{QStringLiteral("/Forms/AuthenticateUser/AuthUser.aspx?fid=0;1&tck=&&&lastm=20190219160242")};
-    QString         user_name;
+    const QString   _login_url{QStringLiteral("/Forms/AuthenticateUser/AuthUser.aspx?fid=0;1&tck=&&&lastm=20190219160242")};
+    QString         _user_name;
 
     // extract student name and store it into 'user_name' by parsing 'response'
     bool            extractName (QString& response);
