@@ -1,3 +1,8 @@
+/*
+    * This is a Helper for SettingsPage.qml
+    * In this Section we handle changing Boostan client configurations
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import API.Settings 1.0

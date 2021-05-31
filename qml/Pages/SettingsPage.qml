@@ -1,3 +1,11 @@
+/*
+    * This is a Settings pge
+    * In this page, We provide 3 type of information to users:
+    * -Golestan settings: changing golestan account credentials
+    * -Boostan Settings:  changing this client(Boostan) configurations
+    * -About: some information about the Boostan project
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15

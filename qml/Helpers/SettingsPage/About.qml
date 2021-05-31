@@ -1,3 +1,8 @@
+/*
+    * This is a Helper for SettingsPage.qml
+    * In this page we write some information about Boostan project.
+*/
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../../Controls"
@@ -19,6 +24,7 @@ Item {
             text: "بوستان یک کارخواه(کلاینت) آزاد برای سامانهٔ دانشگاهی گلستان است."
         }
 
+        // separator
         Rectangle {
             width: parent.width
             height: 1
@@ -34,6 +40,7 @@ Item {
             text: "نسخه: " + Version
         }
 
+        // separator
         Rectangle {
             width: parent.width
             height: 1

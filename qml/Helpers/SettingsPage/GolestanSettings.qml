@@ -1,3 +1,8 @@
+/*
+    * This is a Helper for SettingsPage.qml
+    * In this Section we handle changing Golestan account credentials
+*/
+
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
