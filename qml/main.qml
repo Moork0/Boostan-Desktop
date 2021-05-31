@@ -53,21 +53,25 @@ ApplicationWindow {
         SideBarItem {
             title: "پیشخوان"
             componentPath: "qrc:/Pages/DashboardPage.qml"
+            iconText: "\uf19d"
         }
 
         SideBarItem {
             title: "دروس ارائه شده"
             componentPath: "qrc:/Pages/OfferedCoursePage.qml"
+            iconText: "\uf0ce"
         }
 
         SideBarItem {
             title: "کارنامه"
             componentPath: "qrc:/Pages/ScoresPage.qml"
+            iconText: "\ue80f"
         }
 
         SideBarItem {
             title: "تنظیمات"
             componentPath: "qrc:/Pages/SettingsPage.qml"
+            iconText: "\ue80e"
         }
 
     }
