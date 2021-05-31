@@ -44,6 +44,7 @@ HEADERS += \
         header/handlers/inithandler.h \
         header/handlers/loginhandler.h \
         header/handlers/scoreshandler.h \
+        header/helpers/commonmacros.h \
         header/helpers/errors.h \
         header/helpers/constants.h \
         header/base/network.h \
