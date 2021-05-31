@@ -4,7 +4,7 @@
 
 bool Logger::init()
 {
-    if (!_file.open(QIODevice::WriteOnly)) {
+    if (!_file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         return false;
     }
     return true;
