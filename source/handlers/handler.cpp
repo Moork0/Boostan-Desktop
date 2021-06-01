@@ -121,6 +121,12 @@ bool Handler::updateTokens(const QString& data)
     return true;
 }
 
+void Handler::clearTokens()
+{
+    clearCookies();
+    _request_validators.clear();
+}
+
 bool Handler::verifyResponse(QNetworkReply& reply, QString& data)
 {
     if (hasError(reply.error())) {

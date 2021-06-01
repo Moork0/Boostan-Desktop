@@ -125,6 +125,7 @@ protected:
         * return true if succeed otherwise return false
      */
     bool        updateTokens(const QString& data);
+    void        clearTokens();
 
     /*
         * This is important function and will be used in almost all of the
