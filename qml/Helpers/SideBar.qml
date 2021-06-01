@@ -156,6 +156,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 15
             width: parent.width - 20
+
             Icon {
                 id: logout_icon
                 Layout.alignment: Qt.AlignRight
@@ -165,7 +166,13 @@ Rectangle {
                 description: "خروج"
                 color: "#262125"
                 clickAble: true
+                onClicked: {
+                    // close the sidebar and push login pages
+                    right_pane.enabled = false;
+                    stackview.rawPushReset("qrc:/Pages/LoginPage.qml", "qrc:/Pages/LoginPage.qml")
+                }
             }
+
             Item {
                 height: 10
             }
