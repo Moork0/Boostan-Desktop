@@ -8,6 +8,9 @@ InitHandler::InitHandler()
 bool InitHandler::start()
 {
     connect(&_request, &Network::complete, this, &InitHandler::parseInit);
+    // reset tokens
+    clearTokens();
+
     _request.setUrl(_root_url + _loginurl);
     return _request.get();
 }
