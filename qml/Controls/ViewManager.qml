@@ -53,6 +53,8 @@ StackView {
         root.push(obj)
     }
 
+    // replace current item with {{comp}} and remove every
+    // other existing component in {{__objects}}
     function rawPushReset(comp, comp_name, is_url = true)
     {
         if (is_url === true)
