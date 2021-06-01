@@ -49,6 +49,7 @@ Rectangle {
     }
 
     ColumnLayout {
+        visible: side_bar.enabled
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.topMargin: 20
