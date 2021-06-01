@@ -53,6 +53,21 @@ StackView {
         root.push(obj)
     }
 
+    function rawPushReset(comp, comp_name, is_url = true)
+    {
+        if (is_url === true)
+            comp = Qt.createComponent(comp)
+
+        var obj = comp.createObject(root.parent, {__viewManUid: comp_name})
+        root.replace(obj, StackView.PushTransition)
+
+        for (var uid in __objects) {
+            removePage(uid);
+        }
+        __objects[comp_name] = obj
+
+    }
+
     function removePage(uid)
     {
         if (__objects.hasOwnProperty(uid)) {
@@ -60,4 +75,5 @@ StackView {
             delete __objects[uid]
         }
     }
+
 }
