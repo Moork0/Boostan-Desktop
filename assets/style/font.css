@@ -1,0 +1,32 @@
+@font-face {
+    font-family: vazir;
+    src: url("./assets/fonts/vazir-font-v16.1.0/Vazir.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: vazirLight;
+    src: url("./assets/fonts/vazir-font-v16.1.0/Vazir-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: vazirBold;
+    src: url("./assets/fonts/vazir-font-v16.1.0/Vazir-Bold.ttf") format("truetype");
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+    font-family: vazirLight, "Montserrat", Helvetica, Arial, serif !important;
+}
