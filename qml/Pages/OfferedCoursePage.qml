@@ -191,6 +191,7 @@ PageBase {
         width: parent.width - 30
         height: parent.height - constructed_schedule_btn.height - 50
         model: 0
+        hasModelBackend: true
         columnItem: tableview_column
 
         onInitialChoose: weightOfChoosed += offered_course_model.getCourseWeight(index)
