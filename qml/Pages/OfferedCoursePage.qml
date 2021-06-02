@@ -193,6 +193,7 @@ PageBase {
         model: 0
         hasModelBackend: true
         columnItem: tableview_column
+        rowHeight: 80
 
         onInitialChoose: weightOfChoosed += offered_course_model.getCourseWeight(index)
         onChoosedCleared: weightOfChoosed = 0
