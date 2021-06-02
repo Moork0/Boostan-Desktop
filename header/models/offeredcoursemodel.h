@@ -20,7 +20,7 @@ class OfferedCourseModel : public QAbstractListModel
 
 private:
     // the container which stores the data
-    QList<QVariantList*>    data_container;
+    QList<QVariantList*>    _data_container;
 
 public:
     explicit    OfferedCourseModel          (QObject *parent = nullptr);
@@ -72,18 +72,20 @@ public:
 
     /** Custom functions: **/
 
-    // convert 'role' to integer index
+    // convert {{role}} to integer index
     static int      roleToIndex         (roles role);
     // free up memory
     void            cleanUp             ();
-    // move 'container' data's to 'data_container'
+    // move {{container}} data's to {{_data_container}}
     void            setDataContainer    (QList<QVariantList*>& container);
 
 public slots:
     // convert and return a 'data_container' element to ScheduleTable compatible format
     QVariantMap     toScheduleFormat    (const int index) const;
-    // return a weight of a course at index 'index' in 'data_container'
+    // return a weight of a course at index {{index}} in {{_data_container}}
     int             getCourseWeight     (const int index) const;
+    // disable isChoosed property of {{index_list}} indexes
+    void            clearAllChoosed          (const QList<int> index_list);
 };
 
 #endif // OFFEREDCOURSEMODEL_H

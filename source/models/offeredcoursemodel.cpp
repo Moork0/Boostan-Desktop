@@ -16,7 +16,7 @@ int OfferedCourseModel::rowCount(const QModelIndex &parent) const
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
     if (parent.isValid())
         return 0;
-    return data_container.size();
+    return _data_container.size();
 }
 
 QVariant OfferedCourseModel::data(const QModelIndex &index, int role) const
@@ -25,9 +25,9 @@ QVariant OfferedCourseModel::data(const QModelIndex &index, int role) const
 
     int row = index.row();
     int column = role - ROLE_START - 1;
-    if (row < 0 || row >= data_container.size()) return QVariant();
+    if (row < 0 || row >= _data_container.size()) return QVariant();
 
-    return data_container.at(row)->at(column);
+    return _data_container.at(row)->at(column);
 }
 
 QHash<int, QByteArray> OfferedCourseModel::roleNames() const
@@ -46,9 +46,9 @@ bool OfferedCourseModel::setData(const QModelIndex &index, const QVariant &value
 
     int row = index.row();
     int column = role - ROLE_START - 1;
-    if (row < 0 || row >= data_container.size()) return false;
+    if (row < 0 || row >= _data_container.size()) return false;
 
-    data_container[row]->replace(column , value);
+    _data_container[row]->replace(column , value);
     emit dataChanged(index, index, QVector<int>() << role);
     return true;
 }
@@ -67,31 +67,31 @@ int OfferedCourseModel::roleToIndex(OfferedCourseModel::roles role)
 
 void OfferedCourseModel::cleanUp()
 {
-    if (data_container.isEmpty()) return;
-    for(QVariantList* element : qAsConst(data_container)) {
+    if (_data_container.isEmpty()) return;
+    for(QVariantList* element : qAsConst(_data_container)) {
         delete element;
         element = nullptr;
     }
-    data_container.clear();
+    _data_container.clear();
 }
 
 void OfferedCourseModel::setDataContainer(QList<QVariantList*>& container)
 {
     cleanUp();
-    data_container.swap(container);
+    _data_container.swap(container);
 }
 
 QVariantMap OfferedCourseModel::toScheduleFormat(const int index) const
 {
     QVariantMap map;
-    if (index < 0 || index >= data_container.size()) return map;
-    map[QStringLiteral("teacher")] = data_container[index]->at(roleToIndex(teacherRole));
-    map[QStringLiteral("name")] = data_container[index]->at(roleToIndex(courseNameRole));
-    map[QStringLiteral("exam")] = data_container[index]->at(roleToIndex(examRole)).toString().replace(QStringLiteral("<br>"), QStringLiteral(" "));
+    if (index < 0 || index >= _data_container.size()) return map;
+    map[QStringLiteral("teacher")] = _data_container[index]->at(roleToIndex(teacherRole));
+    map[QStringLiteral("name")] = _data_container[index]->at(roleToIndex(courseNameRole));
+    map[QStringLiteral("exam")] = _data_container[index]->at(roleToIndex(examRole)).toString().replace(QStringLiteral("<br>"), QStringLiteral(" "));
     map[QStringLiteral("warningForCourses")] = QVariantList();
-    map[QStringLiteral("uid")] = ScheduleTable::getUid(data_container[index]->at(roleToIndex(courseNumberRole)).toString(), data_container[index]->at(roleToIndex(groupRole)).toString());
+    map[QStringLiteral("uid")] = ScheduleTable::getUid(_data_container[index]->at(roleToIndex(courseNumberRole)).toString(), _data_container[index]->at(roleToIndex(groupRole)).toString());
 
-    QStringList times = data_container[index]->at(roleToIndex(timeRole)).toString().split("<br>");
+    QStringList times = _data_container[index]->at(roleToIndex(timeRole)).toString().split("<br>");
     QVariantList rows, columns, lengths;
     float calculated_column;
     for (QString& time : times) {
@@ -112,8 +112,13 @@ QVariantMap OfferedCourseModel::toScheduleFormat(const int index) const
 
 int OfferedCourseModel::getCourseWeight(const int index) const
 {
-    return data_container.at(index)->at(roleToIndex(weightRole)).toInt();
+    return _data_container.at(index)->at(roleToIndex(weightRole)).toInt();
 }
 
-
+void OfferedCourseModel::clearAllChoosed(const QList<int> index_list)
+{
+    for (uint index : index_list) {
+        setData(QAbstractItemModel::createIndex(index, 0), false, isChoosedRole);
+    }
+}
 
