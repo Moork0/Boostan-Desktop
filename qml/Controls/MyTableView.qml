@@ -17,6 +17,7 @@ Item {
     /**  Properties  **/
 
     property alias model: listview.model
+    property bool hasModelBackend: false
     // Roles used for accessing information in model.
     property var columnRoles: ["group", "courseNumber", "courseName", "weight", "capacity", "teacher", "time", "place", "exam"]
     // List of titles for each column.
@@ -62,9 +63,13 @@ Item {
 
     function clearAllChoosed ()
     {
-        for (var i = 0; i < choosedList.length; ++i) {
-            var obj = listview.itemAtIndex(choosedList[i])
-            obj.rowData["isChoosed"] = false
+        if (root.hasModelBackend)
+            listview.model.clearAllChoosed(choosedList)
+        else {
+            for (var i = 0; i < choosedList.length; ++i) {
+                var obj = listview.itemAtIndex(choosedList[i])
+                obj.rowData["isChoosed"] = false
+            }
         }
         root.choosedList = []
         root.choosedCleared()
