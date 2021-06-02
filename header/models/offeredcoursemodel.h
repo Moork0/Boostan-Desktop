@@ -84,7 +84,7 @@ public slots:
     QVariantMap     toScheduleFormat    (const int index) const;
     // return a weight of a course at index {{index}} in {{_data_container}}
     int             getCourseWeight     (const int index) const;
-    // disable isChoosed property of {{index_list}} indexes
+    // set isChoosed property of {{index_list}} indexes to false
     void            clearAllChoosed          (const QList<int> index_list);
 };
 
