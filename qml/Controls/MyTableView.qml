@@ -171,7 +171,7 @@ Item {
             Component.onCompleted: {
                 // Identify the chosen state of the row. If there is no member names 'isChoosed', create one.
                 rowData["isChoosed"] = rowData.isChoosed ?? false;
-                if (rowData["isChoosed"]) {
+                if (rowData["isChoosed"] && root.choosedList.indexOf(index) === -1) {
                     choosedList.push(index)
                     initialChoose(index)
                 }
