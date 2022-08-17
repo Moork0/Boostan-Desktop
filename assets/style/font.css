@@ -1,16 +1,16 @@
 @font-face {
     font-family: vazir;
-    src: url("../fonts/vazir-font-v16.1.0/Vazir.ttf") format("truetype");
+    src: url("../font/vazir-font-v16.1.0/Vazir.ttf") format("truetype");
 }
 
 @font-face {
     font-family: vazirLight;
-    src: url("../fonts/vazir-font-v16.1.0/Vazir-Light.ttf") format("truetype");
+    src: url("../font/vazir-font-v16.1.0/Vazir-Light.ttf") format("truetype");
 }
 
 @font-face {
     font-family: vazirBold;
-    src: url("../fonts/vazir-font-v16.1.0/Vazir-Bold.ttf") format("truetype");
+    src: url("../font/vazir-font-v16.1.0/Vazir-Bold.ttf") format("truetype");
 }
 
 html,
