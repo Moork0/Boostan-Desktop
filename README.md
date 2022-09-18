@@ -11,7 +11,10 @@ Boostan is written in C++, Qt, and QML.
 
 Demo:
 
-https://seedpuller.github.io/Boostan-Desktop/assets/img/out1.mp4
+
+https://user-images.githubusercontent.com/24620298/190890888-47ed93a7-f91c-4ed4-9c6b-7b357e38b021.mp4
+
+
 
 # Acknowledgement
 
