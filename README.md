@@ -9,6 +9,10 @@ Aside from Golestan's basic functionalities, Boostan provides much more features
 
 Boostan is written in C++, Qt, and QML.
 
+Demo:
+
+https://seedpuller.github.io/Boostan-Desktop/assets/img/out1.mp4
+
 # Acknowledgement
 
 - [Vida Azadi](mailto:azadivida@gmail.com): UI design
